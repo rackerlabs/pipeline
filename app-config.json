@@ -22,5 +22,5 @@
         "name"          : "test_db",
         "collection"    : "test_col"
     },
-	"installed" :   false
+	"installed" :	true
 }
