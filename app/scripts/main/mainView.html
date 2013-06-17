@@ -1,0 +1,41 @@
+<div class="text-right">
+    <p><i class="{{connectedClass}}"></i><span class="small muted"> {{connected}}</span></p>
+</div>
+<div class="hero-unit">
+    <h1>'Allo, 'Allo!</h1>
+    <div>
+        <button class="btn pull-right" ng-click="collapse()">
+            <i class="{{collapseIcon}}"></i> {{collapseText}}
+        </button>
+    </div>
+    <div collapse="isCollapsed">
+        <p>You now have</p>
+        <div class="row well well-large">
+            <ul class="span4">
+                <li ng-repeat="thing in awesomeClientThings">{{thing}}</li>
+            </ul>
+            <ul class="span4">
+                <li ng-repeat="thing in awesomeServerThings">{{thing}}</li>
+            </ul>
+        </div>
+        <p>installed.</p>
+    </div>
+    <h3>Enjoy coding! - Yeoman</h3>
+</div>
+<div class="row">
+    <div class="span4 text-center">
+        <button class="btn" ng-click="socketExample()">
+            <i class="icon-external-link"</button></i> Socket Test
+        </button>
+    </div>
+    <div class="span4 text-center">
+        <button class="btn" ng-click="redirect( 'db' )">
+            <i class="icon-external-link"</button></i> Database Test
+        </button>
+    </div>
+    <div class="span4 text-center">
+        <button class="btn" ng-click="redirect( '/route/test' )">
+            <i class="icon-external-link"</button></i> Route Test
+        </button>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+{
+    "info" : {
+        "name"          :   "yo-angular-express-plus",
+        "description"   :   "Yeoman scaffolded angular-express app with extra goodies",
+        "version"       :   "0.1.0",
+        "author"        :   {
+            "name"    :   "author",
+            "email"   :   "email",
+            "url"     :   "url",
+            "twitter" :   "twitter"
+        }
+    },
+    "appPath"   :   "app",
+    "serverPath":   "server",
+    "distPath"  :   "dist",
+    "server" : {
+        "port"      :   3001
+    },
+    "database" : {
+        "host"          : "localhost",
+        "port"          : 27017,
+        "name"          : "test_db",
+        "collection"    : "test_col"
+    },
+	"installed" :   false
+}
