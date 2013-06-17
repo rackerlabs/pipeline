@@ -1,13 +1,13 @@
 {
     "info" : {
-        "name"          :   "yo-angular-express-plus",
-        "description"   :   "Yeoman scaffolded angular-express app with extra goodies",
+        "name"          :   "Pipeline",
+        "description"   :   "Simple & Opinionated build server built around the concept of the pipeline.",
         "version"       :   "0.1.0",
         "author"        :   {
-            "name"    :   "author",
-            "email"   :   "email",
-            "url"     :   "url",
-            "twitter" :   "twitter"
+            "name"    :   "Chris Cantu",
+            "email"   :   "chris.cantu@rackspace.com",
+            "url"     :   "no url yet",
+            "twitter" :   "chriscantu"
         }
     },
     "appPath"   :   "app",
