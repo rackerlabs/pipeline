@@ -10,17 +10,17 @@
             {
                 "id": 1,
                 "name": "v2 Start Build",
-                "status": "inactive"
+                "status": "success"
             },
             {
                 "id": 2,
                 "name": "v2 Dev Done",
-                "status": "inactive"
+                "status": "attention"
             },
             {
                 "id": 3,
                 "name": "v2 Isolation Phase Complete",
-                "status": "inactive"
+                "status": "active"
             },
             {
                 "id": 4,
@@ -50,12 +50,12 @@
             {
                 "id": 1,
                 "name": "v2 Start Build",
-                "status": "inactive"
+                "status": "success"
             },
             {
                 "id": 2,
                 "name": "v2 Dev Done",
-                "status": "inactive"
+                "status": "error"
             },
             {
                 "id": 3,

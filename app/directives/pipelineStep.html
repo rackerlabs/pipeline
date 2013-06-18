@@ -1,5 +1,6 @@
-<div class="well pipeline-step state-{{ step.state }}">
+<div class="well pipeline-step state-{{ step.status }}">
     <div class="label">{{ step.name }}</div>
-    Pipeline: {{ step.pipeline_id }}<br>
+    Pipeline: {{ pipeline.id }}<br>
     Step ID: {{ step.id }}<br>
+    <rx-pipeline-step-controls pipeline-id="{{ pipeline.id }}" step-id="{{ step.id }}"></rx-pipeline-step-controls>
 </div>

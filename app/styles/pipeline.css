@@ -34,9 +34,9 @@
 }
 
 .pipeline .state-error {
-    background-color: #eeb2b1;
-    border-color: #B94A48;
-    color: #722625;
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #eed3d7;
 }
 
 .pipeline .state-error .label {
@@ -45,9 +45,9 @@
 }
 
 .pipeline .state-success {
-    background-color: #b0dab1;
-    border-color: #468847;
-    color: #145415;
+    color: #468847;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
 }
 
 .pipeline .state-success .label {
@@ -56,12 +56,34 @@
 }
 
 .pipeline .state-active {
-    background-color: #f4dcba;
-    border-color: #f89406;
-    color: #966115;
+    color: #3a87ad;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
 }
 
 .pipeline .state-active .label {
-    background-color: #f89406;
+    background-color: #3a87ad;
     color: #FFFFFF;
+}
+
+.pipeline .state-attention {
+    background-color: #fcf8e3;
+    border-color: #fbeed5;
+    color: #c09853;
+}
+
+.pipeline .state-attention .label {
+    background-color: #c09853;
+    color: #FFFFFF;
+}
+
+.pipeline .pipeline-step .pipeline-step-controls {
+    
+}
+
+.pipeline .pipeline-step .pipeline-step-controls .icon-stack {
+}
+
+.pipeline .pipeline-step .pipeline-step-controls .icon-stack i[class^="icon-"] {
+    
 }

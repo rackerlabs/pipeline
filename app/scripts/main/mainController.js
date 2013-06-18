@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module( 'yoAngularExpressTestApp' )
-    .controller( 'MainCtrl', [ '$scope', 'socket', '$location', '$window', function( $scope, socket, $location, $window ) {
-
+angular.module( 'rxPipelineApp' )
+    .controller( 'MainCtrl', [ '$scope', 'socket', '$location', '$window', 'Pipelines', function( $scope, socket, $location, $window, Pipelines ) {
+        $scope.pipelines = Pipelines.pipelineData;
+        
         $scope.awesomeClientThings = [
             'HTML5 Boilerplate',
             'AngularJS',
