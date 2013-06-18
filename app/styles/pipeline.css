@@ -1,0 +1,67 @@
+.pipeline-list {
+    
+}
+
+.pipeline-list .pipeline {
+    border: 1px solid #000;
+}
+
+.pipeline-list .pipeline .well {
+    float: left;
+    min-height: 100px;
+    min-width: 120px;
+    padding: 9px;
+    margin-bottom: 0px;
+    margin: 0px 5px;
+    font-size: 9pt;
+}
+
+.pipeline-list .pipeline .well .label {
+    text-align: center;
+    display: block;
+}
+
+.pipeline-list .pipeline .pipeline-info {
+    width: 150px !important;
+    margin-right: 15px;
+}
+
+.pipeline-list .pipeline .pipeline-info .git-config {
+}
+
+.pipeline-list .pipeline .pipeline-steps {
+    display: inline-block;
+}
+
+.pipeline .state-error {
+    background-color: #eeb2b1;
+    border-color: #B94A48;
+    color: #722625;
+}
+
+.pipeline .state-error .label {
+    background-color: #B94A48;
+    color: #FFFFFF;
+}
+
+.pipeline .state-success {
+    background-color: #b0dab1;
+    border-color: #468847;
+    color: #145415;
+}
+
+.pipeline .state-success .label {
+    background-color: #468847;
+    color: #FFFFFF;
+}
+
+.pipeline .state-active {
+    background-color: #f4dcba;
+    border-color: #f89406;
+    color: #966115;
+}
+
+.pipeline .state-active .label {
+    background-color: #f89406;
+    color: #FFFFFF;
+}
