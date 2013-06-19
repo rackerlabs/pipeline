@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module( 'yoAngularExpressTestApp', [ 'ui.bootstrap', 'btford.socket-io' ])
+angular.module( 'rxPipelineApp', [ 'ui.bootstrap', 'btford.socket-io', 'ngSanitize', 'pipelineDirectives', 'pipelineServices', 'pipelineFilters'])
     .config( [ '$routeProvider', '$locationProvider', function ( $routeProvider, $locationProvider ) {
         $routeProvider
         .when( '/', {
