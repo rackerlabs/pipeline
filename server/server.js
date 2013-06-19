@@ -47,6 +47,7 @@ exports.io = io.listen( http.createServer( server ).listen( server.get( 'port' )
     console.log( 'Express server listening on ' + server.get( 'port' ) );
 } ) );
 
+// Configure Routes
 server.get('/api/pipeline', pipeline.list);
 server.get('/api/pipeline/:id', pipeline.get);
 server.post('/api/pipeline', pipeline.save);
@@ -58,14 +59,7 @@ server.post('/api/build', build.save);
 server.put('/api/build/:id', build.update);
 server.delete('/api/build:id', build.delete);
 
-
-// Configure Routes
-//require( './routes' );
-
-// Configure Sockets
 require( './sockets');
 
-// Configure Database
-//require( './db' );
-console.log('mongodb://' + db.host + '/' + db.name);
+console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);
 mongoose.connect('mongodb://' + db.host + '/' + db.name);
