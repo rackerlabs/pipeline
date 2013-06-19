@@ -60,12 +60,12 @@ server.delete('/api/build:id', build.delete);
 
 
 // Configure Routes
-require( './routes' );
+//require( './routes' );
 
 // Configure Sockets
 require( './sockets');
 
 // Configure Database
-require( './db' );
-
-mongoose.connect('mongodb://' + db.host + ':'+ db.port + '/' + db.name);
+//require( './db' );
+console.log('mongodb://' + db.host + '/' + db.name);
+mongoose.connect('mongodb://' + db.host + '/' + db.name);
