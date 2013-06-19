@@ -12,22 +12,42 @@ var PIPELINE_SCHEMA = new Schema({
 
 var Pipeline = mongoose.model('Pipeline', PIPELINE_SCHEMA);
 
-exports.list = function(req, res) {
-    res.json(200, { msg: 'List of pipelines'});
+exports.list = function (req, res) {
+    return Pipeline.find(function (err, pipelines) {
+        return (err) ? res.json(400, {msg: 'Unable to fetch pipelines'}) : res.json(200, pipelines);
+    });
 };
 
-exports.get = function(req, res) {
-    res.json(200, { msg: 'Pipeline by id'});
+exports.get = function (req, res) {
+    var id = req.params.id;
+    
+    return Pipeline.findOne(function (err, pipeline) {
+        return (err || !pipeline) ? res.json(404, {msg: "Unable to find pipeline with id: " + id}) : res.json(200, pipeline);
+    });
 };
 
-exports.save = function(req, res) {
-    res.json(200, { msg: "I saved some SHIT!" } );
+exports.save = function (req, res) {
+    var myPipeline = new Pipeline(req.body);
+    
+    return myPipeline.save(function (err, pipeline) {
+        return (!err) ? res.json(200, pipeline) : res.json(400, {msg: "Unable to create new pipeline"});
+    });
 };
 
-exports.update = function(req, res) {
-    res.json(200, {msg: "I updated your mom!" });
+exports.update = function (req, res) {
+    var id = req.params.id, 
+        body = req.body;
+    body.lastUpdated = new Date();
+    
+    return Pipeline.update({_id: id}, body, {}, function (err, updatedNumber, raw) {
+        return (!err) ?  res.json(200, raw) : res.json(400, {msg: "Unable to update pipeline id: " + id });
+    });
 };
 
-exports.delete = function(req, res) {
-    res.json(200, {msg:"I deleted it!  What of it beeeach??"});
-}
+exports.delete = function (req, res) {
+    var id = req.params.id;
+    
+    return Pipeline.remove({_id: id}, function (err) {
+        return (!err) ? res.json(200, {msg: "Deleted pipeline id: " + id}) : res.json(400, {msg: "Unable to delete pipeline id: " + id});
+    });
+};
