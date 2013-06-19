@@ -9,7 +9,11 @@ var express     = require( 'express' ),
     http        = require( 'http' ),
     path        = require( 'path' ),
     io          = require( 'socket.io' ),
-    appConfig   = require( './../app-config.json' );
+    mongoose    = require( 'mongoose' ),
+    appConfig   = require( '../app-config.json' ),
+    db          = appConfig.database,
+    pipeline    = require( './routes/pipeline'),
+    build       = require( './routes/build');
 
 // Server instance
 var server = exports.server = express();
@@ -43,6 +47,18 @@ exports.io = io.listen( http.createServer( server ).listen( server.get( 'port' )
     console.log( 'Express server listening on ' + server.get( 'port' ) );
 } ) );
 
+server.get('/api/pipeline', pipeline.list);
+server.get('/api/pipeline/:id', pipeline.get);
+server.post('/api/pipeline', pipeline.save);
+server.put('/api/pipeline/:id', pipeline.update);
+server.delete('/api/pipeline:id', pipeline.delete);
+server.get('/api/build', build.list);
+server.get('/api/build/:id', build.get);
+server.post('/api/build', build.save);
+server.put('/api/build/:id', build.update);
+server.delete('/api/build:id', build.delete);
+
+
 // Configure Routes
 require( './routes' );
 
@@ -51,3 +67,5 @@ require( './sockets');
 
 // Configure Database
 require( './db' );
+
+mongoose.connect('mongodb://' + db.host + ':'+ db.port + '/' + db.name);
