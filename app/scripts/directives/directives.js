@@ -17,11 +17,14 @@ directive("rxPipelineStep", function (Pipelines, PipelineSteps) {
         replace: true,
         templateUrl: "directives/pipelineStep.html",
         link: function (scope, element, attrs) {
+            var localOnly = attrs["localOnly"];
             
+            scope.showStep = (((localOnly == "true") && (scope.step.global == false))||(localOnly != "true")) ? true : false;
+            console.log(scope.step);
         }
     };
 }).
-directive("rxPipelineList", function (Pipelines) {
+directive("rxPipelineList", function (Pipelines, Steps) {
     return {
         restrict: 'E',
         replace: true,
@@ -29,6 +32,15 @@ directive("rxPipelineList", function (Pipelines) {
         link: function (scope, element, attrs) {
             scope.Pipelines = Pipelines;
             scope.pipelineData = Pipelines.getPipelines();
+            scope.Steps = Steps;
+            
+            scope.getCurrentTab = function() {
+                return scope.currentTab;
+            }
+            scope.setTab = function(tab) {
+                scope.currentTab = tab;
+            }
+            scope.setTab("pipelines");
         }
     };
 }).
@@ -43,4 +55,13 @@ directive("rxPipelineStepControls", function(PipelineSteps) {
             console.log(scope.pipelineStep);
         }
     };
+}).
+directive("rxGlobalStep", function(Steps) {
+    return {
+        restrict: "E",
+        replace: true,
+        templateUrl: "directives/globalStep.html",
+        link: function (scope, element, attrs) {
+        }
+   };
 });

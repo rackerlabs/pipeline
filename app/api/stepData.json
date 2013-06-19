@@ -1,26 +1,32 @@
 [
     {
         "id": 1,
-        "name": "v2 Start Build"
+        "name": "v2 Start Build",
+        "global": false
     },
     {
         "id": 2,
-        "name": "v2 Dev Done"
+        "name": "v2 Dev Done",
+        "global": false
     },
     {
         "id": 3,
-        "name": "v2 Isolation Phase Complete"
+        "name": "v2 Isolation Phase Complete",
+        "global": false
     },
     {
         "id": 4,
-        "name": "v2 Push to Staging"
+        "name": "v2 Push to Staging",
+        "global": false
     },
     {
         "id": 5,
-        "name": "Smoke Tests"
+        "name": "Smoke Tests",
+        "global": true
     },
     {
         "id": 6,
-        "name": "v2 Production Ready"
+        "name": "v2 Production Ready",
+        "global": true
     }
 ]

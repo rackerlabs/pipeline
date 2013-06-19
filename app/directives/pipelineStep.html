@@ -1,4 +1,4 @@
-<div class="well pipeline-step state-{{ step.status }}">
+<div class="well pipeline-step state-{{ step.status }}" ng-show="showStep">
     <div class="label">{{ step.name }}</div>
     Pipeline: {{ pipeline.id }}<br>
     Step ID: {{ step.id }}<br>

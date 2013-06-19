@@ -92,7 +92,7 @@ angular.module('pipelineServices', ['ngResource']).
             }
         };
     }).
-    factory('Pipelines', function (PipelineSteps, Server) {
+    factory('Pipelines', function (PipelineSteps, Steps, Server) {
         return {
             pipelineData: [],
             lastUpdated: undefined,
@@ -121,6 +121,12 @@ angular.module('pipelineServices', ['ngResource']).
         return {
             stepData: [],
             lastUpdated: undefined,
+            getGlobalSteps: function() {
+                return _.filter(this.getSteps(), {"global": true});
+            },
+            getLocalSteps: function() {
+                return _.filter(this.getSteps(), {"global": false});
+            },
             getSteps: function() {
                 var stepScope = this;
                 
