@@ -7,7 +7,7 @@
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-        <title></title>
+        <title>Pipeline</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
@@ -15,6 +15,8 @@
 
         <!-- build:css styles/css/main-min.css -->
         <link rel="stylesheet" href="styles/css/main.css">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="styles/pipeline.css">
         <!-- endbuild -->
 
         <!-- build:js scripts/vendor/modernizr.js -->
@@ -22,7 +24,7 @@
         <!-- endbuild -->
     </head>
 
-    <body ng-app="yoAngularExpressTestApp">
+    <body ng-app="rxPipelineApp">
         <!--[if lt IE 7]>
         <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
@@ -33,7 +35,7 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class="container" ng-view></div>
+        <div class="container-fluid" ng-view></div>
 
         <!-- Scripts -->
         <script src="components/socket.io-client/dist/socket.io.min.js"></script>
@@ -56,6 +58,9 @@
         <!-- build:js scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/main/mainController.js"></script>
+        <script src="scripts/directives/directives.js"></script>
+        <script src="scripts/services/services.js"></script>
+        <script src="scripts/filters/filters.js"></script>
         <!-- endbuild -->
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

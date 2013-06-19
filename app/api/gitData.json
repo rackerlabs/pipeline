@@ -1,0 +1,17 @@
+[
+    {
+        "repo": "flow",
+        "type": "api",
+        "url": "https://github.com/rackerlabs/flow"
+    },
+    {
+        "repo": "flowui",
+        "type": "ui",
+        "url": "https://github.com/rackerlabs/flowui"
+    },
+    {
+        "repo": "flowtest",
+        "type": "test",
+        "url": "https://github.com/rackerlabs/flowtest"
+    }
+]
