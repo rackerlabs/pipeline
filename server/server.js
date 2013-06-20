@@ -4,16 +4,17 @@
  * Module dependencies
  */
 
-var express     = require( 'express' ),
-    cons        = require( 'consolidate' ),
-    http        = require( 'http' ),
-    path        = require( 'path' ),
-    io          = require( 'socket.io' ),
-    mongoose    = require( 'mongoose' ),
-    appConfig   = require( '../app-config.json' ),
+var express     = require('express'),
+    cons        = require('consolidate'),
+    http        = require('http'),
+    path        = require('path'),
+    io          = require('socket.io'),
+    mongoose    = require('mongoose'),
+    appConfig   = require('../app-config.json'),
     db          = appConfig.database,
-    pipeline    = require( './routes/pipeline'),
-    build       = require( './routes/build');
+    pipeline    = require('./routes/pipeline'),
+    build       = require('./routes/build'),
+    output     = require('./routes/output');
 
 // Server instance
 var server = exports.server = express();
@@ -58,6 +59,7 @@ server.get('/api/build/:id', build.get);
 server.post('/api/build', build.save);
 server.put('/api/build/:id', build.update);
 server.delete('/api/build:id', build.delete);
+server.get('/api/output', output.find);
 
 require( './sockets');
 
