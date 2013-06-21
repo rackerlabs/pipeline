@@ -1,5 +1,6 @@
 'use strict';
 var spawn = require('child_process').spawn;
+var Build = require('./../../server/db/schemas').Build; //TODO: Save data to mongodb
 
 module.exports = function( socket ) {
 
