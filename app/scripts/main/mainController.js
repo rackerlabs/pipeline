@@ -57,9 +57,8 @@ angular.module( 'rxPipelineApp' )
 
         socket.on( 'send:example', function( data ) {
             console.log('client socket on');
-
-            $('.hero-unit').css( 'background-color', '#DC002A' );
-        } );
+            console.log("> " + data);
+        });
 
         $scope.redirect = function( path ) {
             console.log('attempting to redirect to ' + path );

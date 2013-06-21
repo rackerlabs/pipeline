@@ -8,13 +8,12 @@ var express     = require('express'),
     cons        = require('consolidate'),
     http        = require('http'),
     path        = require('path'),
-    io          = require('socket.io'),
     mongoose    = require('mongoose'),
     appConfig   = require('../app-config.json'),
     db          = appConfig.database,
     pipeline    = require('./routes/pipeline'),
     build       = require('./routes/build'),
-    output     = require('./routes/output');
+    output      = require('./routes/output');
 
 // Server instance
 var server = exports.server = express();
@@ -44,9 +43,21 @@ server.configure( 'production', function() {
 
 
 // Start server - hook in sockets instance
-exports.io = io.listen( http.createServer( server ).listen( server.get( 'port' ), function() {
+var io = require('socket.io').listen( http.createServer( server ).listen( server.get( 'port' ), function() {
     console.log( 'Express server listening on ' + server.get( 'port' ) );
 } ) );
+
+io.sockets.on( 'connection', function( socket ) {
+
+    socket.emit( 'send:onConnect', {
+        data: 'Sockets Connected'
+    } );
+
+    // Example socket
+    // @todo remove the requirement to pass in the socket
+    require( './routes/socket' )( socket );
+
+} );
 
 // Configure Routes
 server.get('/api/pipeline', pipeline.list);
@@ -61,7 +72,7 @@ server.put('/api/build/:id', build.update);
 server.delete('/api/build:id', build.delete);
 server.get('/api/output', output.find);
 
-require( './sockets');
+//require( './sockets');
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);
 mongoose.connect('mongodb://' + db.host + '/' + db.name);
