@@ -9,8 +9,6 @@ module.exports = function( socket ) {
         var find = spawn('find', ['.', '-name', '*.js']);
 
         find.stdout.on('data', function(data) {
-            console.log("Data coming: '" + data + "'");
-
             socket.emit('send:example', data.toString() );
         });
 

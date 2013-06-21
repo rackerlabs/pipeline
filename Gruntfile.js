@@ -441,7 +441,8 @@ module.exports = function (grunt) {
                 options: {
                     stdout: true,
                     stderror: true,
-                    failOnError: true
+                    failOnError: true,
+                    execOptions: { maxBuffer: 5000 * 1024 }
                 }
             },
             startServer: {
