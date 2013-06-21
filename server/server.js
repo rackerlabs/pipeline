@@ -55,7 +55,7 @@ io.sockets.on( 'connection', function( socket ) {
 
     // Example socket
     // @todo remove the requirement to pass in the socket
-    require( './routes/socket' )( socket );
+    require( './sockets/buildSocket' )( socket );
 
 } );
 
