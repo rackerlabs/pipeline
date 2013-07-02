@@ -36,7 +36,7 @@ exports.update = function (req, res) {
 exports.delete = function (req, res) {
     var id = req.params.id;
     
-    return Build.remove({_id: id}, function (err) {
+    return Build.remove({ _id: id}, function (err) {
         return (!err) ? res.json(200, {msg: "Deleted build id: " + id}) : res.json(400, {msg: "Unable to delete build id: " + id});
     });
 };

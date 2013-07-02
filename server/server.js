@@ -64,12 +64,12 @@ server.get('/api/pipeline', pipeline.list);
 server.get('/api/pipeline/:id', pipeline.get);
 server.post('/api/pipeline', pipeline.save);
 server.put('/api/pipeline/:id', pipeline.update);
-server.delete('/api/pipeline:id', pipeline.delete);
+server.delete('/api/pipeline/:id', pipeline.delete);
 server.get('/api/build', build.list);
 server.get('/api/build/:id', build.get);
 server.post('/api/build', build.save);
 server.put('/api/build/:id', build.update);
-server.delete('/api/build:id', build.delete);
+server.delete('/api/build/:id', build.delete);
 server.get('/api/output', output.find);
 
 //require( './sockets');
