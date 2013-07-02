@@ -1,19 +1,5 @@
 'use strict';
-var mongoose    = require('mongoose'),
-    Schema      = mongoose.Schema;
-
-var BUILD_SCHEMA = new Schema({
-        name: String,
-        description: String,
-        created: { type: Date, default: Date.now },
-        createBy: String,
-        lastUpdated: { type: Date, default: Date.now },
-        lastUpdatedBy: String,
-        commands: [],
-        history: []
-    });
-
-var Build = mongoose.model('Build', BUILD_SCHEMA);
+var Build = require('./../../server/db/schemas').Build;
 
 exports.list = function (req, res) {
     return Build.find(function (err, builds) {

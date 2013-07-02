@@ -50,14 +50,18 @@ angular.module( 'rxPipelineApp' )
 
         $scope.socketExample = function() {
             console.log('sending event to socket');
-            socket.emit( 'send:example', {
-                data: 'example'
+            socket.emit( 'builds:startBuild', {
+                id: '51c12f137b1b2be326000001'
             } );
         };
 
-        socket.on( 'send:example', function( data ) {
+        socket.on('builds:update', function( data ) {
             console.log('client socket on');
             console.log("> " + data);
+        });
+
+        socket.on('builds:error', function(data) {
+            alert('Error occurred: ' + data);
         });
 
         $scope.redirect = function( path ) {

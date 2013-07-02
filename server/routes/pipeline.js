@@ -1,16 +1,5 @@
 'use strict';
-var mongoose    = require('mongoose'),
-    Schema      = mongoose.Schema;
-
-var PIPELINE_SCHEMA = new Schema({
-        created: { type: Date, default: Date.now},
-        createBy: String,
-        lastUpdated: Date,
-        branches: [{name: String, repoUrl: String}],
-        steps: []
-    });
-
-var Pipeline = mongoose.model('Pipeline', PIPELINE_SCHEMA);
+var Pipeline = require('./../../server/db/schemas').Pipeline;
 
 exports.list = function (req, res) {
     return Pipeline.find(function (err, pipelines) {
