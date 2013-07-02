@@ -42,12 +42,6 @@ module.exports = function( socket ) {
                 return;
             };
             
-            var funcs = [];
-
-            for (var i = 0; i < build.commands.length; i++) { 
-                funcs.push( scope.seqSpawn );
-            };
-
             var result = Q.resolve(0);
 
             _.forEach(build.commands, function(c) {
