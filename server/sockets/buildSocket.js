@@ -4,8 +4,11 @@ var Q = require('q');
 var Build = require('./../../server/db/schemas').Build; //TODO: Save data to mongodb
 
 module.exports = function( socket ) {
-    var seqSpawn = function(words) {
+    var seqSpawn = function( cmd ) {
         var defer = Q.defer();
+        var words = cmd.command.split(' ');
+
+        console.log("Started: xxxxxxx " + words + " xxxxxxx");
 
         var command = spawn(words.shift(), words);
 
@@ -15,33 +18,17 @@ module.exports = function( socket ) {
 
         command.stderr.on('data', function(data) {
             socket.emit('builds:error', data.toString());
+            defer.resolve(data);
         });
 
         command.on('close', function(code) {
+            console.log("Finished: xxxxxxx " + words + " xxxxxxx");
             socket.emit('builds:finished', code);
             defer.resolve(code);
         });
 
         return defer.promise;
-    }    
-
-    socket.on( 'send:example', function( data ) {
-        console.log("begining send:example");
-
-        var find = spawn('find', ['.', '-name', '*.js']);
-
-        find.stdout.on('data', function(data) {
-            socket.emit('send:example', data.toString() );
-        });
-
-        find.stderr.on('data', function(data) {
-            socket.emit('send:example', data.toString());
-        });
-
-        find.on('close', function(code) {
-            socket.emit('send:example', "find ended with exit code: " + code );
-        });
-    });
+    };
 
     socket.on("builds:startBuild", function(data) {
         Build.findById(data.id, function(err, build) {
@@ -50,18 +37,18 @@ module.exports = function( socket ) {
                 return;
             };
 
-            var functions = []
-            //TODO Ensure commands are executed in order.  
-            for (var i = 0; i < build.commands.length; i++) {
-                var words = build.commands[i].command.split(' ');
-                functions.push( seqSpawn(words) );
+            var functions = []; 
+            for (var i = 0; i < build.commands.length; i++) { 
+                functions.push( seqSpawn );
             };
 
-            functions.reduce(function( sofar, f) {
-                return sofar.then(f);
-            }, Q.resolve(0));
+            var result = Q.resolve(0);
+            var counter = 0;
 
+            functions.forEach( function(f) {
+                result = result.then( f(build.commands[counter]) );
+                counter++;
+            });
         });
-
     });
 };
