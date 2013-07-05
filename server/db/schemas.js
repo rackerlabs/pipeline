@@ -30,7 +30,7 @@ var PIPELINE_SCHEMA = new Schema({
         createBy: String,
         lastUpdated: Date,
         branches: [{name: String, repoUrl: String}],
-        steps: []
+        steps: [{buiildId: String}]
     });
 
 exports.Pipeline = mongoose.model('Pipeline', PIPELINE_SCHEMA);
