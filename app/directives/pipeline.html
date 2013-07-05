@@ -6,6 +6,6 @@
         </div>
     </div>
     <div class="pipeline-steps">
-        <rx-pipeline-step ng-repeat="step in pipeline.steps" pipeline-id="{{ pipeline.id }}" local-only="true"></rx-pipeline-step>
+        <rx-pipeline-step ng-repeat="step in pipeline.steps" pipeline="pipeline" step='step' local-only="true"></rx-pipeline-step>
     </div>
 </div>

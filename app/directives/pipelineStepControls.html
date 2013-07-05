@@ -1,10 +1,11 @@
 <div class="pipeline-step-controls">
-    <span class="icon-stack"> <!--Console Output Icon-->
+    <!--Console Output Icon-->
+    <span class="icon-stack" ng-click="displayConsole()" ng-hide="pipelineStep.status == 'inactive' || pipelineStep.status == 'unavailable'">
         <i class="icon-sign-blank icon-stack-base text-success icon-small"></i>
         <i class="icon-terminal icon-light icon-small"></i>
     </span>
     <!--Currently Running-->
-    <i class="icon-refresh icon-spin"></i>
+    <i class="icon-refresh icon-spin" ng-show="pipelineStep.status == 'active'"></i>
     <!--Start Icon-->
-    <i class="icon-play text-success"></i>
+    <i class="icon-play text-success" ng-hide="pipelineStep.status == 'unavailable' || pipelineStep.status == 'active'"></i>
 </div>

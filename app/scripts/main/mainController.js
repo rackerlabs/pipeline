@@ -1,45 +1,10 @@
 'use strict';
 
 angular.module( 'rxPipelineApp' )
-    .controller( 'MainCtrl', [ '$scope', 'socket', '$location', '$window', 'Pipelines', function( $scope, socket, $location, $window, Pipelines ) {
-        $scope.pipelines = Pipelines.pipelineData;
+    .controller( 'MainCtrl', [ '$scope', 'socket', '$location', '$window', 'Pipelines', 'Steps', function( $scope, socket, $location, $window, Pipelines, Steps ) {
+        $scope.Pipelines = Pipelines;
+        $scope.Steps = Steps;
         
-        $scope.awesomeClientThings = [
-            'HTML5 Boilerplate',
-            'AngularJS',
-            'Karma',
-            'jQuery',
-            'UI-Bootstrap',
-            'Font-Awesome',
-            'Modernizr',
-            'lodash',
-        ];
-
-        $scope.awesomeServerThings = [
-            'Express',
-            'Hogan',
-            'Socket.io',
-            'MongoDB'
-        ];
-
-        $scope.isCollapsed = true;
-
-        $scope.collapseText = 'Open';
-
-        $scope.collapseIcon = 'icon-chevron-down';
-
-        $scope.collapse = function() {
-            $scope.isCollapsed = !$scope.isCollapsed;
-
-            if ($scope.isCollapsed) {
-                $scope.collapseText = 'Open';
-                $scope.collapseIcon = 'icon-chevron-down';
-            } else {
-                $scope.collapseText = 'Close';
-                $scope.collapseIcon = 'icon-chevron-up';
-            }
-        };
-
         $scope.connectedClass = 'icon-remove';
         $scope.connected = 'Not Connected to Server';
 

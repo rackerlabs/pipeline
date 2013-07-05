@@ -84,6 +84,11 @@
 .pipeline .pipeline-step .pipeline-step-controls .icon-stack {
 }
 
+.pipeline .pipeline-step .pipeline-step-controls span[class^="icon-"],
+.pipeline .pipeline-step .pipeline-step-controls i[class^="icon-"] {
+    cursor: pointer;
+}
+
 .pipeline .pipeline-step .pipeline-step-controls .icon-stack i[class^="icon-"] {
     
 }
