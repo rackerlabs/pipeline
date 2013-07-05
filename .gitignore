@@ -7,3 +7,4 @@ app/components
 /BUILDLOG.md
 /app/styles/css/main.css
 /.jshint
+npm-debug.log

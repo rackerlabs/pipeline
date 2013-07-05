@@ -33,5 +33,6 @@ The application can be run with front-end code only or also run the server code.
 
 * Ensure mongodb is running locally ie: `mongod`
 * `grunt server --use-server`
+* (if you have issues with grunt, you can also run) `node server/server.js`
 
 > Note: Because of how NodeJS works, the browser may open before server has finished starting up. Therefore, you may see a 404 page when you run the command initially.  Just refresh the page if you see this error.
