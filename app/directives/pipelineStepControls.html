@@ -7,5 +7,5 @@
     <!--Currently Running-->
     <i class="icon-refresh icon-spin" ng-show="pipelineStep.status == 'active'"></i>
     <!--Start Icon-->
-    <i class="icon-play text-success" ng-hide="pipelineStep.status == 'unavailable' || pipelineStep.status == 'active'"></i>
+    <i class="icon-play text-success" ng-hide="pipelineStep.status == 'unavailable' || pipelineStep.status == 'active'" ng-click="Socket.startBuild('51d72b420bf9b10000000002')"></i>
 </div>

@@ -40,6 +40,15 @@ angular.module('pipelineServices', ['ngResource']).
             git: _res('GET', true, { action: 'gitData.json'})
         };
 	}).
+    factory('Socket', function (socket) {
+        return {
+            on: socket.on,
+            emit: socket.emit,
+            startBuild: function (build_id) {
+                this.emit("builds:startBuild", {"id": build_id});
+            }
+        };
+    }).
     factory('Git', function(Server) {
         return {
             pipelineData: [],
@@ -153,7 +162,7 @@ angular.module('pipelineServices', ['ngResource']).
             }
         };
     }).
-    factory("PipelineSteps", function(Steps) {
+    factory("PipelineSteps", function(Steps, Socket) {
         return {
             lastUpdated: undefined,
             getSteps: function(pipeline_id) {
@@ -177,10 +186,15 @@ angular.module('pipelineServices', ['ngResource']).
                 return steps;
             },
             getConsoleData: function () {
-                return {'data': 'Console data placeholder', 'stillRunning': false}
+                return {'data': 'Console data placeholder', 'stillRunning': true}
             },
             hookConsoleOutput: function (scope) {
-                
+                console.log("Hooking: " + scope)
+                Socket.on('builds:update', function( data ) {
+                    console.log('client socket on');
+                    console.log("> " + data);
+                    scope.consoleData += data;
+                });
             }
         };
     });

@@ -1,31 +1,24 @@
 'use strict';
 
 angular.module( 'rxPipelineApp' )
-    .controller( 'MainCtrl', [ '$scope', 'socket', '$location', '$window', 'Pipelines', 'Steps', function( $scope, socket, $location, $window, Pipelines, Steps ) {
+    .controller( 'MainCtrl', [ '$scope', 'socket', '$location', '$window', 'Pipelines', 'Steps', function( $scope, Socket, $location, $window, Pipelines, Steps ) {
         $scope.Pipelines = Pipelines;
         $scope.Steps = Steps;
         
         $scope.connectedClass = 'icon-remove';
         $scope.connected = 'Not Connected to Server';
 
-        socket.on( 'send:onConnect', function( data ) {
+        Socket.on( 'send:onConnect', function( data ) {
             $scope.connected = data.data;
             $scope.connectedClass = 'icon-link';
         } );
 
         $scope.socketExample = function() {
             console.log('sending event to socket');
-            socket.emit( 'builds:startBuild', {
-                id: '51c12f137b1b2be326000001'
-            } );
+            Socket.startBuild('51d72b420bf9b10000000002');
         };
 
-        socket.on('builds:update', function( data ) {
-            console.log('client socket on');
-            console.log("> " + data);
-        });
-
-        socket.on('builds:error', function(data) {
+        Socket.on('builds:error', function(data) {
             alert('Error occurred: ' + data);
         });
 

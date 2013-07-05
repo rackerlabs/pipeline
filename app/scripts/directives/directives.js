@@ -51,7 +51,7 @@ directive("rxPipelineList", function () {
         }
     };
 }).
-directive("rxPipelineStepControls", function($compile) {
+directive("rxPipelineStepControls", function($compile, Socket) {
     return {
         restrict: "E",
         replace: true,
@@ -60,6 +60,7 @@ directive("rxPipelineStepControls", function($compile) {
             pipelineStep: "="
         },
         link: function (scope, element, attrs) {
+            scope.Socket = Socket;
             scope.modalState = true;
             
             scope.displayConsole = function () {
@@ -78,7 +79,6 @@ directive("rxPipelineStepControls", function($compile) {
                 d = $compile(d)(scope);
                 
                 element.parent().append(d);
-                
             };
         }
     };
@@ -108,7 +108,7 @@ directive("rxConsoleOutput", function () {
             
             if (consoleInfo.stillRunning) {
                 // We're going to hook the consoleData variable into the socket output
-                step.hookConsoleOutput(scope);
+                scope.step.hookConsoleOutput(scope);
             }
         }
     };
