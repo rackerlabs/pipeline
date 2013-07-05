@@ -11,7 +11,7 @@ var BUILD_HISTORY_SCHEMA = new Schema({
         output: String,
         startTime: { type: Date, default: Date.now },
         endTime: { type: Date },
-        isSuccessful: Boolean
+        isSuccessful: { type: Boolean, default: true }
     });
 
 var BUILD_SCHEMA = new Schema({

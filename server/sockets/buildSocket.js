@@ -25,13 +25,19 @@ module.exports = function( socket ) {
             command.stderr.on('data', function(data) {
                 var dataString = data.toString() 
                 socket.emit('builds:error', dataString);
+
                 history.output = history.output + dataString;
+                history.isSuccessful = false;
             });
     
             command.on('close', function(code) {
                 socket.emit('builds:finished', code);
+                
+                history.endTime = new Date();
+
                 build.buildHistory.push(history);
                 build.save();
+                
                 defer.resolve(code);
             });
     
