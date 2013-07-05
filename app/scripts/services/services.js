@@ -34,12 +34,21 @@ angular.module('pipelineServices', ['ngResource']).
         };
 
         return {
-                steps: _res("GET", true, { action: 'stepData.json'}),
-                pipelines: _res('GET', true, { action: 'pipeline'}),
-                builds: _res('GET', true, {action: 'build'}),
-                git: _res('GET', true, { action: 'gitData.json'})
-            };
+            steps: _res("GET", true, { action: 'stepData.json'}),
+            pipelines: _res('GET', true, { action: 'pipelineData.json'}),
+            builds: _res('GET', true, {action: 'build'}),
+            git: _res('GET', true, { action: 'gitData.json'})
+        };
 	}).
+    factory('Socket', function (socket) {
+        return {
+            on: socket.on,
+            emit: socket.emit,
+            startBuild: function (build_id) {
+                this.emit("builds:startBuild", {"id": build_id});
+            }
+        };
+    }).
     factory('Git', function(Server) {
         return {
             pipelineData: [],
@@ -104,13 +113,22 @@ angular.module('pipelineServices', ['ngResource']).
                     return this.pipelineData;
                 }
                 
+                var procPipes = this.processPipelineData;
+                
                 Server.pipelines().success(function (data) {
-                    pipelineScope.pipelineData = data;
+                    pipelineScope.pipelineData = procPipes(data);
                     pipelineScope.lastUpdated = new Date();
                 }).error(function (response) {
                 });
                 
                 return this.pipelineData;
+            },
+            processPipelineData: function ( data ) {
+                _.forEach(data, function (v, i, c) {
+                    v.steps = this.parseSteps(v.steps, v.id);
+                }, PipelineSteps);
+                
+                return data;
             },
             getPipeline: function(pipeline_id) {
                 return _.find(this.getPipelines(), {"id": pipeline_id});
@@ -144,7 +162,7 @@ angular.module('pipelineServices', ['ngResource']).
             }
         };
     }).
-    factory("PipelineSteps", function(Steps) {
+    factory("PipelineSteps", function(Steps, Socket) {
         return {
             lastUpdated: undefined,
             getSteps: function(pipeline_id) {
@@ -160,11 +178,23 @@ angular.module('pipelineServices', ['ngResource']).
             getStep: function(pipeline_id, step_id) {
                 return _.find(this.getSteps(pipeline_id), {"id": step_id});
             },
-            getConsoleData: function () {
+            parseSteps: function ( steps, pipeline_id ) {
+                _.forEach(steps, function(v, i, c) {
+                    _.extend(v, this);
+                }, this);
                 
+                return steps;
+            },
+            getConsoleData: function () {
+                return {'data': 'Console data placeholder', 'stillRunning': true}
             },
             hookConsoleOutput: function (scope) {
-                
+                console.log("Hooking: " + scope)
+                Socket.on('builds:update', function( data ) {
+                    console.log('client socket on');
+                    console.log("> " + data);
+                    scope.consoleData += data;
+                });
             }
         };
     });

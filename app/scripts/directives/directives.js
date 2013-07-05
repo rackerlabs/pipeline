@@ -51,7 +51,7 @@ directive("rxPipelineList", function () {
         }
     };
 }).
-directive("rxPipelineStepControls", function($compile) {
+directive("rxPipelineStepControls", function($compile, Socket) {
     return {
         restrict: "E",
         replace: true,
@@ -60,15 +60,25 @@ directive("rxPipelineStepControls", function($compile) {
             pipelineStep: "="
         },
         link: function (scope, element, attrs) {
+            scope.Socket = Socket;
+            scope.modalState = true;
+            
             scope.displayConsole = function () {
+                scope.modalOpts = {
+                    backdrop: true,
+                    keyboard: true,
+                    show: true
+                };
+                
                 var d = document.createElement("rx-console-output");
                 d.setAttribute("step", "pipelineStep");
+                d.setAttribute("options", "modalOpts");
+                d.setAttribute("close-console", "closeConsole()");
+                d.setAttribute("modal-state", "modalState");
                 
                 d = $compile(d)(scope);
                 
                 element.parent().append(d);
-                
-                $("#console-output").modal("show");
             };
         }
     };
@@ -79,18 +89,26 @@ directive("rxConsoleOutput", function () {
         replace: true,
         templateUrl: 'directives/consoleOutput.html',
         scope: {
-            step: '='
+            step: '=',
+            closeConsole: '&',
+            modalState: '='
         },
         link: function (scope, element, attrs) {
-            console.log(scope.step);
             var consoleInfo = scope.step.getConsoleData();
+            
+            scope.consoleOutput = scope.modalState;
+            
+            scope.closeConsole = function () {
+                scope.consoleOutput = false;
+                $("#console-output").remove();
+            };
             
             // Pre-Fill the console output with what's already run
             scope.consoleData = consoleInfo.data;
             
             if (consoleInfo.stillRunning) {
                 // We're going to hook the consoleData variable into the socket output
-                step.hookConsoleOutput(scope);
+                scope.step.hookConsoleOutput(scope);
             }
         }
     };

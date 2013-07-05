@@ -92,3 +92,15 @@
 .pipeline .pipeline-step .pipeline-step-controls .icon-stack i[class^="icon-"] {
     
 }
+
+.modal.ng-scope {
+    width: 80%;
+    height: 80%;
+    left: 25%;
+}
+
+.modal.ng-scope .modal-body {
+    height: 100%;
+    max-height: none;
+    white-space: pre;
+}
