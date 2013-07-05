@@ -7,27 +7,37 @@ var _ = require('lodash');
 module.exports = function( socket ) {
     var scope = {};
     
-    scope.seqSpawn = function( cmd ) {
+    scope.seqSpawn = function( build, counter ) {
         return function () {
-            var defer = Q.defer();
+            var defer = Q.defer(), 
+                cmd = build.commands[counter],
+                history = {};
+
             var words = cmd.command.split(' ');
-    
-            console.log("Started: xxxxxxx " + words + " xxxxxxx");
-    
             var command = spawn(words.shift(), words);
     
             command.stdout.on('data', function(data) {
-                socket.emit('builds:update', data.toString());
+                var dataString = data.toString();
+                socket.emit('builds:update', dataString);
+                history.output = history.output + dataString;
             });
     
             command.stderr.on('data', function(data) {
-                socket.emit('builds:error', data.toString());
-                defer.resolve(data);
+                var dataString = data.toString() 
+                socket.emit('builds:error', dataString);
+
+                history.output = history.output + dataString;
+                history.isSuccessful = false;
             });
     
             command.on('close', function(code) {
-                console.log("Finished: xxxxxxx " + words + " xxxxxxx");
                 socket.emit('builds:finished', code);
+                
+                history.endTime = new Date();
+
+                build.buildHistory.push(history);
+                build.save();
+                
                 defer.resolve(code);
             });
     
@@ -43,9 +53,11 @@ module.exports = function( socket ) {
             };
             
             var result = Q.resolve(0);
+            var counter = 0;
 
-            _.forEach(build.commands, function(c) {
-                result = result.then( this(c) );
+            _.forEach(build.commands, function(command, counter) {
+                result = result.then( this(build, counter) );
+                counter++;
             }, scope.seqSpawn);
         });
     });
