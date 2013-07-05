@@ -35,7 +35,8 @@ angular.module('pipelineServices', ['ngResource']).
 
         return {
                 steps: _res("GET", true, { action: 'stepData.json'}),
-                pipelines: _res('GET', true, { action: 'pipelineData.json'}),
+                pipelines: _res('GET', true, { action: 'pipeline'}),
+                builds: _res('GET', true, {action: 'build'}),
                 git: _res('GET', true, { action: 'gitData.json'})
             };
 	}).
@@ -103,7 +104,6 @@ angular.module('pipelineServices', ['ngResource']).
                     return this.pipelineData;
                 }
                 
-                
                 Server.pipelines().success(function (data) {
                     pipelineScope.pipelineData = data;
                     pipelineScope.lastUpdated = new Date();
@@ -159,6 +159,12 @@ angular.module('pipelineServices', ['ngResource']).
             },
             getStep: function(pipeline_id, step_id) {
                 return _.find(this.getSteps(pipeline_id), {"id": step_id});
+            },
+            getConsoleData: function () {
+                
+            },
+            hookConsoleOutput: function (scope) {
+                
             }
         };
     });
