@@ -25,11 +25,16 @@ var BUILD_SCHEMA = new Schema({
         buildHistory: [BUILD_HISTORY_SCHEMA]
     });
 
+var BRANCH_SCHEMA = new Schema({
+       name: String,
+       repoUrl: String 
+    });
+
 var PIPELINE_SCHEMA = new Schema({
         created: { type: Date, default: Date.now},
         createBy: String,
         lastUpdated: Date,
-        branches: [{name: String, repoUrl: String}],
+        branches: [BRANCH_SCHEMA],
         steps: [{buiildId: String}]
     });
 
