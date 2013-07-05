@@ -2,7 +2,8 @@
 var Build = require('./../../server/db/schemas').Build;
 
 exports.list = function (req, res) {
-    return Build.find(function (err, builds) {
+    var fields = 'name description created createBy lastUpdated lastUpdatedBy commands'
+    return Build.find({}, fields, function (err, builds) {
         return (err) ? res.json(400, {msg: 'Unable to fetch builds'}) : res.json(200, builds);
     });
 };
