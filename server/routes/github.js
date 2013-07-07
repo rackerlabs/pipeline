@@ -33,11 +33,8 @@ exports.createPull = function(req, res) {
 
 	return rest.post(GITHUB_URL + REPO.owner + "/" + REPO.repoName + "/pulls", 
 		{ headers : REPO.headers, data : json }
-	).on('success', function (data) {
-		data.msg = "Created pull request for branch: " + req.branchName; 
-		res.json(201, data);
-	}).on('fail', function (data) {
-		res.json(400, data);
+	).on('complete', function (data, response) {
+		res.json(response.statusCode, data);
 	});
 };
 
