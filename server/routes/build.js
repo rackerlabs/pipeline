@@ -11,7 +11,7 @@ exports.list = function (req, res) {
 exports.get = function (req, res) {
     var id = req.params.id;
     
-    return Build.findOne(function (err, build) {
+    return Build.findOne({_id:id}, function (err, build) {
         return (err || !build) ? res.json(404, {msg: "Unable to find build with id: " + id}) : res.json(200, build);
     });
 };
