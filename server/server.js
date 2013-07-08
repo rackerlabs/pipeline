@@ -13,6 +13,7 @@ var express     = require('express'),
     db          = appConfig.database,
     pipeline    = require('./routes/pipeline'),
     build       = require('./routes/build'),
+    repo        = require('./routes/repo'),
     github      = require('./routes/github');
 
 // Server instance
@@ -70,7 +71,12 @@ server.get('/api/build/:id', build.get);
 server.post('/api/build', build.save);
 server.put('/api/build/:id', build.update);
 server.delete('/api/build/:id', build.delete);
-server.post('/api/github/pull', github.createPull);
+server.get('/api/repo', repo.list);
+server.get('/api/repo/:id', repo.get);
+server.post('/api/repo', repo.save);
+server.put('/api/repo/:id', repo.update);
+server.delete('/api/repo/:id', repo.delete);
+server.post('/api/github/pull/:repoId', github.createPull);
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);
 mongoose.connect('mongodb://' + db.host + '/' + db.name);

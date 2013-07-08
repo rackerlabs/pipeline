@@ -5,14 +5,21 @@ var rest 	= require('restler'),
 	Repo 	= require('./../../server/db/schemas').Repo,
 	GITHUB_URL = "https://api.github.com/repos/";
 
-var fetchRepo = function(id) {
+var fetchRepo = function (id) {
 	var defer = Q.defer();
 
 	Repo.findOne({_id:id}, function (err, repo) {
-		(repo) ? defer.resolve(repo) : defer.reject(err);
+		return (repo) ? defer.resolve(repo) : defer.reject(err);
 	});
 
-	return defer.promise();
+	return defer.promise;
+}
+
+var createHeaders = function (apiToken) {
+	return {
+				"Authorization"	: "token " + apiToken,
+				"Accept" 		: "application/json"
+			}
 }
 
 exports.createBranch = function (req, res) {
@@ -28,7 +35,7 @@ exports.listPulls = function (req, res) {
 };
 
 exports.createPull = function(req, res) {
-	var body = req.body, id = req.params.id;
+	var body = req.body, id = req.params.repoId, headers = {};
 	var data = {
 		"title" : body.branchName,
 		"head"  : body.branchName,
@@ -36,16 +43,11 @@ exports.createPull = function(req, res) {
 	}, json = JSON.stringify(data);
 
 	fetchRepo(id).then(function (repo) {
-		rest.post(GITHUB_URL + repo.owner + "/" + REPO.repoName + "/pulls", 
-			{
-				data: json,
-				headers: {
-					"Authorization"	: "token " + repo.apiToken,
-					"Accept" 		: "application/json"
-				}
-			}
+		headers = createHeaders(repo.apiToken)
+		rest.post(GITHUB_URL + repo.owner + "/" + repo.repoName + "/pulls", 
+			{ data: json, headers: headers }
 		).on('complete', function (data, response) {
-			res.json(response.statusCode, data);
+			return res.json(response.statusCode, data);
 		});
 	});
 };
