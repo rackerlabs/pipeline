@@ -77,8 +77,9 @@ server.post('/api/repo', repo.save);
 server.put('/api/repo/:id', repo.update);
 server.delete('/api/repo/:id', repo.delete);
 
-server.get('/api/github/pull/:repoId', github.listPulls)
-server.post('/api/github/pull/:repoId', github.createPull);
+server.get('/api/github/pulls/:repoId', github.listPulls)
+server.post('/api/github/pulls/:repoId', github.createPull);
+server.get('/api/github/pulls/:repoId/mergeable/:pullId', github.isPullMergeable)
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);
 mongoose.connect('mongodb://' + db.host + '/' + db.name);

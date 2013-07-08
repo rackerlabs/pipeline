@@ -61,7 +61,15 @@ exports.createPull = function(req, res) {
 };
 
 exports.isPullMergeable = function (req, res) {
+	var repoId = req.params.repoId, pullId = req.params.pullId;
 
+	fetchRepo(repoId).then(function (repo) {
+		rest.get(GITHUB_URL + repo.owner + "/" + repo.repoName + "/pulls/" + pullId, 
+			{ headers: createHeaders(repo.apiToken) }
+		).on('complete', function (data, response) {
+			res.json(200, { mergeable: data.mergeable });
+		});
+	});
 };
 
 exports.mergePull = function (req, res) {
