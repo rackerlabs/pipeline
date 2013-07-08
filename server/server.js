@@ -76,6 +76,8 @@ server.get('/api/repo/:id', repo.get);
 server.post('/api/repo', repo.save);
 server.put('/api/repo/:id', repo.update);
 server.delete('/api/repo/:id', repo.delete);
+
+server.get('/api/github/pull/:repoId', github.listPulls)
 server.post('/api/github/pull/:repoId', github.createPull);
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);

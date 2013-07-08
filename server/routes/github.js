@@ -31,7 +31,15 @@ exports.listBranches = function (req, res) {
 };
 
 exports.listPulls = function (req, res) {
+	var id = req.params.repoId
 
+	fetchRepo(id).then( function (repo) {
+		rest.get(GITHUB_URL + repo.owner + "/" + repo.repoName + "/pulls", 
+			{ headers: createHeaders(repo.apiToken) }
+		).on('complete', function (data, response) {
+			res.json(response.statusCode, data);
+		})
+	});
 };
 
 exports.createPull = function(req, res) {
@@ -43,7 +51,7 @@ exports.createPull = function(req, res) {
 	}, json = JSON.stringify(data);
 
 	fetchRepo(id).then(function (repo) {
-		headers = createHeaders(repo.apiToken)
+		headers = createHeaders(repo.apiToken);
 		rest.post(GITHUB_URL + repo.owner + "/" + repo.repoName + "/pulls", 
 			{ data: json, headers: headers }
 		).on('complete', function (data, response) {
