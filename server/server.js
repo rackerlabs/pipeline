@@ -81,6 +81,8 @@ server.get('/api/github/pulls/:repoId', github.listPulls);
 server.post('/api/github/pulls/:repoId', github.createPull);
 server.get('/api/github/pulls/:repoId/mergeable/:pullId', github.isPullMergeable);
 server.post('/api/github/pulls/:repoId/merge/:pullId', github.mergePull);
+server.get('/api/github/branches/:repoId', github.listBranches);
+
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);
 mongoose.connect('mongodb://' + db.host + '/' + db.name);

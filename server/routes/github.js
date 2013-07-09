@@ -27,7 +27,15 @@ exports.createBranch = function (req, res) {
 };
 
 exports.listBranches = function (req, res) {
+	var repoId = req.params.repoId;
 
+	fetchRepo(repoId).then( function (repo) {
+		rest.get(GITHUB_URL + repo.owner + "/" + repo.repoName + "/branches", 
+			{ headers: createHeaders(repo.apiToken) }
+		).on('complete', function (data, response) {
+			res.json(response.statusCode, data);
+		});
+	});
 };
 
 exports.listPulls = function (req, res) {
