@@ -35,7 +35,7 @@ angular.module('pipelineServices', ['ngResource']).
 
         return {
             steps: _res("GET", true, { action: 'stepData.json'}),
-            pipelines: _res('GET', true, { action: 'pipelineData.json'}),
+            pipelines: _res('GET', true, { action: 'pipeline'}),
             builds: _res('GET', true, {action: 'build'}),
             git: _res('GET', true, { action: 'gitData.json'})
         };

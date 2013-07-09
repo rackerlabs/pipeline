@@ -27,8 +27,10 @@ exports.update = function (req, res) {
     var id = req.params.id, 
         body = req.body;
     body.lastUpdated = new Date();
+    console.log(body);
     
     return Pipeline.update({_id: id}, body, {}, function (err, updatedNumber, raw) {
+        console.log(err);
         return (!err) ?  res.json(200, raw) : res.json(400, {msg: "Unable to update pipeline id: " + id });
     });
 };

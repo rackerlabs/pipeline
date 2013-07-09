@@ -45,4 +45,9 @@ filter('GitURL', function(Git) {
             return branch_name;
         }
     };
+}).
+filter('parseId', function () {
+    return function (id) {
+        return parseInt(id.substr(-5), 16);
+    };
 });

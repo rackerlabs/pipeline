@@ -1,8 +1,8 @@
 <div class="pipeline row-fluid">
     <div class="pipeline-info well">
-        <div class="label">Pipeline #{{ pipeline.id }}</div>
-        <div class="git-config" ng-repeat="(repo, branch) in pipeline.git_branches">
-            <span ng-bind-html="repo | GitURL | GitType"></span>: <span ng-bind-html="branch | GitURL: repo"></span>
+        <div class="label">Pipeline #{{ pipeline._id | parseId }}</div>
+        <div class="git-config" ng-repeat="branch in pipeline.branches">
+            <span ng-bind-html="branch.name | GitURL | GitType"></span>: <span ng-bind-html="branch.name"></span>
         </div>
     </div>
     <div class="pipeline-steps">
