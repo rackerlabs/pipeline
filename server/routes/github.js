@@ -1,6 +1,7 @@
 'use strict';
 
 var rest 	= require('restler'), 
+	_ 		= require('lodash'),
 	Q 		= require('q'), 
 	Repo 	= require('./../../server/db/schemas').Repo,
 	GITHUB_URL = "https://api.github.com/repos/";
@@ -22,8 +23,37 @@ var createHeaders = function (apiToken) {
 			}
 }
 
-exports.createBranch = function (req, res) {
+var fetchCommits = function(repo) {
+	var defer = Q.defer();
 
+	rest.get(GITHUB_URL + repo.owner + "/" + repo.repoName + "/commits", 
+		{ headers: createHeaders(repo.apiToken) }
+	).on('complete', function (data, response) {
+		defer.resolve(data);
+	});
+
+	return defer.promise;
+};
+
+exports.createBranch = function (req, res) {
+	var repoId = req.params.repoId, branchName = req.body.branchName, repo = {};
+
+	fetchRepo(repoId).then( function (data) {
+		repo = data;
+		return fetchCommits(repo);
+	}).then( function (commits) {
+		var lastCommit = _.first(commits);
+		var ref = "refs/heads/" + branchName;
+		var data = JSON.stringify({ ref: ref, sha: lastCommit.sha });
+
+		rest.post(GITHUB_URL + repo.owner + "/" + repo.repoName + "/git/refs", { 
+				headers: createHeaders(repo.apiToken),
+				data: data
+			}
+		).on('complete', function(data, response) {
+			res.json(response.statusCode, data);
+		});
+	});
 };
 
 exports.listBranches = function (req, res) {
