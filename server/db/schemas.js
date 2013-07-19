@@ -39,5 +39,16 @@ var PIPELINE_SCHEMA = new Schema({
         steps: [{buildId: String}]
     });
 
+
+var REPO_SCHEMA = new Schema({
+        created: { type: Date, default: Date.now},
+        createBy: String,
+        lastUpdated: Date,
+        owner: String,
+        repoName: String,
+        apiToken: String
+    });
+
 exports.Pipeline = mongoose.model('Pipeline', PIPELINE_SCHEMA);
 exports.Build = mongoose.model('Build', BUILD_SCHEMA);
+exports.Repo = mongoose.model('Repo', REPO_SCHEMA)

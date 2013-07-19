@@ -12,7 +12,9 @@ var express     = require('express'),
     appConfig   = require('../app-config.json'),
     db          = appConfig.database,
     pipeline    = require('./routes/pipeline'),
-    build       = require('./routes/build');
+    build       = require('./routes/build'),
+    repo        = require('./routes/repo'),
+    github      = require('./routes/github');
 
 // Server instance
 var server = exports.server = express();
@@ -69,6 +71,20 @@ server.get('/api/build/:id', build.get);
 server.post('/api/build', build.save);
 server.put('/api/build/:id', build.update);
 server.delete('/api/build/:id', build.delete);
+server.get('/api/repo', repo.list);
+server.get('/api/repo/:id', repo.get);
+server.post('/api/repo', repo.save);
+server.put('/api/repo/:id', repo.update);
+server.delete('/api/repo/:id', repo.delete);
+
+server.get('/api/github/pulls/:repoId', github.listPulls);
+server.post('/api/github/pulls/:repoId', github.createPull);
+server.get('/api/github/pulls/:repoId/mergeable/:pullId', github.isPullMergeable);
+server.post('/api/github/pulls/:repoId/merge/:pullId', github.mergePull);
+server.get('/api/github/branches/:repoId', github.listBranches);
+server.post('/api/github/branches/:repoId', github.createBranch);
+server.post('/api/github/tags/:repoId', github.createTag);
+
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);
 mongoose.connect('mongodb://' + db.host + '/' + db.name);
