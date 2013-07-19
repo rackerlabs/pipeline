@@ -35,6 +35,27 @@ var fetchCommits = function(repo) {
 	return defer.promise;
 };
 
+var createTagObject = function(lastCommit, repo, tagName) {
+	var defer = Q.defer();
+	var date = new Date();
+	var body = { 
+		tag: tagName, 
+		message: 'Automatically Created Tag', 
+		object: lastCommit.sha,
+		type: 'commit', 
+		tagger: { name: repo.owner, date: date }
+	};
+
+	var data = JSON.stringify(body);
+
+	rest.post(GITHUB_URL + repo.owner + '/' + repo.repoName + '/git/tags', {
+		headers: createHeaders(repo.apiToken), data: data
+	}).on('success', function(data) { defer.resolve(data) 
+	}).on('fail', function(error) { defer.reject(error) });
+
+	return defer.promise;
+};
+
 exports.createBranch = function (req, res) {
 	var repoId = req.params.repoId, branchName = req.body.branchName, repo = {};
 
@@ -123,5 +144,23 @@ exports.mergePull = function (req, res) {
 };
 
 exports.createTag = function (req, res) {
+	var repoId = req.params.repoId, repo = {};
+	var tagName = ( req.body.tagName ) ? req.body.tagName : new Date();
 
+	fetchRepo(repoId).then( function (data) {
+		repo = data;
+		return fetchCommits(repo);
+	}).then( function (commits) {
+		var lastCommit = _.first(commits);
+		return createTagObject(lastCommit, repo, tagName);
+	}).then( function (tagObject) {
+		var body = JSON.stringify({ ref: 'refs/tags/' + tagName, sha: tagObject.sha });
+
+		rest.post(GITHUB_URL + repo.owner + "/" + repo.repoName + "/git/refs", {
+			headers: createHeaders(repo.apiToken),
+			data: body
+		}).on('complete', function(data, response) {
+			return res.json(response.statusCode, data);
+		});
+	});
 };

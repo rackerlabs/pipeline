@@ -83,6 +83,7 @@ server.get('/api/github/pulls/:repoId/mergeable/:pullId', github.isPullMergeable
 server.post('/api/github/pulls/:repoId/merge/:pullId', github.mergePull);
 server.get('/api/github/branches/:repoId', github.listBranches);
 server.post('/api/github/branches/:repoId', github.createBranch);
+server.post('/api/github/tags/:repoId', github.createTag);
 
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);
