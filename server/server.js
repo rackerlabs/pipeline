@@ -12,10 +12,9 @@ var express     = require('express'),
     repo        = require('./routes/repo'),
     github      = require('./routes/github'), 
     passport    = require('passport'),
-    Strategy    = require('passport-github').Strategy;
+    Strategy    = require('passport-github').Strategy,
+    auth        = require('./routes/auth');
 
-var GITHUB_CLIENT_ID = "--insert-github-client-id-here--"
-var GITHUB_CLIENT_SECRET = "--insert-github-client-secret-here--";
 var port = process.env.PORT || appConfig.server.port;
 
 // Passport session setup.
@@ -38,8 +37,8 @@ passport.deserializeUser(function(obj, done) {
 //   credentials (in this case, an accessToken, refreshToken, and GitHub
 //   profile), and invoke a callback with a user object.
 passport.use(new Strategy({
-    clientID: GITHUB_CLIENT_ID,
-    clientSecret: GITHUB_CLIENT_SECRET,
+    clientID: appConfig.github.clientId,
+    clientSecret: appConfig.github.clientSecret,
     callbackURL: "http://127.0.0.1:" + port + "/auth/callback"
   },
   function(accessToken, refreshToken, profile, done) {
@@ -125,6 +124,9 @@ server.post('/api/github/pulls/:repoId/merge/:pullId', github.mergePull);
 server.get('/api/github/branches/:repoId', github.listBranches);
 server.post('/api/github/branches/:repoId', github.createBranch);
 server.post('/api/github/tags/:repoId', github.createTag);
+
+server.post('/api/auth', passport.authenticate('github'), auth.successCallback);
+
 
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);
