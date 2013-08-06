@@ -13,6 +13,7 @@
     "appPath"   :   "app",
     "serverPath":   "server",
     "distPath"  :   "dist",
+    "secret":  "!?phrasing?!",
     "server" : {
         "port"      :   3001
     },

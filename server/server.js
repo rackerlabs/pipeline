@@ -67,9 +67,8 @@ server.configure( function() {
     server.set( 'view engine', 'html' );
     server.engine( 'hjs', cons.hogan );
     server.set( 'view engine', 'hjs' );
-    server.use( express.session({ secret: '!?phrasing?!' }) );
     server.use( passport.initialize() );
-    server.use( passport.session() );
+    server.use( passport.session( { secret: appConfig.secret }) );
     server.use( express.bodyParser() );
     server.use( express.methodOverride() );
     server.use( express.static( path.join( __dirname, './../app' ) ) );
