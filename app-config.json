@@ -17,6 +17,10 @@
     "server" : {
         "port"      :   3001
     },
+    "github": {
+        "clientId": "howdy",
+        "clientSecret": "ssshhhhh"
+    },
     "database" : {
         "host"          : "localhost",
         "port"          : 27017,
