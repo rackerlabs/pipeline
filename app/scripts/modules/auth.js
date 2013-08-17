@@ -1,6 +1,6 @@
 angular.module("pipelineAuth", []).
 
-factory('Auth', function($http) {
+factory('Auth', function($http, Server) {
     return {
         AUTH_REQUIRED: true,
         username: undefined,
@@ -181,7 +181,7 @@ factory('Auth', function($http) {
             }
         },
         submitAuth: function() {
-            var frm = $("#auth_signin_form form");
+            var frm = $("form.login-form");
             var u_field = frm.find("#auth_user");
             var p_field = frm.find("#auth_pass");
             var username = frm.find("#auth_user").val();
@@ -200,7 +200,7 @@ factory('Auth', function($http) {
                 btn.attr("data-original-value", btn.text());
                 btn.text(btn.attr("data-loading-text"));
 
-                Ticket.auth($.param({username: username, password: password} ))
+                Server.auth({username: username, password: password})
                     .success(this.finishAuthScope(this))
                     .error(this.failAuthScope(this) );
             }
