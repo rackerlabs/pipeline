@@ -1,11 +1,13 @@
 angular.module("pipelineDirectives", []).
 
-directive("rxNavBar", function (Auth){
+directive("rxNavBar", function (Auth, $location){
     return {
         restrict: "E",
         replace: true,
         templateUrl: "directives/nav-bar.html",
         link: function (scope, element, attrs) {
+            scope.$location = $location;
+            scope.Auth = Auth;
         }
     };
 }).
@@ -20,34 +22,6 @@ directive('rxPipeline', function () {
         },
 		link: function(scope, element, attrs) {
 		}
-    };
-}).
-directive("rxAuth", function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        templateUrl: 'directives/authSignIn.html',
-        scope: {
-            "auth": "="
-        },
-        link: function(scope, element, attrs) {
-            console.log(scope);
-            if (scope.auth.needToLogin()) {
-                scope.auth.signIn();
-            }
-        }
-    };
-}).
-directive("rxAuthForm", function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        templateUrl: 'directives/authForm.html',
-        scope: {
-            "auth": "="
-        },
-        link: function(scope, element, attrs) {
-        }
     };
 }).
 directive("rxPipelineStep", function () {
