@@ -118,7 +118,7 @@ factory('Auth', function($http, Server) {
             this.authError = {};
             
             function reEnableForm() {
-                var frm = $("#auth_signin_form form");
+                var frm = $("form.login-form");
                 var u_field = frm.find("#auth_user");
                 var p_field = frm.find("#auth_pass");
                 var btn = frm.find("button[type='submit']");
