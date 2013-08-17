@@ -8,6 +8,10 @@ angular.module( 'rxPipelineApp', [ 'ui.bootstrap', 'btford.socket-io', 'ngSaniti
             templateUrl: 'scripts/main/mainView.html',
             controller: 'MainCtrl'
         })
+        .when( '/login', {
+            templateUrl: 'scripts/main/login.html',
+            controller: 'MainCtrl'
+        })
         .otherwise({
             redirectTo: '/'
         });

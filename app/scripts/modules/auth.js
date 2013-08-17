@@ -216,59 +216,6 @@ factory('Auth', function($http) {
         }
     }
 }).
-factory('Git', function(Server) {
-    return {
-        pipelineData: [],
-        lastUpdated: undefined,
-        getGitData: function() {
-            var gitScope = this;
-            
-            if (this.lastUpdated && ((new Date()).getSeconds() - this.lastUpdated.getSeconds() < 15000)) {
-                return this.pipelineData;
-            }
-            
-            
-            Server.git().success(function (data) {
-                gitScope.pipelineData = data;
-                gitScope.lastUpdated = new Date();
-            }).error(function (response) {
-            });
-            
-            return this.pipelineData;
-        },
-        getRepo: function(repo_name) {
-            return _.find(this.getGitData(), {"repo": repo_name});
-        },
-        getRepoType: function(repo_name) {
-            var r = this.getRepo(repo_name);
-            
-            if (r) {
-                return r.type;
-            }
-        },
-        getRepoURL: function(repo_name) {
-            var r = this.getRepo(repo_name);
-            
-            if (r) {
-                return r.url;
-            }
-        },
-        getBranchURL: function(repo_name, branch_name) {
-            var r = this.getRepoURL(repo_name);
-            
-            if (r) {
-                return r + ((r.substr(-1) != "/") ? "/" : "") + "tree/" + branch_name;
-            }
-        },
-        getRepoName: function(repo_name) {
-            var b = _.find(this.getGitData(), {"type": repo_name});
-            
-            if (b) {
-                return b.name;
-            }
-        }
-    };
-}).
 directive("rxAuth", function(Auth) {
     return {
         restrict: 'E',

@@ -124,6 +124,7 @@ directive("rxConsoleOutput", function () {
         }
     };
 }).
+
 directive("rxGlobalStep", function() {
     return {
         restrict: "E",
