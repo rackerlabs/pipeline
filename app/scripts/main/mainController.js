@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module( 'rxPipelineApp' )
-    .controller( 'MainCtrl', [ '$scope', 'socket', '$location', '$window', 'Pipelines', 'Steps', function( $scope, Socket, $location, $window, Pipelines, Steps ) {
+    .controller( 'MainCtrl', [ '$scope', 'socket', '$location', '$window', 'Pipelines', 'Steps', 'Auth', function( $scope, Socket, $location, $window, Pipelines, Steps, Auth ) {
         $scope.Pipelines = Pipelines;
         $scope.Steps = Steps;
         
@@ -28,4 +28,5 @@ angular.module( 'rxPipelineApp' )
             $window.location.href = path;
         };
 
+        $scope.Auth = Auth;
     }]);

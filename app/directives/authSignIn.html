@@ -1,10 +1,10 @@
 <ul class="nav auth-signin">
-    <li>
-        <a type='button' href="#auth_signin_form" ng-show="auth.needToLogin()">Login</a>
+    <li ng-class="{'active': $location.path() == '/login'}">
+        <a type='button' href="/login" data-toggle="modal" ng-show="auth.needToLogin()">Login</a>
     </li>
-    <li class="dropdown">
+    <li class="dropdown" ng-hide="auth.needToLogin()">
         <a href="#" class="dropdown-toggle">Account<b class="caret"></b></a>
-        <ul class="dropdown-menu" ng-hide="auth.needToLogin()">
+        <ul class="dropdown-menu">
             <li>
                 <a href="#logout">Logout</a>
             </li>
