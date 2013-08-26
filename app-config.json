@@ -10,6 +10,10 @@
             "twitter" :   "chriscantu"
         }
     },
+    "github": {
+        "clientId":"11b399c403bad0454665",
+        "clientSecret": "08df80b34878db3053abb4bf179564c47c4e49ec"
+    },
     "appPath"   :   "app",
     "serverPath":   "server",
     "distPath"  :   "dist",
