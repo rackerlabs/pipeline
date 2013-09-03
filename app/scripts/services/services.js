@@ -37,7 +37,8 @@ angular.module('pipelineServices', ['ngResource']).
             steps: _res("GET", true, { action: 'stepData.json'}),
             pipelines: _res('GET', true, { action: 'pipeline'}),
             builds: _res('GET', true, {action: 'build'}),
-            git: _res('GET', true, { action: 'gitData.json'})
+            git: _res('GET', true, { action: 'gitData.json'}),
+            auth: _res('POST', true, {action: 'auth'})
         };
 	}).
     factory('Socket', function (socket) {

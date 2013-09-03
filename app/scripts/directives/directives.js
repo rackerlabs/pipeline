@@ -1,5 +1,16 @@
 angular.module("pipelineDirectives", []).
 
+directive("rxNavBar", function (Auth, $location){
+    return {
+        restrict: "E",
+        replace: true,
+        templateUrl: "directives/nav-bar.html",
+        link: function (scope, element, attrs) {
+            scope.$location = $location;
+            scope.Auth = Auth;
+        }
+    };
+}).
 directive('rxPipeline', function () {
     return {
         restrict: 'E',
@@ -113,6 +124,7 @@ directive("rxConsoleOutput", function () {
         }
     };
 }).
+
 directive("rxGlobalStep", function() {
     return {
         restrict: "E",
