@@ -13,19 +13,19 @@ var express     = require('express'),
     github      = require('./routes/github'), 
     passport    = require('passport'),
     Strategy    = require('passport-local').Strategy,
-    GHApi      = require( 'github' ),
-    auth        = require('./routes/auth');
+    auth        = require('./routes/auth'), 
+    rest        = require('restler');
 
 var port = process.env.PORT || appConfig.server.port;
 var server = exports.server = express();
-var gh = new GHApi({version: "3.0.0"});
-
-var validate = function(username, password) {
-    gh.authenticate({ type: "basic", username: username , password: password });
-};
 
 var authenticate = function(username, password, done) {
-    return validate(username, password) ? done(null, {'_id': 'mongoid'}) : done(null, false, { msg: 'Invalid Credentials'});
+    rest.get('https://api.github.com', {username:username, password:password})
+        .on('success', function (data, response) {
+            return done(null, {'_id': 'mongoid'})
+        }).on('fail', function (data, response) {
+            return done(null, false, { msg: 'Invalid Credentials'});
+        });
 };
 
 var isAuthenticated = function (req, res, next) {
@@ -104,6 +104,7 @@ server.post('/api/github/branches/:repoId', github.createBranch);
 server.post('/api/github/tags/:repoId', github.createTag);
 
 server.post('/api/auth', passport.authenticate('local'), auth.authSuccess);
+server.get('/api/auth/loggedIn', auth.loggedIn);
 
 // This is here to route all the HTML5 routes to the index.html
 server.get('*', function(req, res){

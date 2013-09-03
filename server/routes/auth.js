@@ -10,7 +10,7 @@ exports.logout = function (req, res) {
 };
 
 exports.authSuccess = function (req, res) {
-    res.json(200, {'_id': 'myid', firstName: req.body.username, loggedIn: true});
+    res.json(200, {'_id': 'myid', username: req.body.username, loggedIn: true});
 };
 
 exports.loggedIn = function (req, res) {
