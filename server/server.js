@@ -1,9 +1,5 @@
 'use strict';
 
-/**
- * Module dependencies
- */
-
 var express     = require('express'),
     cons        = require('consolidate'),
     http        = require('http'),
@@ -14,20 +10,42 @@ var express     = require('express'),
     pipeline    = require('./routes/pipeline'),
     build       = require('./routes/build'),
     repo        = require('./routes/repo'),
-    github      = require('./routes/github');
+    github      = require('./routes/github'), 
+    passport    = require('passport'),
+    Strategy    = require('passport-local').Strategy,
+    auth        = require('./routes/auth'), 
+    rest        = require('restler');
 
-// Server instance
+var port = process.env.PORT || appConfig.server.port;
 var server = exports.server = express();
+
+var authenticate = function(username, password, done) {
+    rest.get('https://api.github.com', {username:username, password:password})
+        .on('success', function (data, response) {
+            return done(null, {'_id': 'mongoid'})
+        }).on('fail', function (data, response) {
+            return done(null, false, { msg: 'Invalid Credentials'});
+        });
+};
+
+var isAuthenticated = function (req, res, next) {
+    return req.isAuthenticated() ? next() : res.json(401, { msg: 'Unauthorized' });
+};
+
+passport.use( new Strategy (authenticate));
+passport.serializeUser( auth.serialize );
+passport.deserializeUser( auth.deserialize );
 
 // Configure Server
 server.configure( function() {
-    server.set( 'port', process.env.PORT || appConfig.server.port );
+    server.set( 'port', port );
     server.set( 'views', path.join( __dirname, './../app' ) );
     server.engine( 'html', cons.hogan );
     server.set( 'view engine', 'html' );
     server.engine( 'hjs', cons.hogan );
     server.set( 'view engine', 'hjs' );
-
+    server.use( passport.initialize() );
+    server.use( passport.session( { secret: appConfig.secret }) );
     server.use( express.bodyParser() );
     server.use( express.methodOverride() );
     server.use( express.static( path.join( __dirname, './../app' ) ) );
@@ -84,6 +102,14 @@ server.post('/api/github/pulls/:repoId/merge/:pullId', github.mergePull);
 server.get('/api/github/branches/:repoId', github.listBranches);
 server.post('/api/github/branches/:repoId', github.createBranch);
 server.post('/api/github/tags/:repoId', github.createTag);
+
+server.post('/api/auth', passport.authenticate('local'), auth.authSuccess);
+server.get('/api/auth/loggedIn', auth.loggedIn);
+
+// This is here to route all the HTML5 routes to the index.html
+server.get('*', function(req, res){
+  res.sendfile('app/index.html');
+});
 
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);

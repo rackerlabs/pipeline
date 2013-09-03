@@ -104,3 +104,11 @@
     max-height: none;
     white-space: pre;
 }
+
+form.login-form {
+    max-width: 380px;
+    margin: auto;
+    border: 1px solid #c0c0c0;
+    border-radius: 5px;
+    
+}
