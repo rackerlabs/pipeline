@@ -83,6 +83,13 @@ exports.get = function(req, res) {
     });
 };
 
+exports.list = function(req, res) {
+    var fields = '_id instanceId pipelineId ipAddress created';
+
+    Vm.find({}, fields, function (err, list) {
+        return (err || !list) ? res.json(404, {msg: 'No VMs provisioned'}) : res.json(200, list);
+    });
+};
 
 exports.delete = function(req, res) {
     var pipelineId = (req.params.pipelineId) ? req.params.pipelineId : null;
@@ -122,6 +129,35 @@ exports.delete = function(req, res) {
         return res.json(400, {msg: err});
     }).
     done(function(server) {
-        return res.json(200, { msg: 'Server deleted'});
+        return res.json(200, { msg: 'Server has been deleted.'});
+    });
+};
+
+exports.reboot = function(req, res) {
+    var pipelineId = req.params.pipelineId;
+
+    Q.fcall(function() {
+        var defer = Q.defer();
+
+        Vm.findOne({pipelineId: pipelineId}, function (err, vm) {
+            return (err || !vm) ? defer.reject('Unable to find vm for pipeline id: ' + pipelineId) : defer.resolve(vm);
+        });
+
+        return defer.promise;
+    }).
+    then(function(vm) {
+        var defer = Q.defer();
+
+        client.rebootServer(vm.instanceId, {}, function(err, server) {
+            return (err) ? defer.reject(err) : defer.resolve(vm);
+        });
+
+        return defer.promise;
+    }).
+    catch(function(err) {
+        return res.json(400, {msg: err});
+    }).
+    done(function(server) {
+        return res.json(200, { msg: 'Server is rebooting.'});
     });
 };

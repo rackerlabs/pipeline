@@ -117,9 +117,12 @@ server.post('/api/notify/emails', notify.emailUsers);
 server.post('/api/auth', passport.authenticate('local'), auth.authSuccess);
 server.get('/api/auth/loggedIn', auth.loggedIn);
 
+server.get('/api/vm', vm.list);
 server.post('/api/vm', vm.create);
 server.get('/api/vm/:pipelineId', vm.get);
 server.delete('/api/vm/:pipelineId', vm.delete);
+
+server.post('/api/vm/:pipelineId/reboot', vm.reboot);
 
 // This is here to route all the HTML5 routes to the index.html
 server.get('*', function(req, res){
