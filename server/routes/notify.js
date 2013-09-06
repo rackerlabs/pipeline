@@ -2,6 +2,7 @@
 
 var email = require('./../../server/utils/email'), 
 	user = require('./../../server/routes/user'),
+	pipeline = require('./../../server/routes/pipeline'),
 	Q = require('q'),
 	_ = require('lodash');
 
@@ -42,3 +43,21 @@ exports.emailUsers = function (req, res) {
 			return res.json(409, error);
 		});
 };
+
+exports.pipelineEmail = function (buildId) {
+	pipeline.findByBuildIdAndNotificationType(buildId, "email").then( function (pipe) {
+		var notification = _.find(pipe.notifications, function (notify) {
+			return notify.notification_type == "email";
+		});
+
+		var mail = {
+			from: "Chris Cantu <christopher.cantu@gmail.com>",
+			to: notification.contacts.toString(),
+			text: notification.body,
+			html: notification.body,
+			subject: notification.subject
+		};
+
+		return email.sendMail(mail);
+	});
+}
