@@ -31,5 +31,20 @@
         "name"          : "pipeline",
         "collection"    : "test_col"
     },
-	"installed" :	true
+    "vm": {
+        "cloudCredentials" : {
+            "provider": "rackspace",
+            "username": "rnreekez",
+            "apiKey": "5b71c11338ca4e7eb8086a156d8f5377"
+        },
+        "cloudServer": {
+            "defaults": {
+                "flavor": "3",
+                "image": "c6f9c411-e708-4952-91e5-62ded5ea4d3e",
+                "keyname": "pipeline_key"
+            }
+        },
+        "privateKey": ""
+    },
+	"installed": true
 }
