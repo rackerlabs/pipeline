@@ -8,3 +8,5 @@ app/components
 /app/styles/css/main.css
 /.jshint
 npm-debug.log
+*.swp
+*.swo

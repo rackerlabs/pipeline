@@ -1,30 +1,24 @@
 angular.module("pipelineAuth", []).
 
-factory('Auth', function($http, Server) {
+factory('Auth', function($location, $http, $cookies, Server) {
     return {
         AUTH_REQUIRED: true,
         username: undefined,
         name: undefined,
-        email: undefined,
-        coreid: undefined,
-        auth_token: undefined,
+        auth_id: undefined,
+        loggedIn: false,
         auth_cache_date: undefined,
-        signIn: function() {
+        signIn: function () {
             if (!this.isLoggedIn()) {
-                if ($("#auth_signin_form").modal) {
-                    $("#auth_signin_form").modal("show");
-                    $("#auth_signin_form #auth_user").focus();
-                }
+                $location.path("/login");
             }
         },
         signOut: function() {
-            TQSettings.destroySessionData("TQAuth");
-            delete $http.defaults.headers.common["RX-AUTH-TOKEN"];
+            $cookies.PipelineAuth = undefined;
+            delete $http.defaults.headers.common["PIPELINE-AUTH-ID"];
             this.username = undefined;
-            this.coreid = undefined;
-            this.email = undefined;
-            this.name = undefined;
-            this.auth_token = undefined;
+            this.auth_id = undefined;
+            this.loggedIn = false;
 
             if (this.AUTH_REQUIRED) {
                 location.reload(true);
@@ -32,79 +26,51 @@ factory('Auth', function($http, Server) {
         },
         getAuthObject: function() {
             if (!this.auth_cache_date||(((new Date()).getTime() - this.auth_cache_date.getTime()) / 1000 > 10)) {
-                try {
-                    var stored_auth = $.cookies.get("GHAuth");
-                } catch (err) {
-                    var stored_auth = undefined;
-                }
+                var stored_auth = $cookies.PipelineAuth;
 
                 if (stored_auth) {
                     this.username = stored_auth.username;
-                    this.email = stored_auth.email;
-                    this.github_id = stored_auth.github_id;
-                    this.name = stored_auth.name;
-                    this.auth_token = stored_auth.auth_token;
-                    this.auth_cache_date = new Date();
+                    this.auth_id = stored_auth.auth_id;
+                    this.loggedIn = true;
 
-                    $http.defaults.headers.common["GH-AUTH-TOKEN"] = this.auth_token;
+                    $http.defaults.headers.common["PIPELINE-AUTH-ID"] = this.auth_token;
                 }
                 else {
                     this.username = undefined;
-                    this.github_id = undefined;
-                    this.email = undefined;
-                    this.name = undefined;
-                    this.auth_token = undefined;
-                    this.auth_cache_date = undefined;
+                    this.auth_id = undefined;
+                    this.loggedIn = false;
 
-                    if ($http.defaults.headers.common.hasOwnProperty("GH-AUTH-TOKEN")) {
-                        location.href = "/";
+                    if ($http.defaults.headers.common.hasOwnProperty("PIPELINE-AUTH-ID")) {
+                        $location.path("/");
                     }
                 }
             }
 
-            return {"username": this.username, "name": this.name, "auth_token": this.auth_token, "email": this.email, "github_id": this.github_id };
+            return {"username": this.username, "auth_id": this.auth_id, "loggedIn": this.loggedIn };
         },
         getAuthHeader: function() {
             if (this.isLoggedIn()) {
-                return {'RX-AUTH-TOKEN': this.getAuthObject().auth_token};
+                return {'auth_id': this.getAuthObject().auth_id};
             }
 
             return {};
         },
         registerAuthObject: function(obj) {
-            this.username = obj["RX-RACKER-SSO"]
-            this.auth_token = obj["RX-AUTH-TOKEN"];
-            this.email = obj["RX-RACKER-EMAIL"];
-            this.coreid = obj["RX-RACKER-CORE-ID"];
-            if (obj["RX-RACKER-FULL-NAME"]) {
-                this.name = obj["RX-RACKER-FULL-NAME"];
-            }
+            this.username = obj.username;
+            this.auth_id = (obj.hasOwnProperty("auth_id")) ? obj.auth_id : obj._id;
+            this.loggedIn = obj.loggedIn;
 
-            $http.defaults.headers.common["RX-AUTH-TOKEN"] = this.auth_token;
+            $http.defaults.headers.common["PIPELINE-AUTH-ID"] = this.auth_id;
 
-            TQSettings.storeSessionData("TQAuth", {username: this.username, name: this.name, auth_token: this.auth_token, email: this.email, coreid: this.coreid});
-            
-            EventManager.fire("initiate-refresh-timer");
-        },
-        finishAuthScope: function(scope) {
-            return function(resultData, resultStatus, resultHeaders, resultConfig) {
-                scope.finishAuth(resultData, resultStatus, resultHeaders, resultConfig);
-            };
+            $cookies.PipelineAuth = {username: this.username, auth_id: this.auth_id};
         },
         finishAuth: function(resultData, resultStatus, resultHeaders, resultConfig) {
             this.authError = undefined;
             this.registerAuthObject(resultData)
 
-            $("#auth_signin_form form")[0].reset();
-
-            location.reload(true);
-
-            $("#auth_signin_form").modal("hide");
-        },
-        failAuthScope: function(scope) {
-            return function(resultData, resultStatus, resultHeaders, resultConfig) {
-                scope.failAuth(resultData, resultStatus, resultHeaders, resultConfig);
-            };
+            console.log(this);
+            console.log($cookies.PipelineAuth);
+            $location.path("/");
         },
         fetchLockoutMessage: function(timeRemaining) {
             if (timeRemaining > 0) {
@@ -201,15 +167,15 @@ factory('Auth', function($http, Server) {
                 btn.text(btn.attr("data-loading-text"));
 
                 Server.auth({username: username, password: password})
-                    .success(this.finishAuthScope(this))
-                    .error(this.failAuthScope(this) );
+                    .success(this.finishAuth.bind(this))
+                    .error(this.failAuth.bind(this) );
             }
         },
         userFullName: function() {
             return (this.name) ? this.name : this.username;
         },
         isLoggedIn: function() {
-            return (this.getAuthObject().auth_token !== undefined);
+            return (this.getAuthObject().auth_id !== undefined);
         },
         needToLogin: function() {
             return (this.AUTH_REQUIRED&&(!this.isLoggedIn()));
@@ -221,23 +187,14 @@ directive("rxAuth", function(Auth) {
         restrict: 'E',
         replace: true,
         templateUrl: 'directives/authSignIn.html',
-        scope: false,
+        scope: {
+            "auth": "=",
+            "currentPath": "="
+        },
         link: function(scope, element, attrs) {
-            scope.auth = Auth;
             if (scope.auth.needToLogin()) {
                 scope.auth.signIn();
             }
-        }
-    };
-}).
-directive("rxAuthForm", function(Auth) {
-    return {
-        restrict: 'E',
-        replace: true,
-        templateUrl: 'directives/authForm.html',
-        scope: false,
-        link: function(scope, element, attrs) {
-            scope.Auth = Auth;
         }
     };
 });

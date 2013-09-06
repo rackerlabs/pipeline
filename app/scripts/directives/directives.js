@@ -5,13 +5,15 @@ directive("rxNavBar", function (Auth, $location){
         restrict: "E",
         replace: true,
         templateUrl: "directives/nav-bar.html",
+        controller: function ($scope) {
+            $scope.Auth = Auth;
+            $scope.loc = $location;
+        },
         link: function (scope, element, attrs) {
-            scope.$location = $location;
-            scope.Auth = Auth;
         }
     };
 }).
-directive('rxPipeline', function () {
+directive('rxPipeline', function (Auth) {
     return {
         restrict: 'E',
         replace: true,
@@ -21,6 +23,7 @@ directive('rxPipeline', function () {
             step: '='
         },
 		link: function(scope, element, attrs) {
+            scope.Auth = Auth;
 		}
     };
 }).

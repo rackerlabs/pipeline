@@ -1,4 +1,5 @@
 <div class="pipeline-list">
+    {{ Auth.username }}
     <div class="tabbable">
         <ul class="nav nav-tabs">
             <li ng-class="{active: getCurrentTab()=='pipelines'}"><a href="javascript:void(0)" ng-click="setTab('pipelines')">Pipelines</a></li>
