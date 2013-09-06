@@ -7,7 +7,7 @@ var Vm        = require('./../../server/db/schemas').Vm,
     client    = require('pkgcloud').compute.createClient(appConfig.vm.cloudCredentials);
 
 exports.create = function(req, res) {
-    var pipelineId = (req.body.pipelineId) ? req.body.pipelineId : null;
+    var pipelineId = (req.params.id) ? req.params.id : null;
 
     if(!pipelineId) {
         return res.json(404, {msg: 'pipelineId is required for VM creation'});
@@ -76,16 +76,23 @@ exports.create = function(req, res) {
 };
 
 exports.get = function(req, res) {
-    var pipelineId = req.params.pipelineId;
+    var pipelineId = req.params.id;
 
     Vm.findOne({pipelineId: pipelineId}, function (err, vm) {
         return (err || !vm) ? res.json(404, {msg: 'Unable to find vm for pipeline id: ' + pipelineId}) : res.json(200, vm);
     });
 };
 
+exports.list = function(req, res) {
+    var fields = '_id instanceId pipelineId ipAddress created';
+
+    Vm.find({}, fields, function (err, list) {
+        return (err || !list) ? res.json(404, {msg: 'No VMs provisioned'}) : res.json(200, list);
+    });
+};
 
 exports.delete = function(req, res) {
-    var pipelineId = (req.params.pipelineId) ? req.params.pipelineId : null;
+    var pipelineId = (req.params.id) ? req.params.id : null;
 
     if(!pipelineId) {
         return res.json(404, {msg: 'pipelineId is required for VM removal'});
@@ -122,6 +129,35 @@ exports.delete = function(req, res) {
         return res.json(400, {msg: err});
     }).
     done(function(server) {
-        return res.json(200, { msg: 'Server deleted'});
+        return res.json(200, { msg: 'Server has been deleted.'});
+    });
+};
+
+exports.reboot = function(req, res) {
+    var pipelineId = req.params.id;
+
+    Q.fcall(function() {
+        var defer = Q.defer();
+
+        Vm.findOne({pipelineId: pipelineId}, function (err, vm) {
+            return (err || !vm) ? defer.reject('Unable to find vm for pipeline id: ' + pipelineId) : defer.resolve(vm);
+        });
+
+        return defer.promise;
+    }).
+    then(function(vm) {
+        var defer = Q.defer();
+
+        client.rebootServer(vm.instanceId, {}, function(err, server) {
+            return (err) ? defer.reject(err) : defer.resolve(vm);
+        });
+
+        return defer.promise;
+    }).
+    catch(function(err) {
+        return res.json(400, {msg: err});
+    }).
+    done(function(server) {
+        return res.json(200, { msg: 'Server is rebooting.'});
     });
 };
