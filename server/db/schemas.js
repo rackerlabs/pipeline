@@ -41,8 +41,8 @@ var BRANCH_SCHEMA = new Schema({
        type: String
     });
 
-
 var PIPELINE_SCHEMA = new Schema({
+        name: { type: String, required: true, unique: false },
         created: { type: Date, default: Date.now},
         createBy: String,
         lastUpdated: Date,
