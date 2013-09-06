@@ -22,7 +22,7 @@ var server = exports.server = express();
 
 var authenticate = function(username, password, done) {
     auth.findByUsername(username).then(function (user) {
-        return auth.authGithub(username, password, done);
+        return auth.authGithub(user, password, done);
     }).catch( function(error) {
         return done(null, false, error);
     });

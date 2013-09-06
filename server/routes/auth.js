@@ -15,10 +15,10 @@ exports.findByUsername = function (username) {
 	return defer.promise;
 };
 
-exports.authGithub = function (username, password, done) {
-    rest.get('https://api.github.com', { username: username, password:password })
+exports.authGithub = function (user, password, done) {
+    rest.get('https://api.github.com', { username: user.username, password:password })
         .on('success', function (data, response) {
-            return done(null, {'_id': 'mongoid'} );
+            return done(null, user );
         }).on('fail', function (data, response) {
             return done(null, false, { msg: 'Invalid Credentials'});
         }).on('error', function(data, response) {
@@ -36,8 +36,7 @@ exports.logout = function (req, res) {
 };
 
 exports.authSuccess = function (req, res) {
-	console.log(req);
-    res.json(200, {'_id': 'myid', username: req.body.username, loggedIn: true});
+    res.json(200, req.user);
 };
 
 exports.loggedIn = function (req, res) {
