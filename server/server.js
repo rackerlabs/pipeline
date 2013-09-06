@@ -20,12 +20,11 @@ var port = process.env.PORT || appConfig.server.port;
 var server = exports.server = express();
 
 var authenticate = function(username, password, done) {
-    rest.get('https://api.github.com', { username:username, password:password })
-        .on('success', function (data, response) {
-            return done(null, {'_id': 'mongoid'} );
-        }).on('fail', function (data, response) {
-            return done(null, false, { msg: 'Invalid Credentials'});
-        });
+    auth.findByUsername(username).then(function (user) {
+        return auth.authGithub(username, password, done);
+    }).catch( function(error) {
+        return done(null, false, error);
+    });
 };
 
 var isAuthenticated = function (req, res, next) {
