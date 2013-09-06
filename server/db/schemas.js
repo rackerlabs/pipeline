@@ -49,6 +49,15 @@ var REPO_SCHEMA = new Schema({
         apiToken: String
     });
 
+var USER_SCHEMA = new Schema({
+        created: { type: Date, default: Date.now },
+        createdBy: String,
+        lastUpdated: Date,
+        username: { type: String, unique: true, required: true },
+        lastLogin: Date
+    });
+
 exports.Pipeline = mongoose.model('Pipeline', PIPELINE_SCHEMA);
 exports.Build = mongoose.model('Build', BUILD_SCHEMA);
-exports.Repo = mongoose.model('Repo', REPO_SCHEMA)
+exports.Repo = mongoose.model('Repo', REPO_SCHEMA);
+exports.User = mongoose.model('User', USER_SCHEMA);

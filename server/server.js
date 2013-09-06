@@ -20,9 +20,9 @@ var port = process.env.PORT || appConfig.server.port;
 var server = exports.server = express();
 
 var authenticate = function(username, password, done) {
-    rest.get('https://api.github.com', {username:username, password:password})
+    rest.get('https://api.github.com', { username:username, password:password })
         .on('success', function (data, response) {
-            return done(null, {'_id': 'mongoid'})
+            return done(null, {'_id': 'mongoid'} );
         }).on('fail', function (data, response) {
             return done(null, false, { msg: 'Invalid Credentials'});
         });
@@ -95,6 +95,12 @@ server.post('/api/repo', repo.save);
 server.put('/api/repo/:id', repo.update);
 server.delete('/api/repo/:id', repo.delete);
 
+// server.get('/api/user', user.list);
+// server.get('/api/user/:id', user.list);
+// server.post('/api/user', user.save);
+// sever.put('/api/user/:id', user.update);
+// server.delete('/api/user/:id', user.delete);
+
 server.get('/api/github/pulls/:repoId', github.listPulls);
 server.post('/api/github/pulls/:repoId', github.createPull);
 server.get('/api/github/pulls/:repoId/mergeable/:pullId', github.isPullMergeable);
@@ -110,7 +116,6 @@ server.get('/api/auth/loggedIn', auth.loggedIn);
 server.get('*', function(req, res){
   res.sendfile('app/index.html');
 });
-
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);
 mongoose.connect('mongodb://' + db.host + '/' + db.name);
