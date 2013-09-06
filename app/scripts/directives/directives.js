@@ -86,7 +86,7 @@ directive("rxConsoleOutput", function (Socket) {
         replace: true,
         templateUrl: '/directives/consoleOutput.html',
         scope: {
-            step: '=',
+            build: '=',
             closeConsole: '&',
             modalState: '='
         },
@@ -159,6 +159,8 @@ directive("rxBuildConfiguration", function($compile) {
             }
 
             scope.displayConsole = function () {
+                scope.modalState = true;
+
                 scope.modalOpts = {
                     backdrop: true,
                     keyboard: true,
@@ -166,7 +168,7 @@ directive("rxBuildConfiguration", function($compile) {
                 };
                 
                 var d = document.createElement("rx-console-output");
-                d.setAttribute("step", "pipelineStep");
+                d.setAttribute("build", "build");
                 d.setAttribute("options", "modalOpts");
                 d.setAttribute("close-console", "closeConsole()");
                 d.setAttribute("modal-state", "modalState");
