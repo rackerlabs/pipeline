@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module( 'rxPipelineApp' )
-    .controller( 'MainCtrl', [ '$scope', 'socket', '$location', '$window', 'Pipelines', 'Steps', 'Auth', function( $scope, Socket, $location, $window, Pipelines, Steps, Auth ) {
+    .controller( 'MainCtrl', [ '$scope', 'socket', '$location', '$window', '$cookies', 'Pipelines', 'Steps', 'Auth', function( $scope, Socket, $location, $window, $cookies, Pipelines, Steps, Auth ) {
         $scope.Pipelines = Pipelines;
         $scope.Steps = Steps;
         

@@ -26,7 +26,8 @@ factory('Auth', function($location, $http, $cookies, Server) {
         },
         getAuthObject: function() {
             if (!this.auth_cache_date||(((new Date()).getTime() - this.auth_cache_date.getTime()) / 1000 > 10)) {
-                var stored_auth = $cookies.PipelineAuth;
+                var stored_auth = eval('(' + $cookies.PipelineAuth + ')');
+                console.log(stored_auth);
 
                 if (stored_auth) {
                     this.username = stored_auth.username;
@@ -62,14 +63,12 @@ factory('Auth', function($location, $http, $cookies, Server) {
 
             $http.defaults.headers.common["PIPELINE-AUTH-ID"] = this.auth_id;
 
-            $cookies.PipelineAuth = {username: this.username, auth_id: this.auth_id};
+            $cookies.PipelineAuth = JSON.stringify({username: this.username, auth_id: this.auth_id});
         },
         finishAuth: function(resultData, resultStatus, resultHeaders, resultConfig) {
             this.authError = undefined;
             this.registerAuthObject(resultData)
 
-            console.log(this);
-            console.log($cookies.PipelineAuth);
             $location.path("/");
         },
         fetchLockoutMessage: function(timeRemaining) {

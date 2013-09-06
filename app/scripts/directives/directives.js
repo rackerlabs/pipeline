@@ -23,7 +23,6 @@ directive('rxPipeline', function (Auth) {
             step: '='
         },
 		link: function(scope, element, attrs) {
-            scope.Auth = Auth;
 		}
     };
 }).
@@ -50,7 +49,8 @@ directive("rxPipelineList", function () {
         templateUrl: "directives/pipelineList.html",
         scope: {
             "pipelines": "=",
-            "steps": "="
+            "steps": "=",
+            "auth": "="
         },
         link: function (scope, element, attrs) {
             scope.pipelineData = scope.pipelines.getPipelines();
