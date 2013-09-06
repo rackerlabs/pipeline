@@ -12,13 +12,11 @@ We looked at what was available and tried a few out. Unfortunately, none of the 
 * HTML5 Boilerplate
 * AngularJS
 * Karma
-* jQuery
 * UI-Bootstrap
 * Font-Awesome
 * Modernizr
 * lodash
 * ExpressJS
-* Hogan
 * Socket.io
 * MongoDB
 
