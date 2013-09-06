@@ -8,8 +8,8 @@
         </ul>
         <div class="tab-content">
             <div class="tab-pane" id="pipeline-tab" ng-show="getCurrentTab() == 'pipelines'" ng-class="{active: getCurrentTab() == 'pipelines'}">
-                <rx-pipeline ng-repeat="pipeline in pipelines.pipelineData" pipeline="pipeline"></rx-pipeline>
-                <div class='no-pipelines' ng-hide="pipelines.pipelineData">
+                <rx-pipeline ng-repeat="pipeline in pipelines.pipelines" pipeline="pipeline"></rx-pipeline>
+                <div class='no-pipelines' ng-hide="pipelines.pipelines">
                     There are currently no active pipelines in the system.
                 </div>
             </div>

@@ -118,39 +118,6 @@ angular.module('pipelineServices', ['ngResource']).
             }
         };
     }).
-    factory('Pipelines', function (PipelineSteps, Steps, Server) {
-        return {
-            pipelineData: [],
-            lastUpdated: undefined,
-            getPipelines: function() {
-                var pipelineScope = this;
-                
-                if (this.lastUpdated && ((new Date()).getSeconds() - this.lastUpdated.getSeconds() < 15000)) {
-                    return this.pipelineData;
-                }
-                
-                var procPipes = this.processPipelineData;
-                
-                Server.pipelines().success(function (data) {
-                    pipelineScope.pipelineData = procPipes(data);
-                    pipelineScope.lastUpdated = new Date();
-                }).error(function (response) {
-                });
-                
-                return this.pipelineData;
-            },
-            processPipelineData: function ( data ) {
-                _.forEach(data, function (v, i, c) {
-                    v.steps = this.parseSteps(v.steps, v.id);
-                }, PipelineSteps);
-                
-                return data;
-            },
-            getPipeline: function(pipeline_id) {
-                return _.find(this.getPipelines(), {"id": pipeline_id});
-            }
-        };
-    }).
     factory("Steps", function (Server) {
         return {
             stepData: [],
@@ -289,6 +256,7 @@ angular.module('pipelineServices', ['ngResource']).
                     $location.path("/settings/pipelines");
                 };
                 if (pipeline) {
+                    console.log(pipeline);
                     if (pipeline.hasOwnProperty("_id")) {
                         var id = pipeline._id;
                         delete pipeline._id;

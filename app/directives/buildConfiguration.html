@@ -23,8 +23,7 @@
             <li ng-repeat="command in build.commands">
                 <label for="command_{{ command._id }}">Run Command</label>
                 <textarea name="command_{{command._id}}" id="command_{{command._id}}" ng-model="command.command"></textarea></br>
-                <input type="checkbox" value="Y"
-                ng-model="command.stopBuildOnFailure">
+                <input type="checkbox" value="Y" ng-model="command.stopBuildOnFailure">
                 <label for="stop_fail_{{ command._id }}">Stop on Failure</label><br>
                 <button ng-click="removeCommand(build, $index)" class="remove">Remove Command</button>
             </li>

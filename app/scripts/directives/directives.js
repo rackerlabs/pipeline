@@ -154,6 +154,9 @@ directive("rxBuildConfiguration", function() {
         link: function (scope, element, attrs) {
             scope.builds.updateBuilds();
             scope.build = scope.builds.getBuild(scope.buildId);
+            if (!scope.build) {
+                scope.build = {};
+            }
             scope.addCommand = function (build) {
                 if (!build.hasOwnProperty("commands")) {
                     build.commands = [];
@@ -176,7 +179,8 @@ directive("rxBuildSelector", function() {
         templateUrl: "/directives/buildSelector.html",
         scope: {
             'builds': '=',
-            'stepModel': '='
+            'stepModel': '=',
+            'selectorId': '='
         },
         link: function (scope, element, attrs) {
             scope.builds.updateBuilds();
@@ -191,21 +195,40 @@ directive("rxPipelineConfiguration", function() {
         scope: {
             'pipelines': '=',
             'pipelineId': '=',
+            'builds': '=',
             'view': '='
         },
         link: function (scope, element, attrs) {
-            scope.builds.updateBuilds();
-            scope.build = scope.builds.getBuild(scope.buildId);
-            scope.addCommand = function (build) {
-                if (!build.hasOwnProperty("commands")) {
-                    build.commands = [];
-                }
-                build.commands.push({command: "", stopBuildOnFailure: false});
+            scope.pipelines.updatePipelines();
+            scope.pipeline = scope.pipelines.getPipeline(scope.pipelineId);
+
+            if (!scope.pipeline) {
+                scope.pipeline = {};
             }
 
-            scope.removeCommand = function (build, i) {
-                if (i < build.commands.length) {
-                    build.commands.splice(i, 1);
+            scope.addBranch = function (pipeline) {
+                if (!pipeline.hasOwnProperty("branches")) {
+                    pipeline.branches = [];
+                }
+                pipeline.branches.push({type: "", name: "", repoUrl: ""});
+            }
+
+            scope.removePipeline = function (pipeline, i) {
+                if (i < pipeline.branches.length) {
+                    pipeline.branches.splice(i, 1);
+                }
+            }
+
+            scope.addStep = function (pipeline) {
+                if (!pipeline.hasOwnProperty("steps")) {
+                    pipeline.steps = [];
+                }
+                pipeline.steps.push({buildId: "none"});
+            }
+
+            scope.removeStep = function (pipeline, i) {
+                if (i < pipeline.steps.length) {
+                    pipeline.steps.splice(i, 1);
                 }
             }
         }
