@@ -1,4 +1,13 @@
 'use strict';
+var paramFunc = function (obj) {
+    var ret = [];
+
+    for (var k in obj) {
+        ret.push(k + ":" + obj[k]);
+    }
+
+    return ret.join("&");
+};
 
 angular.module('pipelineServices', ['ngResource']).
     factory('Server', function ($http) {
@@ -20,7 +29,7 @@ angular.module('pipelineServices', ['ngResource']).
                     }
                 }
             }
-            return ret_str + (query ? "?" + $.param(query) : "");
+            return ret_str + (query ? "?" + paramFunc(query) : "");
         };
         
         var _res = function(method, isArray, params) {

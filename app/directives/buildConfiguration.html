@@ -22,7 +22,7 @@
             <li ng-hide="build.commands" class="empty">There are no commands for this</li>
             <li ng-repeat="command in build.commands">
                 <select name="command_type" ng-model="command.command">
-                    <option value="">Run Command</option>
+                    <option>Run Command</option>
                     <option value="deploy_vm">Deploy VM</option>
                 </select><br>
                 <textarea name="command_{{command._id}}" id="command_{{command._id}}" ng-hide="command.command == 'deploy_vm'" ng-model="command.command"></textarea></br>
