@@ -22,8 +22,10 @@ We looked at what was available and tried a few out. Unfortunately, none of the 
 
 ### Setting Up the Application
 
-## Install NodeJS
+## Install NodeJS, MongoDB, and Git
 * Follow the steps on http://nodejs.org
+* Follow the steps on http://www.mongodb.com/
+* Follow the steps on http://git-scm.com/book/en/Getting-Started-Installing-Git
 
 ## Install MongoDB, Git, NodeJS and NPM
 * `git clone git@github.com:christophercantu/pipeline.git`
