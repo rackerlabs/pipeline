@@ -29,16 +29,16 @@ exports.emailUser = function (req, res) {
 
 exports.emailUsers = function (req, res) {
 	var usersIds = req.body.ids;
+	var opts = ( req.body.options ) ? req.body.options : options;
 
 	user.findUsersByIds(usersIds)
 		.then( function(users) {
 			var ids = _.pluck(users, 'email');
-			options.to = ids.toString();
-			return email.sendMail(options);
+			opts.to = ids.toString();
+			return email.sendMail(opts);
 		}).then( function (message) {
 			return res.json(200, message);
 		}).catch( function (error) {
 			return res.json(409, error);
 		});
 };
-
