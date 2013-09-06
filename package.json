@@ -13,12 +13,13 @@
     "consolidate": "~0.9.1",
     "hogan.js": "~2.0.0",
     "socket.io": "~0.9.14",
-    "mongoose":"~3.6.15",
-    "q":"~0.9.6",
-    "restler":"~2.0.1 ",
+    "mongoose": "~3.6.15",
+    "q": "~0.9.6",
+    "restler": "~2.0.1",
     "passport": "~0.1.17",
     "passport-local": "~0.1.6",
-    "github": "~0.1.10"
+    "github": "~0.1.10",
+    "nodemailer": "~0.5.2"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
