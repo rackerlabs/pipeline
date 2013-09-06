@@ -1,6 +1,26 @@
 'use strict';
 
-var User = require('./../../server/db/schemas').User;
+var User = require('./../../server/db/schemas').User, Q = require('q');
+
+exports.findById = function (id) {
+	var defer = Q.defer();
+
+	User.findById(id, function (err, user) {
+		(err) ? defer.reject(err) : defer.resolve(user);
+	});
+
+	return defer.promise;
+};
+
+exports.findUsersByIds = function (ids) {
+	var defer = Q.defer();
+
+	User.find({_id: { $in: ids } }, function (err, users) {
+		(err) ? defer.reject(err) : defer.resolve(users);
+	});
+
+	return defer.promise;
+};
 
 exports.list = function (req, res) {
     return User.find({}, function (err, users) {
@@ -49,8 +69,8 @@ var saveUser = function(user) {
 };
 
 exports.bootstrap = function () { 
-	saveUser( { createdBy: "christophercantu", username: "christophercantu"} );
-	saveUser( { createdBy: "christophercantu", username: "nickburns2006"} );
-	saveUser( { createdBy: "christophercantu", username: "rnreekez"} );
-	saveUser( { createdBy: "christophercantu", username: "hussamd"} );
+	saveUser( { createdBy: "christophercantu", username: "christophercantu", email: 'chris.cantu@rackspace.com'} );
+	saveUser( { createdBy: "christophercantu", username: "nickburns2006",  email: 'stephen.golub@rackspace.com' });
+	saveUser( { createdBy: "christophercantu", username: "rnreekez", email: 'roger.enriquez@rackspace.com'});
+	saveUser( { createdBy: "christophercantu", username: "hussamd", email: 'hussam.dawood@rackspace.com'});
 }

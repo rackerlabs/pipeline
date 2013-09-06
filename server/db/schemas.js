@@ -2,6 +2,15 @@
 var mongoose    = require('mongoose'),
     Schema      = mongoose.Schema;
 
+var NOTIFICATION_SCHEMA = new Schema({
+    notification_type: { type: String },
+    contacts: { type: Array, required: true },
+    subject: { type: String, required: false },
+    body: { type: String, required: true },
+    onSuccess: { type: Boolean, default: false },
+    onFailure: { type: Boolean, default: false }
+});
+
 var BUILD_COMMAND_SCHEMA = new Schema({
         command: String,
         stopBuildOnFailure: { type: Boolean, default: true } 
@@ -22,7 +31,8 @@ var BUILD_SCHEMA = new Schema({
         lastUpdated: { type: Date, default: Date.now },
         lastUpdatedBy: String,
         commands: [BUILD_COMMAND_SCHEMA],
-        buildHistory: [BUILD_HISTORY_SCHEMA]
+        buildHistory: [BUILD_HISTORY_SCHEMA],
+        notifications: [NOTIFICATION_SCHEMA]
     });
 
 var BRANCH_SCHEMA = new Schema({
@@ -32,13 +42,14 @@ var BRANCH_SCHEMA = new Schema({
     });
 
 var PIPELINE_SCHEMA = new Schema({
+        name: { type: String, required: true, unique: false },
         created: { type: Date, default: Date.now},
         createBy: String,
         lastUpdated: Date,
         branches: [BRANCH_SCHEMA],
-        steps: [{buildId: String}]
+        steps: [{buildId: String}],
+        notifications: [NOTIFICATION_SCHEMA]
     });
-
 
 var REPO_SCHEMA = new Schema({
         created: { type: Date, default: Date.now},
@@ -54,6 +65,7 @@ var USER_SCHEMA = new Schema({
         createdBy: String,
         lastUpdated: { type: Date, default: Date.now },
         username: { type: String, unique: true, required: true },
+        email : { type: String, unique:true, required: true },
         lastLogin: Date
     });
 
