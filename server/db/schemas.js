@@ -1,4 +1,5 @@
 'use strict';
+
 var mongoose    = require('mongoose'),
     Schema      = mongoose.Schema;
 
@@ -13,14 +14,15 @@ var NOTIFICATION_SCHEMA = new Schema({
 
 var BUILD_COMMAND_SCHEMA = new Schema({
         command: String,
-        stopBuildOnFailure: { type: Boolean, default: true } 
+        stopBuildOnFailure: { type: Boolean, default: true }
     });
 
 var BUILD_HISTORY_SCHEMA = new Schema({
         output: String,
         startTime: { type: Date, default: Date.now },
         endTime: { type: Date },
-        isSuccessful: { type: Boolean, default: true }
+        isSuccessful: { type: Boolean, default: true },
+        pipelineId: String,
     });
 
 var BUILD_SCHEMA = new Schema({
@@ -36,9 +38,9 @@ var BUILD_SCHEMA = new Schema({
     });
 
 var BRANCH_SCHEMA = new Schema({
-       name: String,
-       repoUrl: String,
-       type: String
+        name: String,
+        repoUrl: String,
+        type: String
     });
 
 var PIPELINE_SCHEMA = new Schema({
@@ -49,6 +51,13 @@ var PIPELINE_SCHEMA = new Schema({
         branches: [BRANCH_SCHEMA],
         steps: [{buildId: String}],
         notifications: [NOTIFICATION_SCHEMA]
+    });
+
+var VM_SCHEMA = new Schema({
+        created: { type: Date, default: Date.now },
+        instanceId: String,
+        ipAddress: { type: String, default: '' },
+        pipelineId: String
     });
 
 var REPO_SCHEMA = new Schema({
@@ -70,6 +79,7 @@ var USER_SCHEMA = new Schema({
     });
 
 exports.Pipeline = mongoose.model('Pipeline', PIPELINE_SCHEMA);
+exports.Vm = mongoose.model('Vm', VM_SCHEMA);
 exports.Build = mongoose.model('Build', BUILD_SCHEMA);
 exports.Repo = mongoose.model('Repo', REPO_SCHEMA);
 exports.User = mongoose.model('User', USER_SCHEMA);

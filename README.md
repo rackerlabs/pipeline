@@ -23,7 +23,7 @@ We looked at what was available and tried a few out. Unfortunately, none of the 
 
 ### Setting Up the Application
 
-* Install MongoDB
+* Install MongoDB, Git, NodeJS and NPM
 * `git clone git@github.com:christophercantu/pipeline.git`
 * `npm install`
 * `bower install`
