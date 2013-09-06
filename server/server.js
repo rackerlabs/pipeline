@@ -87,6 +87,12 @@ server.get('/api/pipeline/:id', pipeline.get);
 server.post('/api/pipeline', pipeline.save);
 server.put('/api/pipeline/:id', pipeline.update);
 server.delete('/api/pipeline/:id', pipeline.delete);
+server.get('/api/pipeline/:id/vm', vm.get);
+server.post('/api/pipeline/:id/vm', vm.create);
+server.delete('/api/pipeline/:id/vm', vm.delete);
+
+server.get('/api/vm', vm.list);
+
 server.get('/api/build', build.list);
 server.get('/api/build/:id', build.get);
 server.post('/api/build', build.save);
@@ -116,11 +122,6 @@ server.post('/api/notify/emails', notify.emailUsers);
 
 server.post('/api/auth', passport.authenticate('local'), auth.authSuccess);
 server.get('/api/auth/loggedIn', auth.loggedIn);
-
-server.get('/api/vm', vm.list);
-server.post('/api/vm', vm.create);
-server.get('/api/vm/:pipelineId', vm.get);
-server.delete('/api/vm/:pipelineId', vm.delete);
 
 server.post('/api/vm/:pipelineId/reboot', vm.reboot);
 

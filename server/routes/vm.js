@@ -7,7 +7,7 @@ var Vm        = require('./../../server/db/schemas').Vm,
     client    = require('pkgcloud').compute.createClient(appConfig.vm.cloudCredentials);
 
 exports.create = function(req, res) {
-    var pipelineId = (req.body.pipelineId) ? req.body.pipelineId : null;
+    var pipelineId = (req.params.id) ? req.params.id : null;
 
     if(!pipelineId) {
         return res.json(404, {msg: 'pipelineId is required for VM creation'});
@@ -76,7 +76,7 @@ exports.create = function(req, res) {
 };
 
 exports.get = function(req, res) {
-    var pipelineId = req.params.pipelineId;
+    var pipelineId = req.params.id;
 
     Vm.findOne({pipelineId: pipelineId}, function (err, vm) {
         return (err || !vm) ? res.json(404, {msg: 'Unable to find vm for pipeline id: ' + pipelineId}) : res.json(200, vm);
@@ -92,7 +92,7 @@ exports.list = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-    var pipelineId = (req.params.pipelineId) ? req.params.pipelineId : null;
+    var pipelineId = (req.params.id) ? req.params.id : null;
 
     if(!pipelineId) {
         return res.json(404, {msg: 'pipelineId is required for VM removal'});
@@ -134,7 +134,7 @@ exports.delete = function(req, res) {
 };
 
 exports.reboot = function(req, res) {
-    var pipelineId = req.params.pipelineId;
+    var pipelineId = req.params.id;
 
     Q.fcall(function() {
         var defer = Q.defer();
