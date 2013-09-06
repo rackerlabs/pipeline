@@ -1,0 +1,29 @@
+{
+  "name": "yoAngularExpressTest",
+  "version": "0.0.0",
+  "appPath": "app",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "git://github.com/angular-ui/bootstrap-bower.git#~0.3.0",
+    "angular-cookies": "git://github.com/angular/bower-angular-cookies.git#~1.0.5",
+    "angular-mocks": "git://github.com/angular/bower-angular-mocks.git#~1.0.5",
+    "angular-resource": "git://github.com/angular/bower-angular-resource.git#~1.0.5",
+    "angular-sanitize": "git://github.com/angular/bower-angular-sanitize.git#~1.0.5",
+    "angular-scenario": "git://github.com/angular/bower-angular-scenario.git#~1.0.5",
+    "angular-socket-io": "git://github.com/btford/angular-socket-io.git#~0.0.1",
+    "bootstrap": "git://github.com/twbs/bootstrap.git#~2.3.1",
+    "bootstrap-ui": "git://github.com/angular-ui/bootstrap.git#~0.5.0",
+    "es5-shim": "git://github.com/kriskowal/es5-shim.git#~2.0.8",
+    "font-awesome-more": "git://github.com/hectorcenteno/Font-Awesome-More.git",
+    "json3": "git://github.com/bestiejs/json3.git#~3.2.4",
+    "lodash": "git://github.com/bestiejs/lodash.git#~1.2.1",
+    "modernizr": "git://github.com/Modernizr/Modernizr.git#~2.6.2",
+    "socket.io-client": "git://github.com/LearnBoost/socket.io-client.git#~0.9.11"
+  }
+}
