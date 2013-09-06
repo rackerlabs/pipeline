@@ -1,5 +1,18 @@
 'use strict';
-var Pipeline = require('./../../server/db/schemas').Pipeline;
+var Pipeline = require('./../../server/db/schemas').Pipeline, 
+    Q = require('q');
+
+exports.findByBuildIdAndNotificationType = function (buildId, notificationType) {
+    var defer = Q.defer();
+
+    Pipeline.findOne( { "steps.buildId" : buildId, 
+            "notifications.notification_type": notificationType }, 
+        function (err, pipeline) {
+            return (err) ? defer.reject(err) : defer.resolve(pipeline);
+        });
+
+    return defer.promise;
+};
 
 exports.list = function (req, res) {
     return Pipeline.find(function (err, pipelines) {
