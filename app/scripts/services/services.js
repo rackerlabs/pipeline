@@ -190,7 +190,7 @@ angular.module('pipelineServices', ['ngResource']).
             }
         };
     }).
-    factory("Builds", function($location, Server) {
+    factory("Builds", function($location, Server, Socket) {
         return {
             builds: [],
             getBuilds: function () {
@@ -237,6 +237,12 @@ angular.module('pipelineServices', ['ngResource']).
                     }
                 }
 
+            },
+            startBuild: function (build, disp) {
+                if (build.hasOwnProperty("_id")) {
+                    Socket.startBuild(build._id);
+                    disp();
+                }
             }
         };
     }).

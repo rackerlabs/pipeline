@@ -5,6 +5,7 @@
                 <div>
                     <div class="span2">{{ build.name }}</div>
                     <div class="span1"><a href="/settings/builds/edit/{{ build._id }}">Edit</a></div>
+                    <div class="span1"><a href="#" ng-click="builds.startBuild(build, displayConsole)">Build</a></div>
                     <div class="span1"><a href="#" ng-click="builds.deleteBuild(build)">Delete</a></div>
                     <div class="span3">{{ build.lastUpdated}}</div>
                 </div>

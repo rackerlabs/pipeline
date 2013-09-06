@@ -10,6 +10,8 @@ angular.module( 'rxPipelineApp' )
         $scope.connectedClass = 'icon-remove';
         $scope.connected = 'Not Connected to Server';
 
+        $scope.Socket = Socket;
+
         Socket.on( 'send:onConnect', function( data ) {
             $scope.connected = data.data;
             $scope.connectedClass = 'icon-link';

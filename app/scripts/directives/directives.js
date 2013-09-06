@@ -77,27 +77,10 @@ directive("rxPipelineStepControls", function($compile, Socket) {
             scope.Socket = Socket;
             scope.modalState = true;
             
-            scope.displayConsole = function () {
-                scope.modalOpts = {
-                    backdrop: true,
-                    keyboard: true,
-                    show: true
-                };
-                
-                var d = document.createElement("rx-console-output");
-                d.setAttribute("step", "pipelineStep");
-                d.setAttribute("options", "modalOpts");
-                d.setAttribute("close-console", "closeConsole()");
-                d.setAttribute("modal-state", "modalState");
-                
-                d = $compile(d)(scope);
-                
-                element.parent().append(d);
-            };
         }
     };
 }).
-directive("rxConsoleOutput", function () {
+directive("rxConsoleOutput", function (Socket) {
     return {
         restrict: 'E',
         replace: true,
@@ -108,7 +91,7 @@ directive("rxConsoleOutput", function () {
             modalState: '='
         },
         link: function (scope, element, attrs) {
-            var consoleInfo = scope.step.getConsoleData();
+            var consoleInfo = {'data': 'Console data placeholder', 'stillRunning': true}
             
             scope.consoleOutput = scope.modalState;
             
@@ -122,7 +105,12 @@ directive("rxConsoleOutput", function () {
             
             if (consoleInfo.stillRunning) {
                 // We're going to hook the consoleData variable into the socket output
-                scope.step.hookConsoleOutput(scope);
+                console.log("Hooking: " + scope)
+                Socket.on('builds:update', function( data ) {
+                    console.log('client socket on');
+                    console.log("> " + data);
+                    scope.consoleData += data;
+                });
             }
         }
     };
@@ -141,7 +129,7 @@ directive("rxGlobalStep", function() {
         }
    };
 }).
-directive("rxBuildConfiguration", function() {
+directive("rxBuildConfiguration", function($compile) {
     return {
         restrict: "E",
         replace: true,
@@ -169,6 +157,24 @@ directive("rxBuildConfiguration", function() {
                     build.commands.splice(i, 1);
                 }
             }
+
+            scope.displayConsole = function () {
+                scope.modalOpts = {
+                    backdrop: true,
+                    keyboard: true,
+                    show: true
+                };
+                
+                var d = document.createElement("rx-console-output");
+                d.setAttribute("step", "pipelineStep");
+                d.setAttribute("options", "modalOpts");
+                d.setAttribute("close-console", "closeConsole()");
+                d.setAttribute("modal-state", "modalState");
+                
+                d = $compile(d)(scope);
+                
+                element.parent().append(d);
+            };
         }
    };
 }).
