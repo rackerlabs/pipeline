@@ -32,7 +32,7 @@ We looked at what was available and tried a few out. Unfortunately, none of the 
 The application can be run with front-end code only or also run the server code.  To run both the front-end and server code, use the following command:
 
 * Ensure mongodb is running locally ie: `mongod`
-* `grunt server --use-server`
+* `node server/server.js`
 * (if you have issues with grunt, you can also run) `node server/server.js`
 
 > Note: Because of how NodeJS works, the browser may open before server has finished starting up. Therefore, you may see a 404 page when you run the command initially.  Just refresh the page if you see this error.
