@@ -1,4 +1,3 @@
-<select name="{{ selectorId }}" id="{{selectorId}}" ng-model="stepModel">
+<select name="step_{{ selectorId }}" id="step_{{selectorId}}" ng-model="stepModel.buildId" ng-options="build._id as build.name for build in builds.builds">
     <option value="none">---Select a Build---</option>
-    <option ng-repeat="build in builds" value="build._id" >{{ build.name }}</option>
 </select>

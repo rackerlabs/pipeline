@@ -127,6 +127,7 @@ div.configuration div.main-area {
 div.configuration div.main-area ul.build-list {
 }
 
-div.configuration div.main-area ul.build-list li div {
+div.configuration div.main-area ul.build-list li div,
+div.configuration div.main-area ul.pipeline-list li div {
     display: inline-block;
 }

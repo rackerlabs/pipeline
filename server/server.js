@@ -11,11 +11,13 @@ var express     = require('express'),
     build       = require('./routes/build'),
     repo        = require('./routes/repo'),
     github      = require('./routes/github'),
-    user        = require('./routes/user'), 
+    vm          = require('./routes/vm'),
+    user        = require('./routes/user'),
     passport    = require('passport'),
     Strategy    = require('passport-local').Strategy,
-    auth        = require('./routes/auth'), 
-    notify       = require('./routes/notify');
+    auth        = require('./routes/auth'),
+    notify       = require('./routes/notify'),
+    rest        = require('restler');
 
 var port = process.env.PORT || appConfig.server.port;
 var server = exports.server = express();
@@ -115,9 +117,13 @@ server.post('/api/notify/emails', notify.emailUsers);
 server.post('/api/auth', passport.authenticate('local'), auth.authSuccess);
 server.get('/api/auth/loggedIn', auth.loggedIn);
 
+server.post('/api/vm', vm.create);
+server.get('/api/vm/:pipelineId', vm.get);
+server.delete('/api/vm/:pipelineId', vm.delete);
+
 // This is here to route all the HTML5 routes to the index.html
 server.get('*', function(req, res){
-  res.sendfile('app/index.html');
+    res.sendfile('app/index.html');
 });
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);

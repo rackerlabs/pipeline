@@ -15,11 +15,24 @@
     <form class="pipeline-edit" ng-show="pipelineId">
         <label for="pipeline_name">Name:</label>
         <input type="text" name="pipeline_name" id="pipeline_name" ng-model="pipeline.name"></br>
+        <label>Git Branches</label>
+        <ul class="branch-list">
+            <li ng-hide="pipeline.branches" class="empty">There are no branches for this</li>
+            <li ng-repeat="branch in pipeline.branches">
+                <label for="branch_type_{{ branch._id }}">Branch Type</label>
+                <input type="text" name="branch_type_{{branch._id}}" id="branch_type_{{branch._id}}" ng-model="branch.type"></br>
+                <label for="branch_{{ branch._id }}">Branch Name</label>
+                <input type="text" name="branch_{{branch._id}}" id="branch_{{branch._id}}" ng-model="branch.name"></br>
+                <label for="branch_url_{{ branch._id }}">Branch URL</label> <input type="text" name="branch_url_{{branch._id}}" id="branch_url_{{branch._id}}" ng-model="branch.repoUrl"></br>
+                <button ng-click="removeBranch(build, $index)" class="remove">Remove Branch</button>
+            </li>
+            <li class="add"><button ng-click="addBranch(pipeline)">Add Branch</button></li>
+        </ul>
         <label>Build Steps</label>
         <ul class="build-list">
             <li ng-hide="pipeline.steps" class="empty">There are no steps for this</li>
             <li ng-repeat="step in pipeline.steps">
-                <rx-build-selector builds='builds' step-model='step.buildId'></rx-build-selector>
+            <rx-build-selector selector-id="$index" builds='builds' step-model='step'></rx-build-selector>
             </li>
             <li class="add"><button ng-click="addStep(pipeline)">Add Build Step</button></li>
         </ul>
