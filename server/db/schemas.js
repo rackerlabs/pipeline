@@ -52,7 +52,7 @@ var REPO_SCHEMA = new Schema({
 var USER_SCHEMA = new Schema({
         created: { type: Date, default: Date.now },
         createdBy: String,
-        lastUpdated: Date,
+        lastUpdated: { type: Date, default: Date.now },
         username: { type: String, unique: true, required: true },
         lastLogin: Date
     });

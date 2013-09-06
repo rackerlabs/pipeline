@@ -28,7 +28,7 @@
     "database" : {
         "host"          : "localhost",
         "port"          : 27017,
-        "name"          : "test_db",
+        "name"          : "pipeline",
         "collection"    : "test_col"
     },
 	"installed" :	true

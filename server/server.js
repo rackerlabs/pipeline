@@ -10,7 +10,8 @@ var express     = require('express'),
     pipeline    = require('./routes/pipeline'),
     build       = require('./routes/build'),
     repo        = require('./routes/repo'),
-    github      = require('./routes/github'), 
+    github      = require('./routes/github'),
+    user        = require('./routes/user'), 
     passport    = require('passport'),
     Strategy    = require('passport-local').Strategy,
     auth        = require('./routes/auth'), 
@@ -52,6 +53,7 @@ server.configure( function() {
 } );
 
 server.configure( 'development', function() {
+    user.bootstrap();
     server.use( express.errorHandler( { dumpExceptions: true, showStack: true } ) );
 } );
 
@@ -94,11 +96,11 @@ server.post('/api/repo', repo.save);
 server.put('/api/repo/:id', repo.update);
 server.delete('/api/repo/:id', repo.delete);
 
-// server.get('/api/user', user.list);
-// server.get('/api/user/:id', user.list);
-// server.post('/api/user', user.save);
-// sever.put('/api/user/:id', user.update);
-// server.delete('/api/user/:id', user.delete);
+server.get('/api/user', user.list);
+server.get('/api/user/:id', user.list);
+server.post('/api/user', user.save);
+server.put('/api/user/:id', user.update);
+server.delete('/api/user/:id', user.delete);
 
 server.get('/api/github/pulls/:repoId', github.listPulls);
 server.post('/api/github/pulls/:repoId', github.createPull);
