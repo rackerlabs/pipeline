@@ -90,6 +90,7 @@ server.delete('/api/pipeline/:id', pipeline.delete);
 server.get('/api/pipeline/:id/vm', vm.get);
 server.post('/api/pipeline/:id/vm', vm.create);
 server.delete('/api/pipeline/:id/vm', vm.delete);
+server.post('/api/pipeline/:id/reboot', vm.reboot);
 
 server.get('/api/vm', vm.list);
 
@@ -122,8 +123,6 @@ server.post('/api/notify/emails', notify.emailUsers);
 
 server.post('/api/auth', passport.authenticate('local'), auth.authSuccess);
 server.get('/api/auth/loggedIn', auth.loggedIn);
-
-server.post('/api/vm/:pipelineId/reboot', vm.reboot);
 
 // This is here to route all the HTML5 routes to the index.html
 server.get('*', function(req, res){
