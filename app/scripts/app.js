@@ -4,15 +4,24 @@ angular.module( 'rxPipelineApp', [ 'ui.bootstrap', 'btford.socket-io', 'ngSaniti
     .config( [ '$routeProvider', '$locationProvider', function ( $routeProvider, $locationProvider ) {
         $routeProvider
         .when( '/', {
-            templateUrl: 'scripts/main/mainView.html',
+            templateUrl: '/scripts/main/mainView.html',
             controller: 'MainCtrl'
         })
         .when( '/login', {
-            templateUrl: 'scripts/main/login.html',
+            templateUrl: '/scripts/main/login.html',
             controller: 'MainCtrl'
         })
-        .when( '/logout', {
-            controller: 'LogoutCtrl'
+        .when( '/settings', {
+            templateUrl: '/scripts/main/settings.html',
+            controller: 'MainCtrl'
+        })
+        .when( '/settings/:view', {
+            templateUrl: '/scripts/main/settings.html',
+            controller: 'MainCtrl'
+        })
+        .when( '/settings/:view/edit/:id', {
+            templateUrl: '/scripts/main/settings.html',
+            controller: 'MainCtrl'
         })
         .otherwise({
             redirectTo: '/'

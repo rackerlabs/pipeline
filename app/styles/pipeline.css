@@ -112,3 +112,21 @@ form.login-form {
     border-radius: 5px;
     
 }
+
+div.configuration {
+
+}
+
+div.configuration div.menu {
+    border: 1px solid #000;
+}
+
+div.configuration div.main-area {
+}
+
+div.configuration div.main-area ul.build-list {
+}
+
+div.configuration div.main-area ul.build-list li div {
+    display: inline-block;
+}

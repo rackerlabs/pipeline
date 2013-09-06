@@ -1,0 +1,36 @@
+<div class="span10 main-area" ng-show="view == 'builds'">
+    <div class="span10 main-area" ng-hide="buildId">
+        <ul class="build-list unstyled">
+            <li ng-repeat="build in builds.builds">
+                <div>
+                    <div class="span2">{{ build.name }}</div>
+                    <div class="span1"><a href="/settings/builds/edit/{{ build._id }}">Edit</a></div>
+                    <div class="span1"><a href="#" ng-click="builds.deleteBuild(build)">Delete</a></div>
+                    <div class="span3">{{ build.lastUpdated}}</div>
+                </div>
+            </li>
+        </ul>
+        <a href="/settings/builds/edit/new">New Build</a>
+    </div>
+    <form class="build-edit" ng-show="buildId">
+        <label for="build_name">Name:</label>
+        <input type="text" name="build_name" id="build_name" ng-model="build.name"></br>
+        <label for="build_desc">Description:</label>
+        <textarea name="build_desc" id="build_desc" ng-model="build.description"></textarea></br>
+        <label>Commands</label>
+        <ul class="command-list">
+            <li ng-hide="build.commands" class="empty">There are no commands for this</li>
+            <li ng-repeat="command in build.commands">
+                <label for="command_{{ command._id }}">Run Command</label>
+                <textarea name="command_{{command._id}}" id="command_{{command._id}}" ng-model="command.command"></textarea></br>
+                <input type="checkbox" value="Y"
+                ng-model="command.stopBuildOnFailure">
+                <label for="stop_fail_{{ command._id }}">Stop on Failure</label><br>
+                <button ng-click="removeCommand(build, $index)" class="remove">Remove Command</button>
+            </li>
+            <li class="add"><button ng-click="addCommand(build)">Add Command</button></li>
+        </ul>
+        <button ng-click="builds.saveBuild(build)">Save</button>
+        <button ng-click="builds.cancelBuild(build)">Cancel</button>
+    </form>
+</div>

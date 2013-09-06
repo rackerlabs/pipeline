@@ -27,7 +27,6 @@ factory('Auth', function($location, $http, $cookies, Server) {
         getAuthObject: function() {
             if (!this.auth_cache_date||(((new Date()).getTime() - this.auth_cache_date.getTime()) / 1000 > 10)) {
                 var stored_auth = eval('(' + $cookies.PipelineAuth + ')');
-                console.log(stored_auth);
 
                 if (stored_auth) {
                     this.username = stored_auth.username;
@@ -185,7 +184,7 @@ directive("rxAuth", function(Auth) {
     return {
         restrict: 'E',
         replace: true,
-        templateUrl: 'directives/authSignIn.html',
+        templateUrl: '/directives/authSignIn.html',
         scope: {
             "auth": "=",
             "currentPath": "="

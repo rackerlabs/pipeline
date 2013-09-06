@@ -30,6 +30,7 @@ exports.update = function (req, res) {
     body.lastUpdated = new Date();
     
     return Build.update({_id: id}, body, {}, function (err, updatedNumber, raw) {
+        console.log(err);
         return (!err) ?  res.json(200, raw) : res.json(400, {msg: "Unable to update build id: " + id });
     });
 };

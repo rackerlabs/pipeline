@@ -4,8 +4,8 @@ angular.module('pipelineServices', ['ngResource']).
     factory('Server', function ($http) {
         var BASE_URL = '/api/:action';
 
-        var _url = function (params, query) {
-            var p, ret_str = BASE_URL;
+        var _url = function (params, query, uri) {
+            var p, ret_str = (uri != undefined) ? uri : BASE_URL;
             
             for (p in params) {
                 ret_str = ret_str.replace(":" + p, params[p]);
@@ -24,11 +24,20 @@ angular.module('pipelineServices', ['ngResource']).
         };
         
         var _res = function(method, isArray, params) {
-            return function(query) {
-                if (["POST", "PUT"].indexOf(method.toUpperCase()) >= 0) {
-                    return $http({method: method, url: _url(params), data: query});
+            return function(query, uri_params) {
+                var url;
+                if (uri_params) {
+                    if (["POST", "PUT"].indexOf(method.toUpperCase()) >= 0) {
+                        return $http({method: method, url: _url(uri_params, undefined, _url(params)), data: query});
+                    } else {
+                        return $http({method: method, url: _url(uri_params, undefined, _url(params, query))});
+                    }
                 } else {
-                    return $http({method: method, url: _url(params, query)});
+                    if (["POST", "PUT"].indexOf(method.toUpperCase()) >= 0) {
+                        return $http({method: method, url: _url(params), data: query});
+                    } else {
+                        return $http({method: method, url: _url(params, query)});
+                    }
                 }
             };
         };
@@ -36,7 +45,13 @@ angular.module('pipelineServices', ['ngResource']).
         return {
             steps: _res("GET", true, { action: 'stepData.json'}),
             pipelines: _res('GET', true, { action: 'pipeline'}),
+            pipelineNew: _res('POST', true, {action: 'pipeline'}),
+            pipelineEdit: _res('PUT', true, {action: 'pipeline/:id'}),
+            pipelineDelete: _res('DELETE', true, {action: 'pipeline/:id'}),
             builds: _res('GET', true, {action: 'build'}),
+            buildNew: _res('POST', true, {action: 'build'}),
+            buildEdit: _res('PUT', true, {action: 'build/:id'}),
+            buildDelete: _res('DELETE', true, {action: 'build/:id'}),
             git: _res('GET', true, { action: 'gitData.json'}),
             auth: _res('POST', true, {action: 'auth'})
         };
@@ -196,6 +211,106 @@ angular.module('pipelineServices', ['ngResource']).
                     console.log("> " + data);
                     scope.consoleData += data;
                 });
+            }
+        };
+    }).
+    factory("Builds", function($location, Server) {
+        return {
+            builds: [],
+            getBuilds: function () {
+                if (this.builds.length == 0) {
+                    this.updateBuilds()
+                }
+
+                return this.builds;
+            },
+            updateBuilds: function () {
+                return Server.builds().success((function (data) {
+                    this.builds = data;
+                }).bind(this));
+            },
+            getBuild: function ( build_id ) {
+                if (build_id) {
+                    return _.find(this.getBuilds(), {"_id": build_id});
+                }
+            },
+            saveBuild: function ( build ) {
+                var successCallback = function () {
+                    $location.path("/settings/builds");
+                };
+                if (build) {
+                    if (build.hasOwnProperty("_id")) {
+                        var id = build._id;
+                        delete build._id;
+                        Server.buildEdit(build, {"id": id}).success(successCallback);
+                    } else {
+                        Server.buildNew(build).success(successCallback);
+                    }
+                }
+            },
+            cancelBuild: function ( build ) {
+                $location.path("/settings/builds");
+            },
+            deleteBuild: function ( build ) {
+                var successCallback = function () {
+                    $location.path("/settings/builds");
+                };
+                if (build) {
+                    if (confirm("Are you sure that you wish to delete this build: " + build.name)) {
+                        Server.buildDelete({}, {"id": build._id}).success(successCallback);
+                    }
+                }
+
+            }
+        };
+    }).
+    factory("Pipelines", function($location, Server) {
+        return {
+            pipelines: [],
+            getPipelines: function () {
+                if (this.pipelines.length == 0) {
+                    this.updatePipelines()
+                }
+
+                return this.pipelines;
+            },
+            updatePipelines: function () {
+                return Server.pipelines().success((function (data) {
+                    this.pipelines = data;
+                }).bind(this));
+            },
+            getPipeline: function ( pipeline_id ) {
+                if (pipeline_id) {
+                    return _.find(this.getPipelines(), {"_id": pipeline_id});
+                }
+            },
+            savePipeline: function ( pipeline ) {
+                var successCallback = function () {
+                    $location.path("/settings/pipelines");
+                };
+                if (pipeline) {
+                    if (pipeline.hasOwnProperty("_id")) {
+                        var id = pipeline._id;
+                        delete pipeline._id;
+                        Server.pipelineEdit(pipeline, {"id": id}).success(successCallback);
+                    } else {
+                        Server.pipelineNew(pipeline).success(successCallback);
+                    }
+                }
+            },
+            cancelPipeline: function ( pipeline ) {
+                $location.path("/settings/pipelines");
+            },
+            deletePipeline: function ( pipeline ) {
+                var successCallback = function () {
+                    $location.path("/settings/pipelines");
+                };
+                if (pipeline) {
+                    if (confirm("Are you sure that you wish to delete this pipeline: " + pipeline.name)) {
+                        Server.pipelineDelete({}, {"id": pipeline._id}).success(successCallback);
+                    }
+                }
+
             }
         };
     });

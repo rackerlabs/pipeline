@@ -4,7 +4,7 @@ directive("rxNavBar", function (Auth, $location){
     return {
         restrict: "E",
         replace: true,
-        templateUrl: "directives/nav-bar.html",
+        templateUrl: "/directives/nav-bar.html",
         controller: function ($scope) {
             $scope.Auth = Auth;
             $scope.loc = $location;
@@ -17,7 +17,7 @@ directive('rxPipeline', function (Auth) {
     return {
         restrict: 'E',
         replace: true,
-        templateUrl: "directives/pipeline.html",
+        templateUrl: "/directives/pipeline.html",
         scope: {
             pipeline: '=',
             step: '='
@@ -30,7 +30,7 @@ directive("rxPipelineStep", function () {
     return {
         restrict: 'E',
         replace: true,
-        templateUrl: "directives/pipelineStep.html",
+        templateUrl: "/directives/pipelineStep.html",
         scope: {
             'pipeline': '=',
             'step': '='
@@ -46,7 +46,7 @@ directive("rxPipelineList", function () {
     return {
         restrict: 'E',
         replace: true,
-        templateUrl: "directives/pipelineList.html",
+        templateUrl: "/directives/pipelineList.html",
         scope: {
             "pipelines": "=",
             "steps": "=",
@@ -69,7 +69,7 @@ directive("rxPipelineStepControls", function($compile, Socket) {
     return {
         restrict: "E",
         replace: true,
-        templateUrl: "directives/pipelineStepControls.html",
+        templateUrl: "/directives/pipelineStepControls.html",
         scope: {
             pipelineStep: "="
         },
@@ -101,7 +101,7 @@ directive("rxConsoleOutput", function () {
     return {
         restrict: 'E',
         replace: true,
-        templateUrl: 'directives/consoleOutput.html',
+        templateUrl: '/directives/consoleOutput.html',
         scope: {
             step: '=',
             closeConsole: '&',
@@ -132,12 +132,82 @@ directive("rxGlobalStep", function() {
     return {
         restrict: "E",
         replace: true,
-        templateUrl: "directives/globalStep.html",
+        templateUrl: "/directives/globalStep.html",
         scope: {
             'step': '=',
             'currentTab': '='
         },
         link: function (scope, element, attrs) {
+        }
+   };
+}).
+directive("rxBuildConfiguration", function() {
+    return {
+        restrict: "E",
+        replace: true,
+        templateUrl: "/directives/buildConfiguration.html",
+        scope: {
+            'builds': '=',
+            'buildId': '=',
+            'view': '='
+        },
+        link: function (scope, element, attrs) {
+            scope.builds.updateBuilds();
+            scope.build = scope.builds.getBuild(scope.buildId);
+            scope.addCommand = function (build) {
+                if (!build.hasOwnProperty("commands")) {
+                    build.commands = [];
+                }
+                build.commands.push({command: "", stopBuildOnFailure: false});
+            }
+
+            scope.removeCommand = function (build, i) {
+                if (i < build.commands.length) {
+                    build.commands.splice(i, 1);
+                }
+            }
+        }
+   };
+}).
+directive("rxBuildSelector", function() {
+    return {
+        restrict: "E",
+        replace: true,
+        templateUrl: "/directives/buildSelector.html",
+        scope: {
+            'builds': '=',
+            'stepModel': '='
+        },
+        link: function (scope, element, attrs) {
+            scope.builds.updateBuilds();
+        }
+    };
+}).
+directive("rxPipelineConfiguration", function() {
+    return {
+        restrict: "E",
+        replace: true,
+        templateUrl: "/directives/pipelineConfiguration.html",
+        scope: {
+            'pipelines': '=',
+            'pipelineId': '=',
+            'view': '='
+        },
+        link: function (scope, element, attrs) {
+            scope.builds.updateBuilds();
+            scope.build = scope.builds.getBuild(scope.buildId);
+            scope.addCommand = function (build) {
+                if (!build.hasOwnProperty("commands")) {
+                    build.commands = [];
+                }
+                build.commands.push({command: "", stopBuildOnFailure: false});
+            }
+
+            scope.removeCommand = function (build, i) {
+                if (i < build.commands.length) {
+                    build.commands.splice(i, 1);
+                }
+            }
         }
    };
 });

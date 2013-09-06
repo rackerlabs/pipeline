@@ -1,0 +1,29 @@
+<div class="span10 main-area" ng-show="view == 'pipelines'">
+    <div class="span10 main-area" ng-hide="pipelineId">
+        <ul class="pipeline-list unstyled">
+            <li ng-repeat="pipeline in pipelines.pipelines">
+                <div>
+                    <div class="span2">{{ pipeline.name }}</div>
+                    <div class="span1"><a href="/settings/pipelines/edit/{{ pipeline._id }}">Edit</a></div>
+                    <div class="span1"><a href="#" ng-click="pipelines.deletePipeline(pipeline)">Delete</a></div>
+                    <div class="span3">{{ pipeline.lastUpdated}}</div>
+                </div>
+            </li>
+        </ul>
+        <a href="/settings/pipelines/edit/new">New Pipeline</a>
+    </div>
+    <form class="pipeline-edit" ng-show="pipelineId">
+        <label for="pipeline_name">Name:</label>
+        <input type="text" name="pipeline_name" id="pipeline_name" ng-model="pipeline.name"></br>
+        <label>Build Steps</label>
+        <ul class="build-list">
+            <li ng-hide="pipeline.steps" class="empty">There are no steps for this</li>
+            <li ng-repeat="step in pipeline.steps">
+                <rx-build-selector builds='builds' step-model='step.buildId'></rx-build-selector>
+            </li>
+            <li class="add"><button ng-click="addStep(pipeline)">Add Build Step</button></li>
+        </ul>
+        <button ng-click="pipelines.savePipeline(pipeline)">Save</button>
+        <button ng-click="pipelines.cancelPipeline(pipeline)">Cancel</button>
+    </form>
+</div>

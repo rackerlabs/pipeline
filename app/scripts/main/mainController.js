@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module( 'rxPipelineApp' )
-    .controller( 'MainCtrl', [ '$scope', 'socket', '$location', '$window', '$cookies', 'Pipelines', 'Steps', 'Auth', function( $scope, Socket, $location, $window, $cookies, Pipelines, Steps, Auth ) {
+    .controller( 'MainCtrl', [ '$scope', 'socket', '$location', '$window', '$cookies', '$routeParams', 'Pipelines', 'Steps', 'Auth', 'Builds', function( $scope, Socket, $location, $window, $cookies, $routeParams, Pipelines, Steps, Auth, Builds ) {
         $scope.Pipelines = Pipelines;
         $scope.Steps = Steps;
+        $scope.Builds = Builds;
+        $scope.routeParams = $routeParams;
         
         $scope.connectedClass = 'icon-remove';
         $scope.connected = 'Not Connected to Server';
