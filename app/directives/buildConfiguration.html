@@ -21,8 +21,11 @@
         <ul class="command-list">
             <li ng-hide="build.commands" class="empty">There are no commands for this</li>
             <li ng-repeat="command in build.commands">
-                <label for="command_{{ command._id }}">Run Command</label>
-                <textarea name="command_{{command._id}}" id="command_{{command._id}}" ng-model="command.command"></textarea></br>
+                <select name="command_type" ng-model="command.command">
+                    <option value="">Run Command</option>
+                    <option value="deploy_vm">Deploy VM</option>
+                </select><br>
+                <textarea name="command_{{command._id}}" id="command_{{command._id}}" ng-hide="command.command == 'deploy_vm'" ng-model="command.command"></textarea></br>
                 <input type="checkbox" value="Y" ng-model="command.stopBuildOnFailure">
                 <label for="stop_fail_{{ command._id }}">Stop on Failure</label><br>
                 <button ng-click="removeCommand(build, $index)" class="remove">Remove Command</button>
