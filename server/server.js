@@ -15,7 +15,7 @@ var express     = require('express'),
     passport    = require('passport'),
     Strategy    = require('passport-local').Strategy,
     auth        = require('./routes/auth'), 
-    rest        = require('restler');
+    notify       = require('./routes/notify');
 
 var port = process.env.PORT || appConfig.server.port;
 var server = exports.server = express();
@@ -109,6 +109,8 @@ server.post('/api/github/pulls/:repoId/merge/:pullId', github.mergePull);
 server.get('/api/github/branches/:repoId', github.listBranches);
 server.post('/api/github/branches/:repoId', github.createBranch);
 server.post('/api/github/tags/:repoId', github.createTag);
+server.post('/api/notify/email/:id', notify.emailUser);
+server.post('/api/notify/emails', notify.emailUsers);
 
 server.post('/api/auth', passport.authenticate('local'), auth.authSuccess);
 server.get('/api/auth/loggedIn', auth.loggedIn);
