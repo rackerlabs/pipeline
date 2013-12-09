@@ -6,37 +6,6 @@ module.exports = {
         hostname: 'localhost'
     },
     proxies: [
-        {
-            context: '/shim',
-            host: '10.69.245.149',
-            port: 4000,
-            https: false,
-            xforward: true,
-            changeOrigin: true,
-            rewrite: {
-                '/shim': '/v1'
-            }
-        },{
-            context: '/api',
-            host: 'dev.virt.encore.rackspace.com',
-            port: 443,
-            https: true,
-            xforward: true,
-            changeOrigin: true,
-            rewrite: {
-                '/api': '/api'
-            }
-        },{
-            context: '/ctkapi',
-            host: 'dev.virt.encore.rackspace.com',
-            port: 443,
-            https: true,
-            xforward: true,
-            changeOrigin: true,
-            rewrite: {
-                '/ctkapi': '/ctkapi/'
-            }
-        }
     ],
     livereload: {
         options: {
