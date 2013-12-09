@@ -21,7 +21,7 @@ exports.save = function (req, res) {
     
     return myBuild.save( function (err, build) {
         return (!err) ? res.json(200, build) : res.json(400, {msg: "Unable to create new build"});
-    });    
+    });
 };
 
 exports.update = function (req, res) {

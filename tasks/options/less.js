@@ -7,7 +7,7 @@ module.exports = {
         },
         files: {
             // compilation.css  :  source.less
-            'app/styles/result.css': 'app/styles/app.less'
+            'app/styles/pipeline.css': 'app/styles/less/*.less'
         }
     }
 };
