@@ -64,9 +64,9 @@ var REPO_SCHEMA = new Schema({
         created: { type: Date, default: Date.now},
         createBy: String,
         lastUpdated: Date,
-        owner: String,
-        repoName: String,
-        apiToken: String
+        owner: { type: String, required: true },
+        repoName: { type: String, required: true },
+        apiToken: { type: String, required: true }
     });
 
 var USER_SCHEMA = new Schema({
