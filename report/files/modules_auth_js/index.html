@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>modules/auth.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">64.87</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">198</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">48.78</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.96</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">angular.module(&quot;pipelineAuth&quot;, []).
+
+factory(&#039;Auth&#039;, function($location, $http, $cookies, Server) {
+    return {
+        AUTH_REQUIRED: true,
+        username: undefined,
+        name: undefined,
+        auth_id: undefined,
+        loggedIn: false,
+        auth_cache_date: undefined,
+        signIn: function () {
+            if (!this.isLoggedIn()) {
+                $location.path(&quot;/login&quot;);
+            }
+        },
+        signOut: function() {
+            $cookies.PipelineAuth = undefined;
+            delete $http.defaults.headers.common[&quot;PIPELINE-AUTH-ID&quot;];
+            this.username = undefined;
+            this.auth_id = undefined;
+            this.loggedIn = false;
+
+            if (this.AUTH_REQUIRED) {
+                location.reload(true);
+            }
+        },
+        getAuthObject: function() {
+            if (!this.auth_cache_date||(((new Date()).getTime() - this.auth_cache_date.getTime()) / 1000 &gt; 10)) {
+                var stored_auth = eval(&#039;(&#039; + $cookies.PipelineAuth + &#039;)&#039;);
+
+                if (stored_auth) {
+                    this.username = stored_auth.username;
+                    this.auth_id = stored_auth.auth_id;
+                    this.loggedIn = true;
+
+                    $http.defaults.headers.common[&quot;PIPELINE-AUTH-ID&quot;] = this.auth_token;
+                }
+                else {
+                    this.username = undefined;
+                    this.auth_id = undefined;
+                    this.loggedIn = false;
+
+                    if ($http.defaults.headers.common.hasOwnProperty(&quot;PIPELINE-AUTH-ID&quot;)) {
+                        $location.path(&quot;/&quot;);
+                    }
+                }
+            }
+
+            return {&quot;username&quot;: this.username, &quot;auth_id&quot;: this.auth_id, &quot;loggedIn&quot;: this.loggedIn };
+        },
+        getAuthHeader: function() {
+            if (this.isLoggedIn()) {
+                return {&#039;auth_id&#039;: this.getAuthObject().auth_id};
+            }
+
+            return {};
+        },
+        registerAuthObject: function(obj) {
+            this.username = obj.username;
+            this.auth_id = (obj.hasOwnProperty(&quot;auth_id&quot;)) ? obj.auth_id : obj._id;
+            this.loggedIn = obj.loggedIn;
+
+            $http.defaults.headers.common[&quot;PIPELINE-AUTH-ID&quot;] = this.auth_id;
+
+            $cookies.PipelineAuth = JSON.stringify({username: this.username, auth_id: this.auth_id});
+        },
+        finishAuth: function(resultData, resultStatus, resultHeaders, resultConfig) {
+            this.authError = undefined;
+            this.registerAuthObject(resultData)
+
+            $location.path(&quot;/&quot;);
+        },
+        fetchLockoutMessage: function(timeRemaining) {
+            if (timeRemaining &gt; 0) {
+                return &quot;This workstation has been locked out due to excessive login attempts...\nThere are &quot; + timeRemaining + &quot; seconds remaining...&quot;;
+            }
+            else {
+                return undefined;
+            }
+        },
+        failAuth: function(resultData, resultStatus, resultHeaders, resultConfig) {
+            this.authError = {};
+            
+            function reEnableForm() {
+                var frm = $(&quot;form.login-form&quot;);
+                var u_field = frm.find(&quot;#auth_user&quot;);
+                var p_field = frm.find(&quot;#auth_pass&quot;);
+                var btn = frm.find(&quot;button[type=&#039;submit&#039;]&quot;);
+
+                btn.prop(&quot;disabled&quot;, false);
+                u_field.prop(&quot;disabled&quot;, false);
+                p_field.prop(&quot;disabled&quot;, false);
+                btn.text(btn.attr(&quot;data-original-value&quot;));
+                btn.removeAttr(&quot;data-original-value&quot;);
+            }
+
+            switch(parseInt(resultStatus, 10)) {
+                case 404: 
+                    this.authError.message = &quot;404: Unable to locate the authentication service!&quot;;
+                break;
+                case 401:
+                case 403:
+                    this.authError.message = &quot;Invalid Login!&quot;;
+                break;
+                case 430:
+                    this.lockoutTimeRemaining = 60;
+                    
+                    $(&quot;#auth_signin_form form&quot;).find(&quot;button[type=&#039;submit&#039;]&quot;).text(&quot;Locked Out&quot;);
+
+                    if (resultData) {
+                        if (resultData.lockoutTimeRemaining) {
+                            this.lockoutTimeRemaining = resultData.lockoutTimeRemaining;
+                        }
+                    }
+                    
+                    var sc = this;
+                    var em = EventManager;
+
+                    var lockoutTimer = function() {
+                        if (sc.lockoutTimeRemaining &gt; 0) {
+                            var errorMessage = sc.fetchLockoutMessage(sc.lockoutTimeRemaining--);
+                            if (errorMessage !== undefined) {
+                                sc.authError.message = errorMessage;
+                            }
+                            else {
+                                sc.authError = undefined;
+                            }
+                            
+                            $timeout(lockoutTimer, 1000);
+                        } else {
+                            reEnableForm();
+                            sc.authError = undefined;
+                        }
+                    };
+                    
+                    lockoutTimer();
+                break;
+                default:
+                    this.authError.message = &quot;There was a Server Error!&quot;;
+
+            }
+
+            if (parseInt(resultStatus) != 430) {
+                reEnableForm();
+            }
+        },
+        submitAuth: function() {
+            var frm = $(&quot;form.login-form&quot;);
+            var u_field = frm.find(&quot;#auth_user&quot;);
+            var p_field = frm.find(&quot;#auth_pass&quot;);
+            var username = frm.find(&quot;#auth_user&quot;).val();
+            var password = frm.find(&quot;#auth_pass&quot;).val();
+            var btn = frm.find(&quot;button[type=&#039;submit&#039;]&quot;);
+
+            this.authError = undefined;
+
+            if ((username.length == 0)||(password.length == 0)) {
+                this.authError = {&quot;message&quot;: &quot;Username or Password Cannot Be Blank!&quot;};
+            }
+            else {
+                btn.prop(&quot;disabled&quot;, true);
+                u_field.prop(&quot;disabled&quot;, true);
+                p_field.prop(&quot;disabled&quot;, true);
+                btn.attr(&quot;data-original-value&quot;, btn.text());
+                btn.text(btn.attr(&quot;data-loading-text&quot;));
+
+                Server.auth({username: username, password: password})
+                    .success(this.finishAuth.bind(this))
+                    .error(this.failAuth.bind(this) );
+            }
+        },
+        userFullName: function() {
+            return (this.name) ? this.name : this.username;
+        },
+        isLoggedIn: function() {
+            return (this.getAuthObject().auth_id !== undefined);
+        },
+        needToLogin: function() {
+            return (this.AUTH_REQUIRED&amp;&amp;(!this.isLoggedIn()));
+        }
+    }
+}).
+directive(&quot;rxAuth&quot;, function(Auth) {
+    return {
+        restrict: &#039;E&#039;,
+        replace: true,
+        templateUrl: &#039;/directives/authSignIn.html&#039;,
+        scope: {
+            &quot;auth&quot;: &quot;=&quot;,
+            &quot;currentPath&quot;: &quot;=&quot;
+        },
+        link: function(scope, element, attrs) {
+            if (scope.auth.needToLogin()) {
+                scope.auth.signIn();
+            }
+        }
+    };
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

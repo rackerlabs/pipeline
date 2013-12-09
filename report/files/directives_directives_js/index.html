@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>directives/directives.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">72.62</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">244</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">32.85</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">2.08</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">angular.module(&quot;pipelineDirectives&quot;, []).
+
+directive(&quot;rxNavBar&quot;, function (Auth, $location){
+    return {
+        restrict: &quot;E&quot;,
+        replace: true,
+        templateUrl: &quot;/directives/nav-bar.html&quot;,
+        controller: function ($scope) {
+            $scope.Auth = Auth;
+            $scope.loc = $location;
+        },
+        link: function (scope, element, attrs) {
+        }
+    };
+}).
+directive(&#039;rxPipeline&#039;, function (Auth) {
+    return {
+        restrict: &#039;E&#039;,
+        replace: true,
+        templateUrl: &quot;/directives/pipeline.html&quot;,
+        scope: {
+            pipeline: &#039;=&#039;,
+            step: &#039;=&#039;
+        },
+		link: function(scope, element, attrs) {
+		}
+    };
+}).
+directive(&quot;rxPipelineStep&quot;, function () {
+    return {
+        restrict: &#039;E&#039;,
+        replace: true,
+        templateUrl: &quot;/directives/pipelineStep.html&quot;,
+        scope: {
+            &#039;pipeline&#039;: &#039;=&#039;,
+            &#039;step&#039;: &#039;=&#039;
+        },
+        link: function (scope, element, attrs) {
+            var localOnly = attrs[&quot;localOnly&quot;];
+            
+            scope.showStep = (((localOnly == &quot;true&quot;) &amp;&amp; (scope.step.global == false))||(localOnly != &quot;true&quot;)) ? true : false;
+        }
+    };
+}).
+directive(&quot;rxPipelineList&quot;, function () {
+    return {
+        restrict: &#039;E&#039;,
+        replace: true,
+        templateUrl: &quot;/directives/pipelineList.html&quot;,
+        scope: {
+            &quot;pipelines&quot;: &quot;=&quot;,
+            &quot;steps&quot;: &quot;=&quot;,
+            &quot;auth&quot;: &quot;=&quot;
+        },
+        link: function (scope, element, attrs) {
+            scope.pipelineData = scope.pipelines.getPipelines();
+            
+            scope.getCurrentTab = function() {
+                return scope.currentTab;
+            }
+            scope.setTab = function(tab) {
+                scope.currentTab = tab;
+            }
+            scope.setTab(&quot;pipelines&quot;);
+        }
+    };
+}).
+directive(&quot;rxPipelineStepControls&quot;, function($compile, Socket) {
+    return {
+        restrict: &quot;E&quot;,
+        replace: true,
+        templateUrl: &quot;/directives/pipelineStepControls.html&quot;,
+        scope: {
+            pipelineStep: &quot;=&quot;
+        },
+        link: function (scope, element, attrs) {
+            scope.Socket = Socket;
+            scope.modalState = true;
+            
+        }
+    };
+}).
+directive(&quot;rxConsoleOutput&quot;, function (Socket) {
+    return {
+        restrict: &#039;E&#039;,
+        replace: true,
+        templateUrl: &#039;/directives/consoleOutput.html&#039;,
+        scope: {
+            build: &#039;=&#039;,
+            closeConsole: &#039;&amp;&#039;,
+            modalState: &#039;=&#039;
+        },
+        link: function (scope, element, attrs) {
+            var consoleInfo = {&#039;data&#039;: &#039;Console data placeholder&#039;, &#039;stillRunning&#039;: true}
+            
+            scope.consoleOutput = scope.modalState;
+            
+            scope.closeConsole = function () {
+                scope.consoleOutput = false;
+                $(&quot;#console-output&quot;).remove();
+            };
+            
+            // Pre-Fill the console output with what&#039;s already run
+            scope.consoleData = consoleInfo.data;
+            
+            if (consoleInfo.stillRunning) {
+                // We&#039;re going to hook the consoleData variable into the socket output
+                console.log(&quot;Hooking: &quot; + scope)
+                Socket.on(&#039;builds:update&#039;, function( data ) {
+                    console.log(&#039;client socket on&#039;);
+                    console.log(&quot;&gt; &quot; + data);
+                    scope.consoleData += data;
+                });
+            }
+        }
+    };
+}).
+
+directive(&quot;rxGlobalStep&quot;, function() {
+    return {
+        restrict: &quot;E&quot;,
+        replace: true,
+        templateUrl: &quot;/directives/globalStep.html&quot;,
+        scope: {
+            &#039;step&#039;: &#039;=&#039;,
+            &#039;currentTab&#039;: &#039;=&#039;
+        },
+        link: function (scope, element, attrs) {
+        }
+   };
+}).
+directive(&quot;rxBuildConfiguration&quot;, function($compile) {
+    return {
+        restrict: &quot;E&quot;,
+        replace: true,
+        templateUrl: &quot;/directives/buildConfiguration.html&quot;,
+        scope: {
+            &#039;builds&#039;: &#039;=&#039;,
+            &#039;buildId&#039;: &#039;=&#039;,
+            &#039;view&#039;: &#039;=&#039;
+        },
+        link: function (scope, element, attrs) {
+            scope.builds.updateBuilds();
+            scope.build = scope.builds.getBuild(scope.buildId);
+            if (!scope.build) {
+                scope.build = {};
+            }
+            scope.addCommand = function (build) {
+                if (!build.hasOwnProperty(&quot;commands&quot;)) {
+                    build.commands = [];
+                }
+                build.commands.push({command: &quot;&quot;, stopBuildOnFailure: false});
+            }
+
+            scope.removeCommand = function (build, i) {
+                if (i &lt; build.commands.length) {
+                    build.commands.splice(i, 1);
+                }
+            }
+
+            scope.displayConsole = function () {
+                scope.modalState = true;
+
+                scope.modalOpts = {
+                    backdrop: true,
+                    keyboard: true,
+                    show: true
+                };
+                
+                var d = document.createElement(&quot;rx-console-output&quot;);
+                d.setAttribute(&quot;build&quot;, &quot;build&quot;);
+                d.setAttribute(&quot;options&quot;, &quot;modalOpts&quot;);
+                d.setAttribute(&quot;close-console&quot;, &quot;closeConsole()&quot;);
+                d.setAttribute(&quot;modal-state&quot;, &quot;modalState&quot;);
+                
+                d = $compile(d)(scope);
+                
+                element.parent().append(d);
+            };
+        }
+   };
+}).
+directive(&quot;rxBuildSelector&quot;, function() {
+    return {
+        restrict: &quot;E&quot;,
+        replace: true,
+        templateUrl: &quot;/directives/buildSelector.html&quot;,
+        scope: {
+            &#039;builds&#039;: &#039;=&#039;,
+            &#039;stepModel&#039;: &#039;=&#039;,
+            &#039;selectorId&#039;: &#039;=&#039;
+        },
+        link: function (scope, element, attrs) {
+            scope.builds.updateBuilds();
+        }
+    };
+}).
+directive(&quot;rxPipelineConfiguration&quot;, function() {
+    return {
+        restrict: &quot;E&quot;,
+        replace: true,
+        templateUrl: &quot;/directives/pipelineConfiguration.html&quot;,
+        scope: {
+            &#039;pipelines&#039;: &#039;=&#039;,
+            &#039;pipelineId&#039;: &#039;=&#039;,
+            &#039;builds&#039;: &#039;=&#039;,
+            &#039;view&#039;: &#039;=&#039;
+        },
+        link: function (scope, element, attrs) {
+            scope.pipelines.updatePipelines();
+            scope.pipeline = scope.pipelines.getPipeline(scope.pipelineId);
+
+            if (!scope.pipeline) {
+                scope.pipeline = {};
+            }
+
+            scope.addBranch = function (pipeline) {
+                if (!pipeline.hasOwnProperty(&quot;branches&quot;)) {
+                    pipeline.branches = [];
+                }
+                pipeline.branches.push({type: &quot;&quot;, name: &quot;&quot;, repoUrl: &quot;&quot;});
+            }
+
+            scope.removePipeline = function (pipeline, i) {
+                if (i &lt; pipeline.branches.length) {
+                    pipeline.branches.splice(i, 1);
+                }
+            }
+
+            scope.addStep = function (pipeline) {
+                if (!pipeline.hasOwnProperty(&quot;steps&quot;)) {
+                    pipeline.steps = [];
+                }
+                pipeline.steps.push({buildId: &quot;none&quot;});
+            }
+
+            scope.removeStep = function (pipeline, i) {
+                if (i &lt; pipeline.steps.length) {
+                    pipeline.steps.splice(i, 1);
+                }
+            }
+        }
+   };
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
