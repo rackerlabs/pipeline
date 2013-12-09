@@ -44,8 +44,6 @@ server.configure( function() {
     server.set( 'views', path.join( __dirname, './../app' ) );
     server.engine( 'html', cons.hogan );
     server.set( 'view engine', 'html' );
-    server.engine( 'hjs', cons.hogan );
-    server.set( 'view engine', 'hjs' );
     server.use( passport.initialize() );
     server.use( passport.session( { secret: appConfig.secret }) );
     server.use( express.bodyParser() );
@@ -124,10 +122,10 @@ server.post('/api/notify/emails', notify.emailUsers);
 server.post('/api/auth', passport.authenticate('local'), auth.authSuccess);
 server.get('/api/auth/loggedIn', auth.loggedIn);
 
-// This is here to route all the HTML5 routes to the index.html
-server.get('*', function(req, res){
-    res.sendfile('app/index.html');
-});
+//This is here to route all the HTML5 routes to the index.html
+// server.get('*', function(req, res){
+//     res.sendfile('app/index.html');
+// });
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);
 mongoose.connect('mongodb://' + db.host + '/' + db.name);

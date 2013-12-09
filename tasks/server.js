@@ -9,9 +9,9 @@ module.exports = function (grunt) {
             // 'test:unit',
             'bgShell:mongodb',
             'express:dev',
-            'configureProxies',
-            'concurrent:server',
-            'connect:livereload'
+            // 'configureProxies',
+            // 'concurrent:server',
+            // 'connect:livereload'
         ];
 
         if (target === 'dist') {

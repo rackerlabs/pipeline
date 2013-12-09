@@ -6,19 +6,20 @@ module.exports = {
 	dev: {
 		options: {
 			script: 'server/server.js',
-			background:true
+			background:true,
+			'node_env': 'dev'
 		}
 	},
 	test: {
 		options: {
 			script: 'server/server.js',
-			node_env: 'test'
+			'node_env': 'test'
 		}
 	},
 	prod: {
 		options: {
 			script: 'server/server.js',
-			node_env: 'production'
+			'node_env': 'production'
 		}
 	}
 };

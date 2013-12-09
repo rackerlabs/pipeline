@@ -11,8 +11,8 @@ module.exports = {
         options: {
             middleware: function(cnct) {
                 return [
-                    config.proxyRequest,
-                    config.modRewrite(['!\\.\\w+$ /']),
+                    // config.proxyRequest,
+                    // config.modRewrite(['!\\.\\w+$ /']),
                     config.liveReloadPage,
                     config.mountFolder(cnct, '.tmp'),
                     config.mountFolder(cnct, config.app)
