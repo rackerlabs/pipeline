@@ -20,7 +20,8 @@
     "passport-local": "~0.1.6",
     "github": "~0.1.10",
     "nodemailer": "~0.5.2",
-    "pkgcloud": "~0.8.9"
+    "pkgcloud": "~0.8.9",
+    "grunt-bg-shell": "~2.3.1"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -51,7 +52,22 @@
     "grunt-jsonmin": "~0.2.3",
     "grunt-banner": "~0.1.4",
     "grunt-shell": "~0.2.2",
-    "grunt-cli": "~0.1.8"
+    "grunt-cli": "~0.1.8",
+    "load-grunt-tasks": "~0.2.0",
+    "fs-extra": "~0.8.1",
+    "glob": "~3.2.7",
+    "connect-livereload": "~0.3.0",
+    "connect-proxy": "~1.0.2",
+    "grunt-connect-proxy": "~0.1.6",
+    "connect-modrewrite": "~0.5.11",
+    "concurrent": "~0.3.2",
+    "grunt-concurrent": "~0.4.2",
+    "grunt-svgmin": "~0.3.0",
+    "grunt-plato": "~0.2.1",
+    "grunt-ngdocs": "~0.1.7",
+    "grunt-styledocco": "~0.1.0",
+    "grunt-express": "~1.2.1",
+    "grunt-express-server": "~0.4.9"
   },
   "engines": {
     "node": ">=0.8.0"

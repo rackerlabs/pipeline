@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>services/services.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">73.07</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">299</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">50.37</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">3.21</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">&#039;use strict&#039;;
+var paramFunc = function (obj) {
+    var ret = [];
+
+    for (var k in obj) {
+        ret.push(k + &quot;:&quot; + obj[k]);
+    }
+
+    return ret.join(&quot;&amp;&quot;);
+};
+
+angular.module(&#039;pipelineServices&#039;, [&#039;ngResource&#039;]).
+    factory(&#039;Server&#039;, function ($http) {
+        var BASE_URL = &#039;/api/:action&#039;;
+
+        var _url = function (params, query, uri) {
+            var p, ret_str = (uri != undefined) ? uri : BASE_URL;
+            
+            for (p in params) {
+                ret_str = ret_str.replace(&quot;:&quot; + p, params[p]);
+            }
+            
+            if (query) {
+                if (typeof query != &quot;string&quot;) {
+                    for (var i in query) {
+                        if (typeof query[i] == &quot;object&quot;) {
+                            query[i] = query[i].join(&quot;,&quot;);
+                        }
+                    }
+                }
+            }
+            return ret_str + (query ? &quot;?&quot; + paramFunc(query) : &quot;&quot;);
+        };
+        
+        var _res = function(method, isArray, params) {
+            return function(query, uri_params) {
+                var url;
+                if (uri_params) {
+                    if ([&quot;POST&quot;, &quot;PUT&quot;].indexOf(method.toUpperCase()) &gt;= 0) {
+                        return $http({method: method, url: _url(uri_params, undefined, _url(params)), data: query});
+                    } else {
+                        return $http({method: method, url: _url(uri_params, undefined, _url(params, query))});
+                    }
+                } else {
+                    if ([&quot;POST&quot;, &quot;PUT&quot;].indexOf(method.toUpperCase()) &gt;= 0) {
+                        return $http({method: method, url: _url(params), data: query});
+                    } else {
+                        return $http({method: method, url: _url(params, query)});
+                    }
+                }
+            };
+        };
+
+        return {
+            steps: _res(&quot;GET&quot;, true, { action: &#039;stepData.json&#039;}),
+            pipelines: _res(&#039;GET&#039;, true, { action: &#039;pipeline&#039;}),
+            pipelineNew: _res(&#039;POST&#039;, true, {action: &#039;pipeline&#039;}),
+            pipelineEdit: _res(&#039;PUT&#039;, true, {action: &#039;pipeline/:id&#039;}),
+            pipelineDelete: _res(&#039;DELETE&#039;, true, {action: &#039;pipeline/:id&#039;}),
+            builds: _res(&#039;GET&#039;, true, {action: &#039;build&#039;}),
+            buildNew: _res(&#039;POST&#039;, true, {action: &#039;build&#039;}),
+            buildEdit: _res(&#039;PUT&#039;, true, {action: &#039;build/:id&#039;}),
+            buildDelete: _res(&#039;DELETE&#039;, true, {action: &#039;build/:id&#039;}),
+            git: _res(&#039;GET&#039;, true, { action: &#039;gitData.json&#039;}),
+            auth: _res(&#039;POST&#039;, true, {action: &#039;auth&#039;})
+        };
+	}).
+    factory(&#039;Socket&#039;, function (socket) {
+        return {
+            on: socket.on,
+            emit: socket.emit,
+            startBuild: function (build_id) {
+                this.emit(&quot;builds:startBuild&quot;, {&quot;id&quot;: build_id});
+            }
+        };
+    }).
+    factory(&#039;Git&#039;, function(Server) {
+        return {
+            pipelineData: [],
+            lastUpdated: undefined,
+            getGitData: function() {
+                var gitScope = this;
+                
+                if (this.lastUpdated &amp;&amp; ((new Date()).getSeconds() - this.lastUpdated.getSeconds() &lt; 15000)) {
+                    return this.pipelineData;
+                }
+                
+                
+                Server.git().success(function (data) {
+                    gitScope.pipelineData = data;
+                    gitScope.lastUpdated = new Date();
+                }).error(function (response) {
+                });
+                
+                return this.pipelineData;
+            },
+            getRepo: function(repo_name) {
+                return _.find(this.getGitData(), {&quot;repo&quot;: repo_name});
+            },
+            getRepoType: function(repo_name) {
+                var r = this.getRepo(repo_name);
+                
+                if (r) {
+                    return r.type;
+                }
+            },
+            getRepoURL: function(repo_name) {
+                var r = this.getRepo(repo_name);
+                
+                if (r) {
+                    return r.url;
+                }
+            },
+            getBranchURL: function(repo_name, branch_name) {
+                var r = this.getRepoURL(repo_name);
+                
+                if (r) {
+                    return r + ((r.substr(-1) != &quot;/&quot;) ? &quot;/&quot; : &quot;&quot;) + &quot;tree/&quot; + branch_name;
+                }
+            },
+            getRepoName: function(repo_name) {
+                var b = _.find(this.getGitData(), {&quot;type&quot;: repo_name});
+                
+                if (b) {
+                    return b.name;
+                }
+            }
+        };
+    }).
+    factory(&quot;Steps&quot;, function (Server) {
+        return {
+            stepData: [],
+            lastUpdated: undefined,
+            getGlobalSteps: function() {
+                return _.filter(this.getSteps(), {&quot;global&quot;: true});
+            },
+            getLocalSteps: function() {
+                return _.filter(this.getSteps(), {&quot;global&quot;: false});
+            },
+            getSteps: function() {
+                var stepScope = this;
+                
+                if (this.lastUpdated &amp;&amp; ((new Date()).getSeconds() - this.lastUpdated.getSeconds() &lt; 15000)) {
+                    return this.stepData;
+                }
+                
+                Server.steps().success(function (data) {
+                    stepScope.stepData = data;
+                    stepScope.lastUpdated = new Date();
+                }).error(function (response) {
+                });
+
+                return this.stepData;
+            }
+        };
+    }).
+    factory(&quot;PipelineSteps&quot;, function(Steps, Socket) {
+        return {
+            lastUpdated: undefined,
+            getSteps: function(pipeline_id) {
+                var ret_data = [];
+                ret_data = Steps.getSteps();
+                
+                _.forEach(ret_data, function(v, i, c) {
+                    c[i].pipeline_id = this;
+                }, pipeline_id);
+                
+                return ret_data;
+            },
+            getStep: function(pipeline_id, step_id) {
+                return _.find(this.getSteps(pipeline_id), {&quot;id&quot;: step_id});
+            },
+            parseSteps: function ( steps, pipeline_id ) {
+                _.forEach(steps, function(v, i, c) {
+                    _.extend(v, this);
+                }, this);
+                
+                return steps;
+            },
+            getConsoleData: function () {
+                return {&#039;data&#039;: &#039;Console data placeholder&#039;, &#039;stillRunning&#039;: true}
+            },
+            hookConsoleOutput: function (scope) {
+                console.log(&quot;Hooking: &quot; + scope)
+                Socket.on(&#039;builds:update&#039;, function( data ) {
+                    console.log(&#039;client socket on&#039;);
+                    console.log(&quot;&gt; &quot; + data);
+                    scope.consoleData += data;
+                });
+            }
+        };
+    }).
+    factory(&quot;Builds&quot;, function($location, Server, Socket) {
+        return {
+            builds: [],
+            getBuilds: function () {
+                if (this.builds.length == 0) {
+                    this.updateBuilds()
+                }
+
+                return this.builds;
+            },
+            updateBuilds: function () {
+                return Server.builds().success((function (data) {
+                    this.builds = data;
+                }).bind(this));
+            },
+            getBuild: function ( build_id ) {
+                if (build_id) {
+                    return _.find(this.getBuilds(), {&quot;_id&quot;: build_id});
+                }
+            },
+            saveBuild: function ( build ) {
+                var successCallback = function () {
+                    $location.path(&quot;/settings/builds&quot;);
+                };
+                if (build) {
+                    if (build.hasOwnProperty(&quot;_id&quot;)) {
+                        var id = build._id;
+                        delete build._id;
+                        Server.buildEdit(build, {&quot;id&quot;: id}).success(successCallback);
+                    } else {
+                        Server.buildNew(build).success(successCallback);
+                    }
+                }
+            },
+            cancelBuild: function ( build ) {
+                $location.path(&quot;/settings/builds&quot;);
+            },
+            deleteBuild: function ( build ) {
+                var successCallback = function () {
+                    $location.path(&quot;/settings/builds&quot;);
+                };
+                if (build) {
+                    if (confirm(&quot;Are you sure that you wish to delete this build: &quot; + build.name)) {
+                        Server.buildDelete({}, {&quot;id&quot;: build._id}).success(successCallback);
+                    }
+                }
+
+            },
+            startBuild: function (build, disp) {
+                if (build.hasOwnProperty(&quot;_id&quot;)) {
+                    Socket.startBuild(build._id);
+                    disp();
+                }
+            }
+        };
+    }).
+    factory(&quot;Pipelines&quot;, function($location, Server) {
+        return {
+            pipelines: [],
+            getPipelines: function () {
+                if (this.pipelines.length == 0) {
+                    this.updatePipelines()
+                }
+
+                return this.pipelines;
+            },
+            updatePipelines: function () {
+                return Server.pipelines().success((function (data) {
+                    this.pipelines = data;
+                }).bind(this));
+            },
+            getPipeline: function ( pipeline_id ) {
+                if (pipeline_id) {
+                    return _.find(this.getPipelines(), {&quot;_id&quot;: pipeline_id});
+                }
+            },
+            savePipeline: function ( pipeline ) {
+                var successCallback = function () {
+                    $location.path(&quot;/settings/pipelines&quot;);
+                };
+                if (pipeline) {
+                    console.log(pipeline);
+                    if (pipeline.hasOwnProperty(&quot;_id&quot;)) {
+                        var id = pipeline._id;
+                        delete pipeline._id;
+                        Server.pipelineEdit(pipeline, {&quot;id&quot;: id}).success(successCallback);
+                    } else {
+                        Server.pipelineNew(pipeline).success(successCallback);
+                    }
+                }
+            },
+            cancelPipeline: function ( pipeline ) {
+                $location.path(&quot;/settings/pipelines&quot;);
+            },
+            deletePipeline: function ( pipeline ) {
+                var successCallback = function () {
+                    $location.path(&quot;/settings/pipelines&quot;);
+                };
+                if (pipeline) {
+                    if (confirm(&quot;Are you sure that you wish to delete this pipeline: &quot; + pipeline.name)) {
+                        Server.pipelineDelete({}, {&quot;id&quot;: pipeline._id}).success(successCallback);
+                    }
+                }
+
+            }
+        };
+    });</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
