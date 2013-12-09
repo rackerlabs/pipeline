@@ -1,4 +1,11 @@
 module.exports = {
+    express: {
+        files: ['server/**/*.js'],
+        tasks: ['express:dev'],
+        options: {
+            spawn:false
+        }
+    },
     scripts: {
         files: ['Gruntfile.js', 'app/scripts/**/*.js', '!app/scripts/**/*.spec.js', '!app/scripts/debug.js'],
         tasks: ['jshint:scripts', 'test:unit'],
@@ -13,15 +20,21 @@ module.exports = {
             livereload: false
         }
     },
-    css: {
-        files: ['app/styles/**/*.less'],
+    less: {
+        files: ['app/styles/less/**/*.less'],
         tasks: ['less'],
         options: {
             livereload: true
         }
     },
+    css: {
+        files: ['app/styles/**/*.css'],
+        options: {
+            livereload: true
+        }
+    },
     html: {
-        files: ['app/index.html', 'app/views/{,*/}*.html'],
+        files: ['app/index.html', 'app/directives/**/*.html'],
         options: {
             livereload: true
         }
