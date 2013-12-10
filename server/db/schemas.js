@@ -12,35 +12,41 @@ var NOTIFICATION_SCHEMA = new Schema({
     onFailure: { type: Boolean, default: false }
 });
 
-var BUILD_COMMAND_SCHEMA = new Schema({
+var BRANCH_SCHEMA = new Schema({
+        name: String,
+        repoUrl: String,
+        type: String
+    });
+
+var TASK_COMMAND_SCHEMA = new Schema({
         command: String,
         stopBuildOnFailure: { type: Boolean, default: true }
     });
 
-var BUILD_HISTORY_SCHEMA = new Schema({
+var TASK_RUN_SCHEMA = new Schema({
         output: String,
         startTime: { type: Date, default: Date.now },
         endTime: { type: Date },
-        isSuccessful: { type: Boolean, default: true },
-        pipelineId: String,
+        isSuccessful: { type: Boolean, default: true }
     });
 
-var BUILD_SCHEMA = new Schema({
+var TASK_SCHEMA = new Schema({
         name: String,
         description: String,
         created: { type: Date, default: Date.now },
         createBy: String,
         lastUpdated: { type: Date, default: Date.now },
         lastUpdatedBy: String,
-        commands: [BUILD_COMMAND_SCHEMA],
-        buildHistory: [BUILD_HISTORY_SCHEMA],
+        taskRuns: [{taskRunId: String}],
+        commands: [TASK_COMMAND_SCHEMA],
         notifications: [NOTIFICATION_SCHEMA]
     });
 
-var BRANCH_SCHEMA = new Schema({
-        name: String,
-        repoUrl: String,
-        type: String
+var PIPELINE_RUN_SCHEMA = new Schema({
+        created: { type: Date, default: Date.now},
+        createBy: String,
+        lastUpdated: Date,
+        taskRuns: [{taskRunId: String}],
     });
 
 var PIPELINE_SCHEMA = new Schema({
@@ -49,7 +55,8 @@ var PIPELINE_SCHEMA = new Schema({
         createBy: String,
         lastUpdated: Date,
         branches: [BRANCH_SCHEMA],
-        steps: [{buildId: String}],
+        tasks: [TASK_SCHEMA],
+        pipelineRuns: [PIPELINE_RUN_SCHEMA],
         notifications: [NOTIFICATION_SCHEMA]
     });
 
@@ -79,7 +86,10 @@ var USER_SCHEMA = new Schema({
     });
 
 exports.Pipeline = mongoose.model('Pipeline', PIPELINE_SCHEMA);
+exports.PipelineRun = mongoose.model('PipelineRun', PIPELINE_RUN_SCHEMA);
+exports.Task = mongoose.model('Task', TASK_SCHEMA);
+exports.TaskRun = mongoose.model('TaskRun', TASK_RUN_SCHEMA);
+
 exports.Vm = mongoose.model('Vm', VM_SCHEMA);
-exports.Build = mongoose.model('Build', BUILD_SCHEMA);
 exports.Repo = mongoose.model('Repo', REPO_SCHEMA);
 exports.User = mongoose.model('User', USER_SCHEMA);
