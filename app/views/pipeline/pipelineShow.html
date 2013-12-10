@@ -15,9 +15,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Steps:</label>
+                <label class="col-sm-3 control-label">Tasks:</label>
                 <div class="col-sm-6">
-                    <select class="form-control" multiple ng-options="s.name for s in builds" ng-model="pipeline.steps">
+                    <select class="form-control" multiple ng-options="t.name for t in tasks" ng-model="pipeline.steps">
                     </select>                    
                 </div>
             </div>

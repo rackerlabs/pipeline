@@ -1,5 +1,5 @@
 angular.module('rxPipelineApp')
-    .controller('PipelineShowCtrl', function ($scope, $routeParams, $location, Pipeline, Build) {
+    .controller('PipelineShowCtrl', function ($scope, $routeParams, $location, Pipeline, Task) {
         Pipeline.get({id: $routeParams.id}, function (data) {
             $scope.pipeline = data;
         }, function (error) {
@@ -8,5 +8,5 @@ angular.module('rxPipelineApp')
             $location.path('/home');
         });
 
-        $scope.builds = Build.list();
+        $scope.tasks = Task.list();
     });
