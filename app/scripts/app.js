@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module( 'rxPipelineApp', ['ngRoute', 'ngResource', 'btford.socket-io', 'http-auth-interceptor',
-    'rxAuthSvc' ])
+    'rxAuthSvc', 'rxPipelineSvc' ])
     .config( [ '$routeProvider', '$locationProvider', function ( $routeProvider, $locationProvider ) {
         $routeProvider
         .when( '/', {
