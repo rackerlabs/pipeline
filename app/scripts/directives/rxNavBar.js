@@ -4,8 +4,12 @@ angular.module('rxPipelineApp')
             restrict: 'E',
             replace: true,
             templateUrl: '/directives/rx-nav-bar.html',
-            controller: function ($scope) {
-                $scope.path = $location.path();
+            controller: function ($scope, Auth) {
+                $scope.logout = function () {
+                    Auth.logout( function () {
+                        $location.path('/');
+                    });
+                };
             }
         };
     });

@@ -120,6 +120,7 @@ server.post('/api/notify/email/:id', notify.emailUser);
 server.post('/api/notify/emails', notify.emailUsers);
 
 server.post('/api/auth', passport.authenticate('local'), auth.authSuccess);
+server.delete('/api/auth', auth.logout);
 server.get('/api/auth/loggedIn', auth.loggedIn);
 
 //This is here to route all the HTML5 routes to the index.html
