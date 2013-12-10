@@ -1,5 +1,4 @@
 <!doctype html>
-<html lang="en" ng-app="rxPipelineApp">
     <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
     <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
     <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -17,9 +16,13 @@
         <!-- build:css styles/css/main-min.css -->
         <link rel="stylesheet" href="/styles/pipeline.css">
         <!-- endbuild -->
+
+        <!-- build:js /scripts/vendor/modernizr.js -->
+        <script src="/components/modernizr/modernizr.js"></script>
+        <!-- endbuild -->
     </head>
 
-    <body>
+    <body ng-app="rxPipelineApp">
         <!--[if lt IE 7]>
         <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
@@ -30,30 +33,38 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <!-- <rx-nav-bar></rx-nav-bar> -->
+        <rx-nav-bar></rx-nav-bar>
         <div class="container-fluid" ng-view></div>
 
         <!-- Scripts -->
+        <script src="/components/socket.io-client/dist/socket.io.min.js"></script>
 
-        <!-- build:js /scripts/vendors.js -->
         <script src="/components/angular/angular.js"></script>
         <script src="/components/angular-resource/angular-resource.js"></script>
         <script src="/components/angular-cookies/angular-cookies.js"></script>
         <script src="/components/angular-route/angular-route.js"></script>
         <script src="/components/angular-sanitize/angular-sanitize.js"></script>
         <script src="/components/angular-socket-io/socket.js"></script>
-        <script src="/components/socket.io-client/dist/socket.io.min.js"></script>
+
+        <!-- build:js /scripts/vendor/lodash.js -->
         <script src="/components/lodash/dist/lodash.underscore.js"></script>
         <!-- endbuild -->
 
-        <!-- build:js /scripts/scripts.js -->
+        <!-- build:js /scripts//scripts.js -->
         <script src="/scripts/app.js"></script>
-        <script src="/scripts/login/loginCtrl.js"></script>
         <script src="/scripts/main/mainController.js"></script>
         <script src="/scripts/modules/auth.js"></script>
         <script src="/scripts/directives/directives.js"></script>
         <script src="/scripts/services/services.js"></script>
         <script src="/scripts/filters/filters.js"></script>
         <!-- endbuild -->
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
     </body>
 </html>

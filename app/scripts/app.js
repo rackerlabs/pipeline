@@ -1,16 +1,12 @@
 'use strict';
 
-angular.module( 'rxPipelineApp', ['ngRoute', 'ngResource', 'btford.socket-io', 
-        'ngSanitize', 'ngCookies', 'pipelineDirectives', 'pipelineServices', 'pipelineFilters', 'pipelineAuth'])
+angular.module( 'rxPipelineApp', ['ngRoute', 'ngResource', 'btford.socket-io',
+        'ngSanitize', 'ngCookies'])
     .config( [ '$routeProvider', '$locationProvider', function ( $routeProvider, $locationProvider ) {
         $routeProvider
         .when( '/', {
-            templateUrl: '/scripts/main/mainView.html',
-            controller: 'MainCtrl'
-        })
-        .when( '/login', {
             templateUrl: '/scripts/main/login.html',
-            controller: 'MainCtrl'
+            controller: 'LoginCtrl'
         })
         .when( '/settings', {
             templateUrl: '/scripts/main/settings.html',
