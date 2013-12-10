@@ -8,7 +8,7 @@ var express     = require('express'),
     appConfig   = require('../app-config.json'),
     db          = appConfig.database,
     pipeline    = require('./routes/pipeline'),
-    build       = require('./routes/build'),
+    task       = require('./routes/task'),
     repo        = require('./routes/repo'),
     github      = require('./routes/github'),
     vm          = require('./routes/vm'),
@@ -80,23 +80,25 @@ io.sockets.on( 'connection', function( socket ) {
 } );
 
 // Configure Routes
-server.get('/api/pipeline', pipeline.list);
-server.get('/api/pipeline/:id', pipeline.get);
-server.post('/api/pipeline', pipeline.save);
-server.put('/api/pipeline/:id', pipeline.update);
-server.delete('/api/pipeline/:id', pipeline.delete);
-server.get('/api/pipeline/:id/vm', vm.get);
-server.post('/api/pipeline/:id/vm', vm.create);
-server.delete('/api/pipeline/:id/vm', vm.delete);
-server.post('/api/pipeline/:id/reboot', vm.reboot);
+server.get('/api/pipelines', pipeline.list);
+server.get('/api/pipelines/:id', pipeline.get);
+server.post('/api/pipelines', pipeline.save);
+server.put('/api/pipelines/:id', pipeline.update);
+server.delete('/api/pipelines/:id', pipeline.delete);
+
+server.get('/api/pipelines/:id/vm', vm.get);
+server.post('/api/pipelines/:id/vm', vm.create);
+server.delete('/api/pipelines/:id/vm', vm.delete);
+server.post('/api/pipelines/:id/reboot', vm.reboot);
 
 server.get('/api/vm', vm.list);
 
-server.get('/api/build', build.list);
-server.get('/api/build/:id', build.get);
-server.post('/api/build', build.save);
-server.put('/api/build/:id', build.update);
-server.delete('/api/build/:id', build.delete);
+server.get('/api/tasks', task.list);
+server.get('/api/tasks/:id', task.get);
+server.post('/api/tasks', task.save);
+server.put('/api/tasks/:id', task.update);
+server.delete('/api/tasks/:id', task.delete);
+
 server.get('/api/repo', repo.list);
 server.get('/api/repo/:id', repo.get);
 server.post('/api/repo', repo.save);
