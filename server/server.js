@@ -39,11 +39,13 @@ server.configure( function() {
     server.set( 'views', path.join( __dirname, './../app' ) );
     server.engine( 'html', cons.hogan );
     server.set( 'view engine', 'html' );
-    server.use(express.cookieParser());
-    server.use( passport.initialize() );
-    server.use( passport.session( { secret: appConfig.secret }) );
+    server.use( express.cookieParser());
     server.use( express.bodyParser() );
     server.use( express.methodOverride() );
+    
+    server.use( express.session( { secret: appConfig.secret }) );
+    server.use( passport.initialize() );
+    server.use( passport.session() );
     server.use( express.static( path.join( __dirname, './../app' ) ) );
     server.use( server.router );
 } );

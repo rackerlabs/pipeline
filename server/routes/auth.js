@@ -32,24 +32,19 @@ exports.logout = function (req, res) {
 };
 
 exports.authSuccess = function (req, res) {
-    console.log(req);
     res.json(200);
 };
 
 exports.loggedIn = function (req, res) {
-    console.log(req.isAuthenticated());
     return (req.isAuthenticated()) ? res.json(200, { user: req.user }) : res.json(401, {loggedIn: false});
 };
 
 exports.serialize = function (user, done) {
-    console.log('Serializing', user._id);
     done(null, user._id);
 };
 
 exports.deserialize = function(id, done) {
-    console.log(id);
     User.findById(id, function (err, user) {
-        console.log('Deserializing', user);
         done(err, user);
     });
 };
