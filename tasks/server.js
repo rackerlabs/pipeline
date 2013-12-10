@@ -6,12 +6,8 @@ module.exports = function (grunt) {
         var commonTasks = [
             'clean:server',
             'less',
-            // 'test:unit',
             'bgShell:mongodb',
             'express:dev',
-            // 'configureProxies',
-            // 'concurrent:server',
-            // 'connect:livereload'
         ];
 
         if (target === 'dist') {
