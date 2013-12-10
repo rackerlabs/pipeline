@@ -19,7 +19,7 @@
                     <tbody>
                         <tr ng-repeat="pipe in pipelines">
                             <td>{{pipe.name}}</td>
-                            <td>{{pipe.lastUpdated}}</td>
+                            <td>{{pipe.lastUpdated | date:'MM/dd/yyyy @ hh:mma' }}</td>
                         </tr>
                     </tbody>
                 </table>                
