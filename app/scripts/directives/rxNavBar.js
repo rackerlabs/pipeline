@@ -5,6 +5,8 @@ angular.module('rxPipelineApp')
             replace: true,
             templateUrl: '/directives/rx-nav-bar.html',
             controller: function ($scope, Auth) {
+                Auth.loggedIn(); //will redirect user to login page if not logged in
+
                 $scope.logout = function () {
                     Auth.logout( function () {
                         $location.path('/');

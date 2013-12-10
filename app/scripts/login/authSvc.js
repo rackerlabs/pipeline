@@ -1,9 +1,10 @@
 angular.module('rxAuthSvc', ['ngResource'])
     .factory('Auth', function ($resource) {
-        return $resource('/api/:action',
-            {},
+        return $resource('/api/auth/:action',
+            { id: '@id' },
             {
-                login: { method: 'POST', isArray: false, params: { action: 'auth'} },
-                logout: { method: 'DELETE', isArray: false, params: { action: 'auth'} }
+                login: { method: 'POST', isArray: false, ignoreAuthModule: true },
+                logout: { method: 'DELETE', isArray: false, ignoreAuthModule: true },
+                loggedIn: { method: 'GET', isArray: false, params: { action: 'loggedIn'} }
             });
     });
