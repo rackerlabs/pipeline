@@ -18,7 +18,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="pipe in pipelines">
-                            <td>{{pipe.name}}</td>
+                            <td><a ng-href="/pipeline/{{pipe._id}}">{{pipe.name}}</a></td>
                             <td>{{pipe.lastUpdated | date:'MM/dd/yyyy @ hh:mma' }}</td>
                         </tr>
                     </tbody>
