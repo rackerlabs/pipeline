@@ -123,9 +123,9 @@ server.post('/api/auth', passport.authenticate('local'), auth.authSuccess);
 server.get('/api/auth/loggedIn', auth.loggedIn);
 
 //This is here to route all the HTML5 routes to the index.html
-// server.get('*', function(req, res){
-//     res.sendfile('app/index.html');
-// });
+server.get('*', function(req, res){
+    res.sendfile('app/index.html');
+});
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);
 mongoose.connect('mongodb://' + db.host + '/' + db.name);
