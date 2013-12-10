@@ -1,6 +1,6 @@
 angular.module('rxPipelineSvc', ['ngResource'])
     .factory('Pipeline', function ($resource) {
-        return $resource('/api/pipeline/:id',
+        return $resource('/api/pipelines/:id',
             {},
             {
                 list: { method: 'GET', isArray: true }
