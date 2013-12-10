@@ -36,7 +36,7 @@ exports.logout = function (req, res) {
 };
 
 exports.authSuccess = function (req, res) {
-    res.json(200, req.user);
+    res.json(200, { msg: 'Logged In'});
 };
 
 exports.loggedIn = function (req, res) {
