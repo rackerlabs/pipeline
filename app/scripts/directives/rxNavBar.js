@@ -4,8 +4,10 @@ angular.module('rxPipelineApp')
             restrict: 'E',
             replace: true,
             templateUrl: '/directives/rx-nav-bar.html',
-            controller: function ($scope, Auth) {
-                Auth.loggedIn(); //will redirect user to login page if not logged in
+            controller: function ($scope, $rootScope, Auth) {
+                Auth.loggedIn(function () {
+                    $rootScope.$emit('event:auth-loginConfirmed');
+                }); //will redirect user to login page if not logged in
 
                 $scope.logout = function () {
                     Auth.logout( function () {
