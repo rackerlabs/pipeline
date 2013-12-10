@@ -8,14 +8,14 @@
         </a>
         <div class="nav-collapse collapse">
             <ul class="nav">
-                <li ng-class="{'active': loc.path() == '/'}">
-                    <a href="/">Home</a>
+                <li ng-class="{'active': $root.path == '/home' }">
+                    <a href="/home">Home</a>
                 </li>
-                <li ng-class="{'active': loc.path().substr(0,9) == '/settings'}">
+                <li ng-class="{'active': $root.path === '/settings'}">
                     <a href="/settings">Settings</a>
                 </li>
             </ul>
-            <rx-auth class="pull-right" current-path="loc.path()" auth="Auth"></rx-auth>
+            <rx-auth class="pull-right" current-path="$root.path" auth="Auth"></rx-auth>
         </div>
     </div>
 </div>

@@ -31,6 +31,10 @@ angular.module( 'rxPipelineApp', ['ngRoute', 'ngResource', 'btford.socket-io', '
         $locationProvider.html5Mode( true );
     }]).run( function ($rootScope, $location) {
 
+        $rootScope.$on('$routeChangeSuccess', function () {
+            $rootScope.$root.path = $location.path();
+        });
+
         $rootScope.$on('event:auth-loginRequired', function () {
             if ( !$rootScope.authenticated ) {
                 $rootScope.storedLocation = $location.path();
