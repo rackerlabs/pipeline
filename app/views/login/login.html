@@ -1,16 +1,28 @@
-<form ng-submit="Auth.submitAuth(this)" class="login-form">
-    <div class="modal-header">
-        <h3>Sign In</h3>
+<div class="row">    
+    <div class="col-sm-6 col-sm-offset-6 col-md-8 col-md-offset-1">
+        <h3>Login</h3>
     </div>
-    <div class="modal-body">
-        <div class="alert alert-error" ng-show="Auth.authError">{{ Auth.authError.message }}</div>
-        <label for="auth_user">GitHub Username:</label>
-        <input type="text" id="auth_user" name="auth_user" />
-        <label for="auth_pass">Password:</label>
-        <input type="password" id="auth_pass" name="auth_pass" />
+</div>
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-6 col-md-6 col-md-offset-2">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Github Username:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="githubUsername" placeholder="Github Username">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Password:</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password" placeholder="Github Password">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-2">
+                    <button type="submit" class="btn btn-primary" ng-click="login()">Sign in</button>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal" ng-hide="Auth.AUTH_REQUIRED">Cancel</a>
-        <button type="submit" class="btn btn-primary" data-loading-text="Signing In...">Sign In</button>
-    </div>
-</form>
+</div>

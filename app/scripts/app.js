@@ -5,7 +5,7 @@ angular.module( 'rxPipelineApp', ['ngRoute', 'ngResource', 'btford.socket-io',
     .config( [ '$routeProvider', '$locationProvider', function ( $routeProvider, $locationProvider ) {
         $routeProvider
         .when( '/', {
-            templateUrl: '/scripts/main/login.html',
+            templateUrl: '/views/login/login.html',
             controller: 'LoginCtrl'
         })
         .when( '/settings', {
