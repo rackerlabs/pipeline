@@ -4,8 +4,21 @@
                 <h5>{{name}}</h5>
             </div>
             <div class="panel-body">
-                {{lastRunBy}}
-                {{lastEndDate | date: 'MM/dd/yyyy @ hh:mma'}}
+                <div class="row">
+                    <div class="col-lg-12">
+                        {{lastRunBy}}        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">        
+                        {{lastEndDate | date: 'short'}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        Duration: 
+                    </div>
+                </div>
             </div>
         </div>
     </div>
