@@ -18,6 +18,7 @@ angular.module('rxPipelineSvc', ['ngResource'])
             list: function () {
                 return [
                     {
+                        '_id': 1,
                         number: 1,
                         tasks: [
                             {

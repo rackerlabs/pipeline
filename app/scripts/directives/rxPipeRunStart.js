@@ -5,6 +5,8 @@ angular.module('rxPipelineApp')
             replace: false,
             templateUrl: '/directives/rx-pipe-run-start.html',
             scope: {
+                deleteMethod: '=',
+                runId: '=',
                 bodyText: '@'
             }
         };

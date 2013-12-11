@@ -2,7 +2,7 @@
     <h1>Build Pipeline</h1>
 </div>
 <div class="row well" ng-repeat="run in runs">
-    <rx-pipe-run-start body-text="{{run.number}}"></rx-pipe-run-start>
+    <rx-pipe-run-start run-id="run._id" delete-method="deleteRun" body-text="{{run.number}}"></rx-pipe-run-start>
     
     <rx-pipe-run-task
         ng-repeat="task in run.tasks"
