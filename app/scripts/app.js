@@ -1,31 +1,47 @@
 'use strict';
 
-angular.module( 'rxPipelineApp', [ 'ui.bootstrap', 'btford.socket-io', 'ngSanitize', 'ngCookies', 'pipelineDirectives', 'pipelineServices', 'pipelineFilters', 'pipelineAuth'])
+angular.module( 'rxPipelineApp', ['ngRoute', 'ngResource', 'btford.socket-io', 'http-auth-interceptor',
+    'rxAuthSvc', 'rxPipelineSvc' ])
     .config( [ '$routeProvider', '$locationProvider', function ( $routeProvider, $locationProvider ) {
         $routeProvider
         .when( '/', {
-            templateUrl: '/scripts/main/mainView.html',
-            controller: 'MainCtrl'
+            templateUrl: '/views/login/login.html',
+            controller: 'LoginCtrl'
         })
-        .when( '/login', {
-            templateUrl: '/scripts/main/login.html',
-            controller: 'MainCtrl'
+        .when('/home', {
+            templateUrl: '/views/home/home.html',
+            controller: 'HomeCtrl'
         })
-        .when( '/settings', {
-            templateUrl: '/scripts/main/settings.html',
-            controller: 'MainCtrl'
+        .when('/pipelines/:id', {
+            templateUrl: '/views/pipeline/pipelineShow.html',
+            controller: 'PipelineShowCtrl'
         })
-        .when( '/settings/:view', {
-            templateUrl: '/scripts/main/settings.html',
-            controller: 'MainCtrl'
-        })
-        .when( '/settings/:view/edit/:id', {
-            templateUrl: '/scripts/main/settings.html',
-            controller: 'MainCtrl'
+        .when('/pipelines/:id/edit', {
+            templateUrl: '/views/pipeline/pipelineEdit.html',
+            controller: 'PipelineEditCtrl'
         })
         .otherwise({
             redirectTo: '/'
         });
 
         $locationProvider.html5Mode( true );
-    }]);
+    }]).run( function ($rootScope, $location) {
+        $rootScope.$on('$routeChangeSuccess', function () {
+            $rootScope.$root.path = $location.path();
+            $rootScope.storedLocation = $location.path();
+        });
+
+        $rootScope.$on('event:auth-loginRequired', function () {
+            if ( !$rootScope.authenticated ) {
+                $rootScope.storedLocation = $location.path();
+                $location.path('/');
+            }
+        });
+
+        $rootScope.$on('event:auth-loginConfirmed', function () {
+            var path = $rootScope.storedLocation ? $rootScope.storedLocation : '/home';
+
+            $location.path(path);
+            $rootScope.authenticated = true;
+        });
+    });

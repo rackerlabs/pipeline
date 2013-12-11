@@ -1,0 +1,17 @@
+<div class="page-header">
+    <h1>Build Pipeline</h1>
+</div>
+<div class="row well" ng-repeat="run in runs">
+    <rx-pipe-run-start run-id="run._id" delete-method="deleteRun" body-text="{{run.number}}"></rx-pipe-run-start>
+    
+    <rx-pipe-run-task
+        ng-repeat="task in run.tasks"
+        name="task.name"
+        last-run-by="task.lastRunBy"
+        status="task.status"
+        last-start-date="task.lastStartDate"
+        last-end-date="task.lastEndDate"
+        >
+    </rx-pipe-run-task>
+
+</div>

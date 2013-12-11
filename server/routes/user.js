@@ -73,4 +73,5 @@ exports.bootstrap = function () {
 	saveUser( { createdBy: "christophercantu", username: "nickburns2006",  email: 'stephen.golub@rackspace.com' });
 	saveUser( { createdBy: "christophercantu", username: "rnreekez", email: 'roger.enriquez@rackspace.com'});
 	saveUser( { createdBy: "christophercantu", username: "hussamd", email: 'hussam.dawood@rackspace.com'});
+    saveUser( { createdBy: "christophercantu", username: "rsyed83", email: 'rahman.syed@rackspace.com'} );
 }

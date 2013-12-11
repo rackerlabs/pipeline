@@ -38,6 +38,7 @@
         "sinon": false,
         "inject": false,
         "Mousetrap": false,
+        "moment":true,
         "_": true,
         "expect": true,
         "helpers": true,

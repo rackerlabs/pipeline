@@ -16,8 +16,7 @@ var express     = require('express'),
     passport    = require('passport'),
     Strategy    = require('passport-local').Strategy,
     auth        = require('./routes/auth'),
-    notify       = require('./routes/notify'),
-    rest        = require('restler');
+    notify       = require('./routes/notify');
 
 var port = process.env.PORT || appConfig.server.port;
 var server = exports.server = express();
@@ -30,10 +29,6 @@ var authenticate = function(username, password, done) {
     });
 };
 
-var isAuthenticated = function (req, res, next) {
-    return req.isAuthenticated() ? next() : res.json(401, { msg: 'Unauthorized' });
-};
-
 passport.use( new Strategy (authenticate));
 passport.serializeUser( auth.serialize );
 passport.deserializeUser( auth.deserialize );
@@ -44,10 +39,13 @@ server.configure( function() {
     server.set( 'views', path.join( __dirname, './../app' ) );
     server.engine( 'html', cons.hogan );
     server.set( 'view engine', 'html' );
-    server.use( passport.initialize() );
-    server.use( passport.session( { secret: appConfig.secret }) );
+    server.use( express.cookieParser());
     server.use( express.bodyParser() );
     server.use( express.methodOverride() );
+    
+    server.use( express.session( { secret: appConfig.secret }) );
+    server.use( passport.initialize() );
+    server.use( passport.session() );
     server.use( express.static( path.join( __dirname, './../app' ) ) );
     server.use( server.router );
 } );
@@ -122,12 +120,13 @@ server.post('/api/notify/email/:id', notify.emailUser);
 server.post('/api/notify/emails', notify.emailUsers);
 
 server.post('/api/auth', passport.authenticate('local'), auth.authSuccess);
+server.delete('/api/auth', auth.logout);
 server.get('/api/auth/loggedIn', auth.loggedIn);
 
 //This is here to route all the HTML5 routes to the index.html
-// server.get('*', function(req, res){
-//     res.sendfile('app/index.html');
-// });
+server.get('*', function(req, res){
+    res.sendfile('app/index.html');
+});
 
 console.log('Connecting to DB - mongodb://' + db.host + '/' + db.name);
 mongoose.connect('mongodb://' + db.host + '/' + db.name);

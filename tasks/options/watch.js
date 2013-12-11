@@ -34,7 +34,7 @@ module.exports = {
         }
     },
     html: {
-        files: ['app/index.html', 'app/directives/**/*.html'],
+        files: ['app/index.html', 'app/directives/**/*.html', 'app/views/**/*.html'],
         options: {
             livereload: true
         }

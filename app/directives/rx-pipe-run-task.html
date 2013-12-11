@@ -1,0 +1,37 @@
+    <div class="col-lg-2">
+        <div class="panel" ng-class="{
+            'panel-success': status === 'success', 
+            'panel-danger': status === 'error',
+            'panel-default': !status,
+            'panel-warning': status === 'inprogress'
+            }">
+            <div class="panel-heading">
+                <h5>{{name}}</h5>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        {{lastRunBy}}        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">        
+                        {{lastEndDate | date: 'short'}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        Duration: {{ lastStartDate | rxDuration:lastEndDate }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 col-lg-offset-9" ng-switch="status">
+                        <i class="fa fa-desktop" ng-switch-when="success"></i>
+                        <i class="fa fa-desktop" ng-switch-when="inprogress"></i>
+                        <i class="fa fa-repeat" ng-switch-when="error"></i>
+                        <i class="fa fa-arrow-right" ng-switch-default></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

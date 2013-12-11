@@ -1,7 +1,6 @@
 module.exports = {
     options: {
-        jshintrc: '.jshintrc',
-        ignores: ['app/scripts/lib/{,*/}*.js']
+        jshintrc: '.jshintrc'
     },
     all: [
         'Gruntfile.js',

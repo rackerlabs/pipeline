@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-lg-12">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Name:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" ng-model="pipeline.name" placeholder="Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Description:</label>
+                <div class='col-sm-6'>
+                    <textarea class="form-control" ng-model="description">
+                    </textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Tasks:</label>
+                <div class="col-sm-6">
+                    <select class="form-control" multiple ng-options="t.name for t in tasks" ng-model="pipeline.steps">
+                    </select>                    
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-2">
+                    <button type="submit" class="btn btn-primary" ng-click="save()">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
