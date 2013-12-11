@@ -12,7 +12,7 @@ angular.module('rxPipelineApp')
         $scope.runs = PipelineRun.list();
 
         $scope.deleteRun = function(runId) {
-            PipelineRun.delete({id: runId},
+            PipelineRun.remove({id: runId},
                 function (data) {
                     $scope.pipeline = data;
                 }, function (error) {

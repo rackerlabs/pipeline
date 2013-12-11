@@ -5,7 +5,7 @@ angular.module('rxPipelineApp')
                 function() {
                     $location.path('/home');
                 }, function (error) {
-                    console.log('Failed');
+                    console.log(error);
                     alert('Failed!');
                 });
         };
