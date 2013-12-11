@@ -40,6 +40,7 @@ angular.module( 'rxPipelineApp', ['ngRoute', 'ngResource', 'btford.socket-io', '
     }]).run( function ($rootScope, $location) {
         $rootScope.$on('$routeChangeSuccess', function () {
             $rootScope.$root.path = $location.path();
+            $rootScope.storedLocation = $location.path();
         });
 
         $rootScope.$on('event:auth-loginRequired', function () {
@@ -51,6 +52,7 @@ angular.module( 'rxPipelineApp', ['ngRoute', 'ngResource', 'btford.socket-io', '
 
         $rootScope.$on('event:auth-loginConfirmed', function () {
             var path = $rootScope.storedLocation ? $rootScope.storedLocation : '/home';
+
             $location.path(path);
             $rootScope.authenticated = true;
         });
