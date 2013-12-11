@@ -22,13 +22,15 @@ angular.module('rxPipelineSvc', ['ngResource'])
                         tasks: [
                             {
                                 name: 'Task1',
-                                lastUpdate: '2013-09-06T20:04:04.343Z',
+                                lastEndDate: '2013-09-06T20:04:04.343Z',
+                                lastStartDate: '2013-09-06T20:04:00.343Z',
                                 lastRunBy: 'Chris',
                                 status: 'success'
                             },
                             {
                                 name: 'Task2',
-                                lastUpdate: '2013-09-06T20:04:04.343Z',
+                                lastEndDate: '2013-09-06T20:04:04.343Z',
+                                lastStartDate: '2013-09-06T20:04:00.343Z',
                                 lastRunBy: 'Rahman',
                                 status: 'error'
                             }

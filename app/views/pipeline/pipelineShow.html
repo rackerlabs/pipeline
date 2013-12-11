@@ -4,24 +4,14 @@
 <div class="row well" ng-repeat="run in runs">
     <rx-pipe-run-start body-text="{{run.number}}"></rx-pipe-run-start>
     
-    <div class="col-lg-2">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h5>Task1</h5>
-            </div>
-            <div class="panel-body">
-                Yo!
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-2">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h5>Task1</h5>
-            </div>
-            <div class="panel-body">
-                Yo!
-            </div>
-        </div>
-    </div>
+    <rx-pipe-run-task
+        ng-repeat="task in run.tasks"
+        name="task.name"
+        last-run-by="task.lastRunBy"
+        status="task.status"
+        last-start-date="task.lastStartDate"
+        last-end-date="task.lastEndDate"
+        >
+    </rx-pipe-run-task>
+
 </div>
