@@ -14,7 +14,6 @@ We looked at what was available and tried a few out. Unfortunately, none of the 
 * Karma
 * UI-Bootstrap
 * Font-Awesome
-* Modernizr
 * lodash
 * ExpressJS
 * Socket.io
@@ -35,5 +34,4 @@ We looked at what was available and tried a few out. Unfortunately, none of the 
 ### Running the application
 The application can be run with front-end code only or also run the server code.  To run both the front-end and server code, use the following command:
 
-* Ensure mongodb is running locally ie: `mongod`
-* `node server/server.js`
+* `grunt server` 
