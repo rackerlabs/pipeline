@@ -13,13 +13,14 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Name</th><th>Last Updated</th>
+                            <th>Name</th><th>Last Updated</th><th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="pipe in pipelines">
                             <td><a ng-href="/pipelines/{{pipe._id}}">{{pipe.name}}</a></td>
                             <td>{{pipe.lastUpdated | date:'MM/dd/yyyy @ hh:mma' }}</td>
+                            <td><a ng-href="/pipelines/{{pipe._id}}/edit" class="btn btn-warning">Edit<a/></td>
                         </tr>
                     </tbody>
                 </table>                

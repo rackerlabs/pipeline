@@ -16,6 +16,10 @@ angular.module( 'rxPipelineApp', ['ngRoute', 'ngResource', 'btford.socket-io', '
             templateUrl: '/views/pipeline/pipelineShow.html',
             controller: 'PipelineShowCtrl'
         })
+        .when('/pipelines/:id/edit', {
+            templateUrl: '/views/pipeline/pipelineEdit.html',
+            controller: 'PipelineEditCtrl'
+        })
         .when( '/settings', {
             templateUrl: '/scripts/main/settings.html',
             controller: 'MainCtrl'
