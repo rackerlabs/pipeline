@@ -20,18 +20,6 @@ angular.module( 'rxPipelineApp', ['ngRoute', 'ngResource', 'btford.socket-io', '
             templateUrl: '/views/pipeline/pipelineEdit.html',
             controller: 'PipelineEditCtrl'
         })
-        .when( '/settings', {
-            templateUrl: '/scripts/main/settings.html',
-            controller: 'MainCtrl'
-        })
-        .when( '/settings/:view', {
-            templateUrl: '/scripts/main/settings.html',
-            controller: 'MainCtrl'
-        })
-        .when( '/settings/:view/edit/:id', {
-            templateUrl: '/scripts/main/settings.html',
-            controller: 'MainCtrl'
-        })
         .otherwise({
             redirectTo: '/'
         });
