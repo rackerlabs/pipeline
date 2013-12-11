@@ -13,7 +13,7 @@
   <![endif]-->
 
   <script>
-    var __options = {"flags":{"complexity":{"newmi":true},"jshint":{"options":{"node":true,"browser":true,"nonstandard":true,"esnext":true,"bitwise":true,"camelcase":true,"curly":true,"sub":true,"eqeqeq":true,"immed":true,"indent":4,"forin":true,"latedef":true,"loopfunc":true,"newcap":true,"noarg":true,"quotmark":"single","regexp":true,"undef":true,"unused":true,"strict":false,"trailing":true,"smarttabs":true,"maxlen":120,"expr":true,"maxcomplexity":10},"globals":{"alert":false,"angular":false,"devel":false,"describe":false,"it":false,"before":false,"beforeEach":false,"after":false,"afterEach":false,"sinon":false,"inject":false,"Mousetrap":false,"_":true,"expect":true,"helpers":true,"waitsFor":true,"runs":true,"protractor":true,"xit":true,"xdescribe":true}}}}
+    var __options = {"flags":{"complexity":{"newmi":true},"jshint":{"options":{"node":true,"browser":true,"nonstandard":true,"esnext":true,"bitwise":true,"camelcase":true,"curly":true,"sub":true,"eqeqeq":true,"immed":true,"indent":4,"forin":true,"latedef":true,"loopfunc":true,"newcap":true,"noarg":true,"quotmark":"single","regexp":true,"undef":true,"unused":true,"strict":false,"trailing":true,"smarttabs":true,"maxlen":120,"expr":true,"maxcomplexity":10},"globals":{"alert":false,"angular":false,"devel":false,"describe":false,"it":false,"before":false,"beforeEach":false,"after":false,"afterEach":false,"sinon":false,"inject":false,"Mousetrap":false,"moment":true,"_":true,"expect":true,"helpers":true,"waitsFor":true,"runs":true,"protractor":true,"xit":true,"xdescribe":true}}}}
   </script>
 
   <link href="assets/css/vendor/bootstrap.css" rel="stylesheet">
@@ -50,11 +50,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Total/Average Lines <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code" data-original-title="SLOC"></i></h2>
-      <p class="stat">861 / 143</p>
+      <p class="stat">223 / 20</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Average Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">70.12</p>
+      <p class="stat">77.39</p>
     </div>
   </div>
 </div>
@@ -119,9 +119,22 @@
           <span class="fade-left fadeout visible-large"></span>
           <span class="col-md-4 file"><a class="file-link" href="./files/app_js/index.html">app.js</a></span>
         <span class="col-md-8 file-chart js-file-chart"
-              data-lint="1"
-              data-sloc="31"
-              data-bugs="0.18"
+              data-lint="0"
+              data-sloc="47"
+              data-bugs="0.33"
+              data-complexity="3"
+          ></span>
+        </div>
+      </li>
+      
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/directives_rxNavBar_js/index.html">directives/rxNavBar.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
+              data-lint="0"
+              data-sloc="19"
+              data-bugs="0.10"
               data-complexity="1"
           ></span>
         </div>
@@ -130,37 +143,11 @@
       <li class="col-md-12">
         <div class="row">
           <span class="fade-left fadeout visible-large"></span>
-          <span class="col-md-4 file"><a class="file-link" href="./files/directives_directives_js/index.html">directives/directives.js</a></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/directives_rxPipeRunStart_js/index.html">directives/rxPipeRunStart.js</a></span>
         <span class="col-md-8 file-chart js-file-chart"
-              data-lint="51"
-              data-sloc="244"
-              data-bugs="2.08"
-              data-complexity="11"
-          ></span>
-        </div>
-      </li>
-      
-      <li class="col-md-12">
-        <div class="row">
-          <span class="fade-left fadeout visible-large"></span>
-          <span class="col-md-4 file"><a class="file-link" href="./files/filters_filters_js/index.html">filters/filters.js</a></span>
-        <span class="col-md-8 file-chart js-file-chart"
-              data-lint="12"
-              data-sloc="53"
-              data-bugs="0.27"
-              data-complexity="6"
-          ></span>
-        </div>
-      </li>
-      
-      <li class="col-md-12">
-        <div class="row">
-          <span class="fade-left fadeout visible-large"></span>
-          <span class="col-md-4 file"><a class="file-link" href="./files/main_mainController_js/index.html">main/mainController.js</a></span>
-        <span class="col-md-8 file-chart js-file-chart"
-              data-lint="1"
-              data-sloc="36"
-              data-bugs="0.28"
+              data-lint="0"
+              data-sloc="13"
+              data-bugs="0.06"
               data-complexity="1"
           ></span>
         </div>
@@ -169,12 +156,12 @@
       <li class="col-md-12">
         <div class="row">
           <span class="fade-left fadeout visible-large"></span>
-          <span class="col-md-4 file"><a class="file-link" href="./files/modules_auth_js/index.html">modules/auth.js</a></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/directives_rxPipeRunTask_js/index.html">directives/rxPipeRunTask.js</a></span>
         <span class="col-md-8 file-chart js-file-chart"
-              data-lint="51"
-              data-sloc="198"
-              data-bugs="1.96"
-              data-complexity="17"
+              data-lint="0"
+              data-sloc="15"
+              data-bugs="0.07"
+              data-complexity="1"
           ></span>
         </div>
       </li>
@@ -182,12 +169,90 @@
       <li class="col-md-12">
         <div class="row">
           <span class="fade-left fadeout visible-large"></span>
-          <span class="col-md-4 file"><a class="file-link" href="./files/services_services_js/index.html">services/services.js</a></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/filters_rxDurationFilter_js/index.html">filters/rxDurationFilter.js</a></span>
         <span class="col-md-8 file-chart js-file-chart"
-              data-lint="51"
-              data-sloc="299"
-              data-bugs="3.21"
-              data-complexity="29"
+              data-lint="0"
+              data-sloc="11"
+              data-bugs="0.08"
+              data-complexity="2"
+          ></span>
+        </div>
+      </li>
+      
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/home_homeCtrl_js/index.html">home/homeCtrl.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
+              data-lint="0"
+              data-sloc="4"
+              data-bugs="0.03"
+              data-complexity="1"
+          ></span>
+        </div>
+      </li>
+      
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/login_authSvc_js/index.html">login/authSvc.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
+              data-lint="0"
+              data-sloc="10"
+              data-bugs="0.11"
+              data-complexity="1"
+          ></span>
+        </div>
+      </li>
+      
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/login_loginCtrl_js/index.html">login/loginCtrl.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
+              data-lint="0"
+              data-sloc="12"
+              data-bugs="0.07"
+              data-complexity="1"
+          ></span>
+        </div>
+      </li>
+      
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/pipeline_pipelineEditCtrl_js/index.html">pipeline/pipelineEditCtrl.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
+              data-lint="0"
+              data-sloc="13"
+              data-bugs="0.09"
+              data-complexity="1"
+          ></span>
+        </div>
+      </li>
+      
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/pipeline_pipelineShowCtrl_js/index.html">pipeline/pipelineShowCtrl.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
+              data-lint="0"
+              data-sloc="23"
+              data-bugs="0.15"
+              data-complexity="1"
+          ></span>
+        </div>
+      </li>
+      
+      <li class="col-md-12">
+        <div class="row">
+          <span class="fade-left fadeout visible-large"></span>
+          <span class="col-md-4 file"><a class="file-link" href="./files/pipeline_pipelineSvc_js/index.html">pipeline/pipelineSvc.js</a></span>
+        <span class="col-md-8 file-chart js-file-chart"
+              data-lint="0"
+              data-sloc="56"
+              data-bugs="0.29"
+              data-complexity="1"
           ></span>
         </div>
       </li>

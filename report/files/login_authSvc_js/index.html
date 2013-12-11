@@ -37,7 +37,7 @@
 
 <div class="jumbotron">
   <div class="container">
-    <h1>app.js</h1>
+    <h1>login/authSvc.js</h1>
   </div>
 </div>
 
@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">73.97</p>
+      <p class="stat">61.55</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">47</p>
+      <p class="stat">10</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">11.96</p>
+      <p class="stat">5.93</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.33</p>
+      <p class="stat">0.11</p>
     </div>
   </div>
 </div>
@@ -90,52 +90,15 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">&#039;use strict&#039;;
-
-angular.module( &#039;rxPipelineApp&#039;, [&#039;ngRoute&#039;, &#039;ngResource&#039;, &#039;btford.socket-io&#039;, &#039;http-auth-interceptor&#039;,
-    &#039;rxAuthSvc&#039;, &#039;rxPipelineSvc&#039; ])
-    .config( [ &#039;$routeProvider&#039;, &#039;$locationProvider&#039;, function ( $routeProvider, $locationProvider ) {
-        $routeProvider
-        .when( &#039;/&#039;, {
-            templateUrl: &#039;/views/login/login.html&#039;,
-            controller: &#039;LoginCtrl&#039;
-        })
-        .when(&#039;/home&#039;, {
-            templateUrl: &#039;/views/home/home.html&#039;,
-            controller: &#039;HomeCtrl&#039;
-        })
-        .when(&#039;/pipelines/:id&#039;, {
-            templateUrl: &#039;/views/pipeline/pipelineShow.html&#039;,
-            controller: &#039;PipelineShowCtrl&#039;
-        })
-        .when(&#039;/pipelines/:id/edit&#039;, {
-            templateUrl: &#039;/views/pipeline/pipelineEdit.html&#039;,
-            controller: &#039;PipelineEditCtrl&#039;
-        })
-        .otherwise({
-            redirectTo: &#039;/&#039;
-        });
-
-        $locationProvider.html5Mode( true );
-    }]).run( function ($rootScope, $location) {
-        $rootScope.$on(&#039;$routeChangeSuccess&#039;, function () {
-            $rootScope.$root.path = $location.path();
-            $rootScope.storedLocation = $location.path();
-        });
-
-        $rootScope.$on(&#039;event:auth-loginRequired&#039;, function () {
-            if ( !$rootScope.authenticated ) {
-                $rootScope.storedLocation = $location.path();
-                $location.path(&#039;/&#039;);
-            }
-        });
-
-        $rootScope.$on(&#039;event:auth-loginConfirmed&#039;, function () {
-            var path = $rootScope.storedLocation ? $rootScope.storedLocation : &#039;/home&#039;;
-
-            $location.path(path);
-            $rootScope.authenticated = true;
-        });
+    <textarea id="file-source" class="col-md-12">angular.module(&#039;rxAuthSvc&#039;, [&#039;ngResource&#039;])
+    .factory(&#039;Auth&#039;, function ($resource) {
+        return $resource(&#039;/api/auth/:action&#039;,
+            {  },
+            {
+                login: { method: &#039;POST&#039;, isArray: false, ignoreAuthModule: true },
+                logout: { method: &#039;DELETE&#039;, isArray: false, ignoreAuthModule: true },
+                loggedIn: { method: &#039;GET&#039;, isArray: false, params: { action: &#039;loggedIn&#039; } }
+            });
     });</textarea>
   </div>
 </div>
