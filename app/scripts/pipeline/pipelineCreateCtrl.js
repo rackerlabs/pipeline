@@ -1,13 +1,12 @@
 angular.module('rxPipelineApp')
-	.controller('PipelineCreateCtrl', function ($scope, $location, Pipeline) {
-		$scope.create = function () {
-			Pipeline.save($scope.pipeline,
-				function (data) {
-					console.log(data);
-					$location.path('/pipelines');
-				},
-				function (error) {
-					console.log(error);
-				});
+	.controller('PipelineCreateCtrl', function ($scope, $location, Pipeline, Task) {
+		$scope.save = function () {
+			var pipe = new Pipeline($scope.pipeline);
+			pipe.$save();
+
+			//TODO add flash message creation was successful
+			$location.path('/home');
 		};
+
+		$scope.tasks = Task.list();
 	});

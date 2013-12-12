@@ -50,10 +50,11 @@ var PIPELINE_RUN_SCHEMA = new Schema({
     });
 
 var PIPELINE_SCHEMA = new Schema({
-        name: { type: String, required: true, unique: false },
+        name: { type: String, required: true, unique: true },
+        description: { type: String },
         created: { type: Date, 'default': Date.now},
         createBy: String,
-        lastUpdated: Date,
+        lastUpdated: { type: Date, 'default': Date.now},
         branches: [BRANCH_SCHEMA],
         tasks: [TASK_SCHEMA],
         pipelineRuns: [PIPELINE_RUN_SCHEMA],
