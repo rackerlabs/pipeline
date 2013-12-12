@@ -1,7 +1,7 @@
 module.exports = {
     express: {
         files: ['server/**/*.js'],
-        tasks: ['express:dev'],
+        tasks: ['express:dev', 'jshint:server'],
         options: {
             spawn:false
         }

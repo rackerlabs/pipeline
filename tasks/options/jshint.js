@@ -2,6 +2,9 @@ module.exports = {
     options: {
         jshintrc: '.jshintrc'
     },
+    server : [
+        'server/{,*/}*.js'
+    ],
     all: [
         'Gruntfile.js',
         'app/scripts/{,*/}*.js',
