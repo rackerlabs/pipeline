@@ -83,7 +83,7 @@ server.get('/api/pipelines', pipeline.list);
 server.get('/api/pipelines/:id', pipeline.get);
 server.post('/api/pipelines', pipeline.save);
 server.put('/api/pipelines/:id', pipeline.update);
-server.delete('/api/pipelines/:id', pipeline.delete);
+server.delete('/api/pipelines/:id', pipeline.remove);
 
 server.get('/api/pipelines/:id/vm', vm.get);
 server.post('/api/pipelines/:id/vm', vm.create);
