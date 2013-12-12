@@ -4,7 +4,8 @@ angular.module('rxPipelineSvc', ['ngResource'])
             { id: '@id' },
             {
                 list: { method: 'GET', isArray: true },
-                get: { method: 'GET', isArray: false }
+                get: { method: 'GET', isArray: false },
+                update: { method: 'PUT', isArray: false}
             });
     })
     .factory('Task', function ($resource) {

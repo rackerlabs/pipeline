@@ -10,4 +10,17 @@ angular.module('rxPipelineApp')
             });
 
         $scope.tasks = Task.list();
+
+        $scope.save = function () {
+            $scope.pipeline.id = $routeParams.id;
+
+            Pipeline.update($scope.pipeline,
+                function () {
+                    $location.path('/home');
+                },
+                function () {
+                    alert('Error');
+                }
+            );
+        };
     });
