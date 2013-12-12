@@ -3,7 +3,7 @@ angular.module('rxPipelineApp')
         $scope.pipelines = Pipeline.list();
 
         $scope.deletePipeline = function (pipelineId) {
-            if ( !$window.confirm('Are you sure you want to remove this Pipeline') ) {
+            if ( !$window.confirm('Are you sure you want to remove this Pipeline?') ) {
                 return;
             }
 
