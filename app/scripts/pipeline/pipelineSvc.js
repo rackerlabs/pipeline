@@ -3,7 +3,8 @@ angular.module('rxPipelineSvc', ['ngResource'])
         return $resource('/api/pipelines/:id',
             {},
             {
-                list: { method: 'GET', isArray: true }
+                list: { method: 'GET', isArray: true },
+                get: { method: 'GET', isArray: false }
             });
     })
     .factory('Task', function ($resource) {
