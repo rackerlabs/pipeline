@@ -20,7 +20,10 @@
                         <tr ng-repeat="pipe in pipelines">
                             <td><a ng-href="/pipelines/{{pipe._id}}">{{pipe.name}}</a></td>
                             <td>{{pipe.lastUpdated | date:'MM/dd/yyyy @ hh:mma' }}</td>
-                            <td><a ng-href="/pipelines/{{pipe._id}}/edit" class="btn btn-warning">Edit<a/></td>
+                            <td>
+                                <a ng-href="/pipelines/{{pipe._id}}/edit" class="btn btn-warning">Edit<a/>
+                                <a href ng-click="deletePipeline({{pipe_.id}})" class="btn btn-danger">Delete<a/>
+                            </td>
                         </tr>
                     </tbody>
                 </table>                

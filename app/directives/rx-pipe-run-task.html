@@ -1,9 +1,10 @@
     <div class="col-lg-2">
         <div class="panel" ng-class="{
             'panel-success': status === 'success', 
+            'panel-info': status === 'ready',
             'panel-danger': status === 'error',
-            'panel-default': !status,
-            'panel-warning': status === 'inprogress'
+            'panel-warning': status === 'inprogress',
+            'panel-default': !status
             }">
             <div class="panel-heading">
                 <h5>{{name}}</h5>
@@ -29,7 +30,8 @@
                         <i class="fa fa-desktop" ng-switch-when="success"></i>
                         <i class="fa fa-desktop" ng-switch-when="inprogress"></i>
                         <i class="fa fa-repeat" ng-switch-when="error"></i>
-                        <i class="fa fa-arrow-right" ng-switch-default></i>
+                        <i class="fa fa-arrow-right" ng-switch-when="ready"></i>
+                        <i class="fa fa-ban" ng-switch-default></i>
                     </div>
                 </div>
             </div>

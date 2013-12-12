@@ -46,6 +46,13 @@ angular.module('rxPipelineSvc', ['ngResource'])
                                 name: 'Task4',
                                 lastEndDate: '2013-09-06T20:04:04.343Z',
                                 lastStartDate: '2013-09-06T20:04:00.343Z',
+                                lastRunBy: 'Rahman',
+                                status: 'ready'
+                            },
+                            {
+                                name: 'Task5',
+                                lastEndDate: '2013-09-06T20:04:04.343Z',
+                                lastStartDate: '2013-09-06T20:04:00.343Z',
                                 lastRunBy: 'Chris'
                             }
                         ]
