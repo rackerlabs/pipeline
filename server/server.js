@@ -102,7 +102,7 @@ server.get('/api/repo', repo.list);
 server.get('/api/repo/:id', repo.get);
 server.post('/api/repo', repo.save);
 server.put('/api/repo/:id', repo.update);
-server.delete('/api/repo/:id', repo.delete);
+server.delete('/api/repo/:id', repo.remove);
 
 server.get('/api/user', user.list);
 server.get('/api/user/:id', user.list);
