@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>server/routes/user.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">76.18</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">78</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">25.80</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">0.96</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">&#039;use strict&#039;;
+
+var User = require(&#039;./../../server/db/schemas&#039;).User, Q = require(&#039;q&#039;);
+
+exports.findById = function (id) {
+	var defer = Q.defer();
+
+	User.findById(id, function (err, user) {
+		(err) ? defer.reject(err) : defer.resolve(user);
+	});
+
+	return defer.promise;
+};
+
+exports.findUsersByIds = function (ids) {
+	var defer = Q.defer();
+
+	User.find({_id: { $in: ids } }, function (err, users) {
+		(err) ? defer.reject(err) : defer.resolve(users);
+	});
+
+	return defer.promise;
+};
+
+exports.list = function (req, res) {
+    return User.find({}, function (err, users) {
+        return (err) ? res.json(400, {msg: &#039;Unable to fetch users&#039;}) : res.json(200, users);
+    });
+};
+
+exports.get = function (req, res) {
+    var id = req.params.id;
+
+    return User.findOne({_id:id}, function (err, user) {
+        return (err || !user) ? res.json(404, {msg: &#039;Unable to find user with id: &#039; + id}) : res.json(200, user);
+    });
+};
+
+exports.save = function (req, res) {
+    var myUser = new User(req.body);
+
+    return myUser.save( function (err, user) {
+        return (!err) ? res.json(200, user) : res.json(400, {msg: &#039;Unable to create new user&#039;});
+    });
+};
+
+exports.update = function (req, res) {
+    var id = req.params.id;
+    var body = req.body;
+    body.lastUpdated = new Date();
+
+    return User.update({_id: id}, body, {}, function (err, updatedNumber, raw) {
+        return (!err) ?  res.json(200, raw) : res.json(400, {msg: &#039;Unable to update user id: &#039; + id });
+    });
+};
+
+exports.remove = function (req, res) {
+    var id = req.params.id;
+
+    return User.remove({ _id: id}, function (err) {
+        return err ? res.json(400, {msg: &#039;Unable to delete user id: &#039; + id}) :
+            res.json(200, {msg: &#039;Deleted user id: &#039; + id});
+    });
+};
+
+var saveUser = function(obj) {
+	return new User(obj).save( function(err, user) {
+		return err ? new Error(err) : user;
+	});
+};
+
+exports.bootstrap = function () {
+	saveUser( { createdBy: &#039;christophercantu&#039;, username: &#039;christophercantu&#039;, email: &#039;chris.cantu@rackspace.com&#039;} );
+	saveUser( { createdBy: &#039;christophercantu&#039;, username: &#039;nickburns2006&#039;,  email: &#039;stephen.golub@rackspace.com&#039; });
+	saveUser( { createdBy: &#039;christophercantu&#039;, username: &#039;rnreekez&#039;, email: &#039;roger.enriquez@rackspace.com&#039;});
+	saveUser( { createdBy: &#039;christophercantu&#039;, username: &#039;hussamd&#039;, email: &#039;hussam.dawood@rackspace.com&#039;});
+    saveUser( { createdBy: &#039;christophercantu&#039;, username: &#039;rsyed83&#039;, email: &#039;rahman.syed@rackspace.com&#039;} );
+};</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

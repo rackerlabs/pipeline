@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>server/server.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">77.97</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">134</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">15.36</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.81</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">&#039;use strict&#039;;
+/* jshint es5:true */
+
+var express     = require(&#039;express&#039;),
+    cons        = require(&#039;consolidate&#039;),
+    http        = require(&#039;http&#039;),
+    path        = require(&#039;path&#039;),
+    mongoose    = require(&#039;mongoose&#039;),
+    appConfig   = require(&#039;../app-config.json&#039;),
+    db          = appConfig.database,
+    pipeline    = require(&#039;./routes/pipeline&#039;),
+    task       = require(&#039;./routes/task&#039;),
+    repo        = require(&#039;./routes/repo&#039;),
+    github      = require(&#039;./routes/github&#039;),
+    vm          = require(&#039;./routes/vm&#039;),
+    user        = require(&#039;./routes/user&#039;),
+    passport    = require(&#039;passport&#039;),
+    Strategy    = require(&#039;passport-local&#039;).Strategy,
+    auth        = require(&#039;./routes/auth&#039;),
+    notify       = require(&#039;./routes/notify&#039;);
+
+var port = process.env.PORT || appConfig.server.port;
+var server = exports.server = express();
+
+var authenticate = function(username, password, done) {
+    auth.findByUsername(username).then(function (user) {
+        return auth.authGithub(user, password, done);
+    }).catch( function(error) {
+        return done(null, false, error);
+    });
+};
+
+passport.use( new Strategy (authenticate));
+passport.serializeUser( auth.serialize );
+passport.deserializeUser( auth.deserialize );
+
+// Configure Server
+server.configure( function() {
+    server.set( &#039;port&#039;, port );
+    server.set( &#039;views&#039;, path.join( __dirname, &#039;./../app&#039; ) );
+    server.engine( &#039;html&#039;, cons.hogan );
+    server.set( &#039;view engine&#039;, &#039;html&#039; );
+    server.use( express.cookieParser());
+    server.use( express.bodyParser() );
+    server.use( express.methodOverride() );
+
+    server.use( express.session( { secret: appConfig.secret }) );
+    server.use( passport.initialize() );
+    server.use( passport.session() );
+    server.use( express.static( path.join( __dirname, &#039;./../app&#039; ) ) );
+    server.use( server.router );
+} );
+
+server.configure( &#039;development&#039;, function() {
+    user.bootstrap();
+    task.bootstrap();
+    server.use( express.errorHandler( { dumpExceptions: true, showStack: true } ) );
+} );
+
+server.configure( &#039;production&#039;, function() {
+    server.use( express.errorHandler() );
+} );
+
+
+// Start server - hook in sockets instance
+var io = require(&#039;socket.io&#039;).listen( http.createServer( server ).listen( server.get( &#039;port&#039; ), function() {
+    console.log( &#039;Express server listening on &#039; + server.get( &#039;port&#039; ) );
+} ) );
+
+io.sockets.on( &#039;connection&#039;, function( socket ) {
+
+    socket.emit( &#039;send:onConnect&#039;, {
+        data: &#039;Sockets Connected&#039;
+    } );
+
+    // Example socket
+    // @todo remove the requirement to pass in the socket
+    require( &#039;./sockets/buildSocket&#039; )( socket );
+
+} );
+
+// Configure Routes
+server.get(&#039;/api/pipelines&#039;, pipeline.list);
+server.get(&#039;/api/pipelines/:id&#039;, pipeline.get);
+server.post(&#039;/api/pipelines&#039;, pipeline.save);
+server.put(&#039;/api/pipelines/:id&#039;, pipeline.update);
+server.delete(&#039;/api/pipelines/:id&#039;, pipeline.remove);
+
+server.get(&#039;/api/pipelines/:id/vm&#039;, vm.get);
+server.post(&#039;/api/pipelines/:id/vm&#039;, vm.create);
+server.delete(&#039;/api/pipelines/:id/vm&#039;, vm.delete);
+server.post(&#039;/api/pipelines/:id/reboot&#039;, vm.reboot);
+
+server.get(&#039;/api/vm&#039;, vm.list);
+
+server.get(&#039;/api/tasks&#039;, task.list);
+server.get(&#039;/api/tasks/:id&#039;, task.get);
+server.post(&#039;/api/tasks&#039;, task.save);
+server.put(&#039;/api/tasks/:id&#039;, task.update);
+server.delete(&#039;/api/tasks/:id&#039;, task.remove);
+
+server.get(&#039;/api/repo&#039;, repo.list);
+server.get(&#039;/api/repo/:id&#039;, repo.get);
+server.post(&#039;/api/repo&#039;, repo.save);
+server.put(&#039;/api/repo/:id&#039;, repo.update);
+server.delete(&#039;/api/repo/:id&#039;, repo.remove);
+
+server.get(&#039;/api/user&#039;, user.list);
+server.get(&#039;/api/user/:id&#039;, user.list);
+server.post(&#039;/api/user&#039;, user.save);
+server.put(&#039;/api/user/:id&#039;, user.update);
+server.delete(&#039;/api/user/:id&#039;, user.remove);
+
+server.get(&#039;/api/github/pulls/:repoId&#039;, github.listPulls);
+server.post(&#039;/api/github/pulls/:repoId&#039;, github.createPull);
+server.get(&#039;/api/github/pulls/:repoId/mergeable/:pullId&#039;, github.isPullMergeable);
+server.post(&#039;/api/github/pulls/:repoId/merge/:pullId&#039;, github.mergePull);
+server.get(&#039;/api/github/branches/:repoId&#039;, github.listBranches);
+server.post(&#039;/api/github/branches/:repoId&#039;, github.createBranch);
+server.post(&#039;/api/github/tags/:repoId&#039;, github.createTag);
+server.post(&#039;/api/notify/email/:id&#039;, notify.emailUser);
+server.post(&#039;/api/notify/emails&#039;, notify.emailUsers);
+
+server.post(&#039;/api/auth&#039;, passport.authenticate(&#039;local&#039;), auth.authSuccess);
+server.delete(&#039;/api/auth&#039;, auth.logout);
+server.get(&#039;/api/auth/loggedIn&#039;, auth.loggedIn);
+
+//This is here to route all the HTML5 routes to the index.html
+server.get(&#039;*&#039;, function(req, res){
+    res.sendfile(&#039;app/index.html&#039;);
+});
+
+console.log(&#039;Connecting to DB - mongodb://&#039; + db.host + &#039;/&#039; + db.name);
+mongoose.connect(&#039;mongodb://&#039; + db.host + &#039;/&#039; + db.name);</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

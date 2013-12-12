@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>server/db/schemas.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">32.23</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">95</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">15.60</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.16</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">&#039;use strict&#039;;
+
+var mongoose    = require(&#039;mongoose&#039;),
+    Schema      = mongoose.Schema;
+
+var NOTIFICATION_SCHEMA = new Schema({
+    notificationType: { type: String },
+    contacts: { type: Array, required: true },
+    subject: { type: String, required: false },
+    body: { type: String, required: true },
+    onSuccess: { type: Boolean, &#039;default&#039;: false },
+    onFailure: { type: Boolean, &#039;default&#039;: false }
+});
+
+var BRANCH_SCHEMA = new Schema({
+        name: String,
+        repoUrl: String,
+        type: String
+    });
+
+var TASK_COMMAND_SCHEMA = new Schema({
+        command: String,
+        stopBuildOnFailure: { type: Boolean, &#039;default&#039;: true }
+    });
+
+var TASK_RUN_SCHEMA = new Schema({
+        output: String,
+        startTime: { type: Date, &#039;default&#039;: Date.now },
+        endTime: { type: Date },
+        isSuccessful: { type: Boolean, &#039;default&#039;: true }
+    });
+
+var TASK_SCHEMA = new Schema({
+        name: { type: String, unique: true, required: true },
+        description: String,
+        created: { type: Date, &#039;default&#039;: Date.now },
+        createBy: String,
+        lastUpdated: { type: Date, &#039;default&#039;: Date.now },
+        lastUpdatedBy: String,
+        taskRuns: [{taskRunId: String}],
+        commands: [TASK_COMMAND_SCHEMA],
+        notifications: [NOTIFICATION_SCHEMA]
+    });
+
+var PIPELINE_RUN_SCHEMA = new Schema({
+        created: { type: Date, &#039;default&#039;: Date.now},
+        createBy: String,
+        lastUpdated: Date,
+        taskRuns: [{taskRunId: String}]
+    });
+
+var PIPELINE_SCHEMA = new Schema({
+        name: { type: String, required: true, unique: false },
+        created: { type: Date, &#039;default&#039;: Date.now},
+        createBy: String,
+        lastUpdated: Date,
+        branches: [BRANCH_SCHEMA],
+        tasks: [TASK_SCHEMA],
+        pipelineRuns: [PIPELINE_RUN_SCHEMA],
+        notifications: [NOTIFICATION_SCHEMA]
+    });
+
+var VM_SCHEMA = new Schema({
+        created: { type: Date, &#039;default&#039;: Date.now },
+        instanceId: String,
+        ipAddress: { type: String, &#039;default&#039;: &#039;&#039; },
+        pipelineId: String
+    });
+
+var REPO_SCHEMA = new Schema({
+        created: { type: Date, &#039;default&#039;: Date.now},
+        createBy: String,
+        lastUpdated: Date,
+        owner: { type: String, required: true },
+        repoName: { type: String, required: true },
+        apiToken: { type: String, required: true }
+    });
+
+var USER_SCHEMA = new Schema({
+        created: { type: Date, &#039;default&#039;: Date.now },
+        createdBy: String,
+        lastUpdated: { type: Date, &#039;default&#039;: Date.now },
+        username: { type: String, unique: true, required: true },
+        email : { type: String, unique:true, required: true },
+        lastLogin: Date
+    });
+
+exports.Pipeline = mongoose.model(&#039;Pipeline&#039;, PIPELINE_SCHEMA);
+exports.PipelineRun = mongoose.model(&#039;PipelineRun&#039;, PIPELINE_RUN_SCHEMA);
+exports.Task = mongoose.model(&#039;Task&#039;, TASK_SCHEMA);
+exports.TaskRun = mongoose.model(&#039;TaskRun&#039;, TASK_RUN_SCHEMA);
+
+exports.Vm = mongoose.model(&#039;Vm&#039;, VM_SCHEMA);
+exports.Repo = mongoose.model(&#039;Repo&#039;, REPO_SCHEMA);
+exports.User = mongoose.model(&#039;User&#039;, USER_SCHEMA);</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
