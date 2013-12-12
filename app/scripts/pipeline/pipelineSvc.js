@@ -1,7 +1,7 @@
 angular.module('rxPipelineSvc', ['ngResource'])
     .factory('Pipeline', function ($resource) {
         return $resource('/api/pipelines/:id',
-            {},
+            { id: '@id' },
             {
                 list: { method: 'GET', isArray: true },
                 get: { method: 'GET', isArray: false }
