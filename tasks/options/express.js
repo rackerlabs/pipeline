@@ -7,7 +7,7 @@ module.exports = {
 		options: {
 			script: 'server/server.js',
 			background:true,
-			'node_env': 'dev'
+			'node_env': 'development'
 		}
 	},
 	test: {
