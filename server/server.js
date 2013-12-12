@@ -1,4 +1,5 @@
 'use strict';
+/* jshint es5:true */
 
 var express     = require('express'),
     cons        = require('consolidate'),
@@ -42,7 +43,7 @@ server.configure( function() {
     server.use( express.cookieParser());
     server.use( express.bodyParser() );
     server.use( express.methodOverride() );
-    
+
     server.use( express.session( { secret: appConfig.secret }) );
     server.use( passport.initialize() );
     server.use( passport.session() );
@@ -96,7 +97,7 @@ server.get('/api/tasks', task.list);
 server.get('/api/tasks/:id', task.get);
 server.post('/api/tasks', task.save);
 server.put('/api/tasks/:id', task.update);
-server.delete('/api/tasks/:id', task.delete);
+server.delete('/api/tasks/:id', task.remove);
 
 server.get('/api/repo', repo.list);
 server.get('/api/repo/:id', repo.get);
@@ -108,7 +109,7 @@ server.get('/api/user', user.list);
 server.get('/api/user/:id', user.list);
 server.post('/api/user', user.save);
 server.put('/api/user/:id', user.update);
-server.delete('/api/user/:id', user.delete);
+server.delete('/api/user/:id', user.remove);
 
 server.get('/api/github/pulls/:repoId', github.listPulls);
 server.post('/api/github/pulls/:repoId', github.createPull);

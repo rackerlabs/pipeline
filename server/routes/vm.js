@@ -1,4 +1,6 @@
 'use strict';
+/* jshint es5:true */
+
 
 var Vm        = require('./../../server/db/schemas').Vm,
     _         = require('lodash'),
@@ -61,7 +63,7 @@ exports.create = function(req, res) {
             pipelineId: pipelineId
         });
 
-        newInstance.save( function (err, newInstance) {
+        newInstance.save( function (err) {
             return (err) ? defer.reject(err) : defer.resolve(server);
         });
 
@@ -79,7 +81,8 @@ exports.get = function(req, res) {
     var pipelineId = req.params.id;
 
     Vm.findOne({pipelineId: pipelineId}, function (err, vm) {
-        return (err || !vm) ? res.json(404, {msg: 'Unable to find vm for pipeline id: ' + pipelineId}) : res.json(200, vm);
+        return (err || !vm) ? res.json(404, {msg: 'Unable to find vm for pipeline id: ' + pipelineId}) :
+            res.json(200, vm);
     });
 };
 
@@ -108,9 +111,9 @@ exports.delete = function(req, res) {
         return defer.promise;
     }).
     then(function(vm) {
-        var defer = Q.defer(), count = 0, inProgress = false;
+        var defer = Q.defer();
 
-        client.destroyServer(vm.instanceId, function(err, server) {
+        client.destroyServer(vm.instanceId, function(err) {
             return (err) ? defer.reject(err) : defer.resolve(vm);
         });
 
@@ -124,11 +127,11 @@ exports.delete = function(req, res) {
         });
 
         return defer.promise;
-    }).
-    catch(function(err) {
+    })
+    .catch(function(err) {
         return res.json(400, {msg: err});
-    }).
-    done(function(server) {
+    })
+    .done(function() {
         return res.json(200, { msg: 'Server has been deleted.'});
     });
 };
@@ -144,20 +147,20 @@ exports.reboot = function(req, res) {
         });
 
         return defer.promise;
-    }).
-    then(function(vm) {
+    })
+    .then(function(vm) {
         var defer = Q.defer();
 
-        client.rebootServer(vm.instanceId, {}, function(err, server) {
+        client.rebootServer(vm.instanceId, {}, function(err) {
             return (err) ? defer.reject(err) : defer.resolve(vm);
         });
 
         return defer.promise;
-    }).
-    catch(function(err) {
+    })
+    .catch(function(err) {
         return res.json(400, {msg: err});
-    }).
-    done(function(server) {
+    })
+    .done(function() {
         return res.json(200, { msg: 'Server is rebooting.'});
     });
 };

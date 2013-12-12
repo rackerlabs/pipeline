@@ -30,7 +30,7 @@ exports.list = function (req, res) {
 
 exports.get = function (req, res) {
     var id = req.params.id;
-    
+
     return User.findOne({_id:id}, function (err, user) {
         return (err || !user) ? res.json(404, {msg: 'Unable to find user with id: ' + id}) : res.json(200, user);
     });
@@ -38,7 +38,7 @@ exports.get = function (req, res) {
 
 exports.save = function (req, res) {
     var myUser = new User(req.body);
-    
+
     return myUser.save( function (err, user) {
         return (!err) ? res.json(200, user) : res.json(400, {msg: 'Unable to create new user'});
     });
@@ -48,15 +48,15 @@ exports.update = function (req, res) {
     var id = req.params.id;
     var body = req.body;
     body.lastUpdated = new Date();
-    
+
     return User.update({_id: id}, body, {}, function (err, updatedNumber, raw) {
         return (!err) ?  res.json(200, raw) : res.json(400, {msg: 'Unable to update user id: ' + id });
     });
 };
 
-exports.delete = function (req, res) {
+exports.remove = function (req, res) {
     var id = req.params.id;
-    
+
     return User.remove({ _id: id}, function (err) {
         return err ? res.json(400, {msg: 'Unable to delete user id: ' + id}) :
             res.json(200, {msg: 'Deleted user id: ' + id});
