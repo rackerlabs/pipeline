@@ -18,17 +18,17 @@ var fetchRepo = function (id) {
 
 var createHeaders = function (apiToken) {
     return {
-                'Authorization' : 'token ' + apiToken,
-                'Accept'        : 'application/json'
-            };
+        'Authorization' : 'token ' + apiToken,
+        'Accept'        : 'application/json'
+    };
 };
 
 var fetchCommits = function(repo) {
     var defer = Q.defer();
 
-    rest.get(GITHUB_URL + repo.owner + '/' + repo.repoName + '/commits', 
+    rest.get(GITHUB_URL + repo.owner + '/' + repo.repoName + '/commits',
         { headers: createHeaders(repo.apiToken) }
-    ).on('complete', function (data, response) {
+    ).on('complete', function (data) {
         defer.resolve(data);
     });
 
@@ -38,20 +38,24 @@ var fetchCommits = function(repo) {
 var createTagObject = function(lastCommit, repo, tagName) {
     var defer = Q.defer();
     var date = new Date();
-    var body = { 
-        tag: tagName, 
-        message: 'Automatically Created Tag', 
+    var body = {
+        tag: tagName,
+        message: 'Automatically Created Tag',
         object: lastCommit.sha,
-        type: 'commit', 
+        type: 'commit',
         tagger: { name: repo.owner, date: date }
     };
 
     var data = JSON.stringify(body);
 
     rest.post(GITHUB_URL + repo.owner + '/' + repo.repoName + '/git/tags', {
-        headers: createHeaders(repo.apiToken), data: data
-    }).on('success', function(data) { defer.resolve(data) 
-    }).on('fail', function(error) { defer.reject(error) });
+        headers: createHeaders(repo.apiToken),
+        data: data
+    }).on('success', function(data) {
+        defer.resolve(data);
+    }).on('fail', function(error) {
+        defer.reject(error);
+    });
 
     return defer.promise;
 };
@@ -67,13 +71,14 @@ exports.createBranch = function (req, res) {
         var ref = 'refs/heads/' + branchName;
         var data = JSON.stringify({ ref: ref, sha: lastCommit.sha });
 
-        rest.post(GITHUB_URL + repo.owner + '/' + repo.repoName + '/git/refs', { 
+        rest.post(GITHUB_URL + repo.owner + '/' + repo.repoName + '/git/refs', {
                 headers: createHeaders(repo.apiToken),
                 data: data
             }
         ).on('complete', function(data, response) {
-            res.json(response.statusCode, data);
-        });
+                res.json(response.statusCode, data);
+            }
+        );
     });
 };
 
@@ -81,7 +86,7 @@ exports.listBranches = function (req, res) {
     var repoId = req.params.repoId;
 
     fetchRepo(repoId).then( function (repo) {
-        rest.get(GITHUB_URL + repo.owner + '/' + repo.repoName + '/branches', 
+        rest.get(GITHUB_URL + repo.owner + '/' + repo.repoName + '/branches',
             { headers: createHeaders(repo.apiToken) }
         ).on('complete', function (data, response) {
             res.json(response.statusCode, data);
@@ -90,14 +95,14 @@ exports.listBranches = function (req, res) {
 };
 
 exports.listPulls = function (req, res) {
-    var id = req.params.repoId
+    var id = req.params.repoId;
 
     fetchRepo(id).then( function (repo) {
-        rest.get(GITHUB_URL + repo.owner + '/' + repo.repoName + '/pulls', 
+        rest.get(GITHUB_URL + repo.owner + '/' + repo.repoName + '/pulls',
             { headers: createHeaders(repo.apiToken) }
         ).on('complete', function (data, response) {
             res.json(response.statusCode, data);
-        })
+        });
     });
 };
 
@@ -111,7 +116,7 @@ exports.createPull = function(req, res) {
 
     fetchRepo(id).then(function (repo) {
         headers = createHeaders(repo.apiToken);
-        rest.post(GITHUB_URL + repo.owner + '/' + repo.repoName + '/pulls', 
+        rest.post(GITHUB_URL + repo.owner + '/' + repo.repoName + '/pulls',
             { data: json, headers: headers }
         ).on('complete', function (data, response) {
             return res.json(response.statusCode, data);
@@ -123,9 +128,9 @@ exports.isPullMergeable = function (req, res) {
     var repoId = req.params.repoId, pullId = req.params.pullId;
 
     fetchRepo(repoId).then(function (repo) {
-        rest.get(GITHUB_URL + repo.owner + '/' + repo.repoName + '/pulls/' + pullId, 
+        rest.get(GITHUB_URL + repo.owner + '/' + repo.repoName + '/pulls/' + pullId,
             { headers: createHeaders(repo.apiToken) }
-        ).on('complete', function (data, response) {
+        ).on('complete', function (data) {
             res.json(200, { mergeable: data.mergeable });
         });
     });
@@ -135,15 +140,16 @@ exports.mergePull = function (req, res) {
     var repoId = req.params.repoId, pullId = req.params.pullId, msg = req.body.message;
 
     fetchRepo(repoId).then( function (repo) {
-        rest.put(GITHUB_URL + repo.owner + '/' + repo.repoName + '/pulls/' + pullId + '/merge', 
-            { 
+        rest.put(GITHUB_URL + repo.owner + '/' + repo.repoName + '/pulls/' + pullId + '/merge',
+            {
                 headers : createHeaders(repo.apiToken),
                 data: JSON.stringify( { 'commit_message' : msg })
             }
         ).on('complete', function (data, response) {
-            return res.json(response.statusCode, data);
-        })
-    })
+                return res.json(response.statusCode, data);
+            }
+        );
+    });
 };
 
 exports.createTag = function (req, res) {
