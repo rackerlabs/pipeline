@@ -4,12 +4,12 @@ var mongoose    = require('mongoose'),
     Schema      = mongoose.Schema;
 
 var NOTIFICATION_SCHEMA = new Schema({
-    notification_type: { type: String },
+    notificationType: { type: String },
     contacts: { type: Array, required: true },
     subject: { type: String, required: false },
     body: { type: String, required: true },
-    onSuccess: { type: Boolean, default: false },
-    onFailure: { type: Boolean, default: false }
+    onSuccess: { type: Boolean, 'default': false },
+    onFailure: { type: Boolean, 'default': false }
 });
 
 var BRANCH_SCHEMA = new Schema({
@@ -20,22 +20,22 @@ var BRANCH_SCHEMA = new Schema({
 
 var TASK_COMMAND_SCHEMA = new Schema({
         command: String,
-        stopBuildOnFailure: { type: Boolean, default: true }
+        stopBuildOnFailure: { type: Boolean, 'default': true }
     });
 
 var TASK_RUN_SCHEMA = new Schema({
         output: String,
-        startTime: { type: Date, default: Date.now },
+        startTime: { type: Date, 'default': Date.now },
         endTime: { type: Date },
-        isSuccessful: { type: Boolean, default: true }
+        isSuccessful: { type: Boolean, 'default': true }
     });
 
 var TASK_SCHEMA = new Schema({
         name: { type: String, unique: true, required: true },
         description: String,
-        created: { type: Date, default: Date.now },
+        created: { type: Date, 'default': Date.now },
         createBy: String,
-        lastUpdated: { type: Date, default: Date.now },
+        lastUpdated: { type: Date, 'default': Date.now },
         lastUpdatedBy: String,
         taskRuns: [{taskRunId: String}],
         commands: [TASK_COMMAND_SCHEMA],
@@ -43,15 +43,15 @@ var TASK_SCHEMA = new Schema({
     });
 
 var PIPELINE_RUN_SCHEMA = new Schema({
-        created: { type: Date, default: Date.now},
+        created: { type: Date, 'default': Date.now},
         createBy: String,
         lastUpdated: Date,
-        taskRuns: [{taskRunId: String}],
+        taskRuns: [{taskRunId: String}]
     });
 
 var PIPELINE_SCHEMA = new Schema({
         name: { type: String, required: true, unique: false },
-        created: { type: Date, default: Date.now},
+        created: { type: Date, 'default': Date.now},
         createBy: String,
         lastUpdated: Date,
         branches: [BRANCH_SCHEMA],
@@ -61,14 +61,14 @@ var PIPELINE_SCHEMA = new Schema({
     });
 
 var VM_SCHEMA = new Schema({
-        created: { type: Date, default: Date.now },
+        created: { type: Date, 'default': Date.now },
         instanceId: String,
-        ipAddress: { type: String, default: '' },
+        ipAddress: { type: String, 'default': '' },
         pipelineId: String
     });
 
 var REPO_SCHEMA = new Schema({
-        created: { type: Date, default: Date.now},
+        created: { type: Date, 'default': Date.now},
         createBy: String,
         lastUpdated: Date,
         owner: { type: String, required: true },
@@ -77,9 +77,9 @@ var REPO_SCHEMA = new Schema({
     });
 
 var USER_SCHEMA = new Schema({
-        created: { type: Date, default: Date.now },
+        created: { type: Date, 'default': Date.now },
         createdBy: String,
-        lastUpdated: { type: Date, default: Date.now },
+        lastUpdated: { type: Date, 'default': Date.now },
         username: { type: String, unique: true, required: true },
         email : { type: String, unique:true, required: true },
         lastLogin: Date
