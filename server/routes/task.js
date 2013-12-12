@@ -46,7 +46,6 @@ exports.delete = function (req, res) {
 
 var saveTask = function (obj) {
     return new Task(obj).save( function (err, task) {
-        console.log('Tasks Error', err);
         return err ? new Error(err) : task;
     });
 };
