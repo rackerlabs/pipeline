@@ -31,7 +31,7 @@ var TASK_RUN_SCHEMA = new Schema({
     });
 
 var TASK_SCHEMA = new Schema({
-        name: String,
+        name: { type: String, unique: true, required: true },
         description: String,
         created: { type: Date, default: Date.now },
         createBy: String,

@@ -52,6 +52,7 @@ server.configure( function() {
 
 server.configure( 'development', function() {
     user.bootstrap();
+    task.bootstrap();
     server.use( express.errorHandler( { dumpExceptions: true, showStack: true } ) );
 } );
 
