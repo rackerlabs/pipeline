@@ -11,8 +11,8 @@
         }
     },
     "github": {
-        "clientId":"11b399c403bad0454665",
-        "clientSecret": "08df80b34878db3053abb4bf179564c47c4e49ec"
+        "clientId":"GITHUB CLIENT ID",
+        "clientSecret": "GITHUB SECRET KEY"
     },
     "appPath"   :   "app",
     "serverPath":   "server",
@@ -34,8 +34,8 @@
     "vm": {
         "cloudCredentials" : {
             "provider": "rackspace",
-            "username": "rnreekez",
-            "apiKey": "5b71c11338ca4e7eb8086a156d8f5377"
+            "username": "API USERNAME",
+            "apiKey": "API KEY"
         },
         "cloudServer": {
             "defaults": {
