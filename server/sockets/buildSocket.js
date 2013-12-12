@@ -1,5 +1,5 @@
 'use strict';
-/*jshint unused:true */
+/*jshint undef:true, unused :false */
 
 var spawn = require('child_process').spawn;
 var Q = require('q');
