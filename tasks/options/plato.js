@@ -7,7 +7,7 @@ module.exports = {
             exclude: /app\/scripts\/lib/ // excludes files in lib directory
         },
         files: {
-            'report': ['app/scripts/**/*.js']
+            'report': ['app/scripts/**/*.js', 'server/**/*.js']
         }
     }
 };
