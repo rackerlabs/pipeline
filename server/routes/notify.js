@@ -7,7 +7,7 @@ var email = require('./../../server/utils/email'),
     _ = require('lodash');
 
 var options = {
-    from: 'Rogers Mom ✔ <christopher.cantu@gmail.com>', // sender address
+    from: 'Rogers Store ✔ <christopher.cantu@gmail.com>', // sender address
     subject: 'Open 24/7', // Subject line
     text: '99% DISCOUNT for all customers', // plaintext body
     html: '<b>99% Discount</b> for all customers!' // html body
