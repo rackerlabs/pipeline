@@ -24,6 +24,10 @@ angular.module( 'rxPipelineApp', ['ngRoute', 'ngResource', 'btford.socket-io', '
             templateUrl: '/views/pipeline/pipelineEdit.html',
             controller: 'PipelineEditCtrl'
         })
+        .when('/tasks', {
+            templateUrl: 'views/task/taskList.html',
+            controller: 'TaskListCtrl'
+        })
         .otherwise({
             redirectTo: '/'
         });
