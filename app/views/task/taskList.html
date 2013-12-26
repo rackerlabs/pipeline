@@ -1,1 +1,37 @@
-Task List Page
+<div class="page-header">
+    <h1>Tasks</h1>
+    <div class="row">
+        <div class="col-lg-1 col-lg-offset-11">    
+            <a ng-href="/tasks-create" class="btn btn-primary">Create</a>
+        </div>
+    </div>    
+</div>
+<div class="row">
+    <div class="col-lg-12">
+                <div class="panel panel-primary">
+            <div class="panel-heading">
+                Tasks
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th><th>Last Updated</th><th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="task in tasks">
+                            <td><a ng-href="/task/{{task._id}}">{{task.name}}</a></td>
+                            <td>{{task.lastUpdated | date:'MM/dd/yyyy @ hh:mma' }}</td>
+                            <td>
+                                <a ng-href="/pipelines/{{task._id}}/edit" class="btn btn-warning">Edit<a/>
+                                <a href ng-click="deletePipeline(task._id)" class="btn btn-danger">Delete<a/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>                
+            </div>
+        </div>
+    </div>
+    
+</div>
