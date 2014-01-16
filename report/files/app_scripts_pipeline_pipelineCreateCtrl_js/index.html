@@ -37,7 +37,7 @@
 
 <div class="jumbotron">
   <div class="container">
-    <h1>server/routes/notify.js</h1>
+    <h1>app/scripts/pipeline/pipelineCreateCtrl.js</h1>
   </div>
 </div>
 
@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">80.75</p>
+      <p class="stat">80.96</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">63</p>
+      <p class="stat">12</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">13.36</p>
+      <p class="stat">4.33</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.57</p>
+      <p class="stat">0.07</p>
     </div>
   </div>
 </div>
@@ -90,69 +90,18 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">&#039;use strict&#039;;
-/*jslint es5: true */
+    <textarea id="file-source" class="col-md-12">angular.module(&#039;rxPipelineApp&#039;)
+	.controller(&#039;PipelineCreateCtrl&#039;, function ($scope, $location, Pipeline, Task) {
+		$scope.save = function () {
+			var pipe = new Pipeline($scope.pipeline);
+			pipe.$save();
 
-var email = require(&#039;./../../server/utils/email&#039;),
-    user = require(&#039;./../../server/routes/user&#039;),
-    pipeline = require(&#039;./../../server/routes/pipeline&#039;),
-    _ = require(&#039;lodash&#039;);
+			//TODO add flash message creation was successful
+			$location.path(&#039;/home&#039;);
+		};
 
-var options = {
-    from: &#039;Rogers Store ✔ &lt;christopher.cantu@gmail.com&gt;&#039;, // sender address
-    subject: &#039;Open 24/7&#039;, // Subject line
-    text: &#039;99% DISCOUNT for all customers&#039;, // plaintext body
-    html: &#039;&lt;b&gt;99% Discount&lt;/b&gt; for all customers!&#039; // html body
-};
-
-exports.emailUser = function (req, res) {
-    var opts = ( req.body.options ) ? req.body.options : options;
-
-    user.findById(req.params.id)
-        .then( function(user) {
-            opts.to = user.email;
-            return email.sendMail(options);
-        })
-        .then( function (message) {
-            return res.json(200, message);
-        }).catch( function (error) {
-            return res.json(409, error);
-        });
-};
-
-exports.emailUsers = function (req, res) {
-    var usersIds = req.body.ids;
-    var opts = ( req.body.options ) ? req.body.options : options;
-
-    user.findUsersByIds(usersIds)
-        .then( function (users) {
-            var ids = _.pluck(users, &#039;email&#039;);
-            opts.to = ids.toString();
-            return email.sendMail(opts);
-        }).then( function (message) {
-            return res.json(200, message);
-        }).catch( function (error) {
-            return res.json(409, error);
-        });
-};
-
-exports.pipelineEmail = function (buildId) {
-    pipeline.findByBuildIdAndNotificationType(buildId, &#039;email&#039;).then( function (pipe) {
-        var notification = _.find(pipe.notifications, function (notify) {
-            return notify.notificationType === &#039;email&#039;;
-        });
-
-        var mail = {
-            from: &#039;Chris Cantu &lt;christopher.cantu@gmail.com&gt;&#039;,
-            to: notification.contacts.toString(),
-            text: notification.body,
-            html: notification.body,
-            subject: notification.subject
-        };
-
-        return email.sendMail(mail);
-    });
-};</textarea>
+		$scope.tasks = Task.list();
+	});</textarea>
   </div>
 </div>
 
